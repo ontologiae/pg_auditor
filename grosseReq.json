@@ -1,0 +1,2600 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "name": "edateevent",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "to_char"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "e"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "edateevent"
+                              }
+                            }
+                          ],
+                          "location": 64
+                        }
+                      },
+                      {
+                        "TypeCast": {
+                          "arg": {
+                            "A_Const": {
+                              "val": {
+                                "String": {
+                                  "str": "HH24hMI (dy DD/MM)"
+                                }
+                              },
+                              "location": 78
+                            }
+                          },
+                          "typeName": {
+                            "names": [
+                              {
+                                "String": {
+                                  "str": "text"
+                                }
+                              }
+                            ],
+                            "typemod": -1,
+                            "location": 100
+                          },
+                          "location": 98
+                        }
+                      }
+                    ],
+                    "location": 56
+                  }
+                },
+                "location": 56
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "ep"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "phrase"
+                        }
+                      }
+                    ],
+                    "location": 125
+                  }
+                },
+                "location": 125
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "ephrase",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "gereencodingnainwak"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "FuncCall": {
+                          "funcname": [
+                            {
+                              "String": {
+                                "str": "replace"
+                              }
+                            }
+                          ],
+                          "args": [
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "replace"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "FuncCall": {
+                                      "funcname": [
+                                        {
+                                          "String": {
+                                            "str": "replace"
+                                          }
+                                        }
+                                      ],
+                                      "args": [
+                                        {
+                                          "FuncCall": {
+                                            "funcname": [
+                                              {
+                                                "String": {
+                                                  "str": "replace"
+                                                }
+                                              }
+                                            ],
+                                            "args": [
+                                              {
+                                                "FuncCall": {
+                                                  "funcname": [
+                                                    {
+                                                      "String": {
+                                                        "str": "replace"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "args": [
+                                                    {
+                                                      "FuncCall": {
+                                                        "funcname": [
+                                                          {
+                                                            "String": {
+                                                              "str": "replace"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "args": [
+                                                          {
+                                                            "FuncCall": {
+                                                              "funcname": [
+                                                                {
+                                                                  "String": {
+                                                                    "str": "replace"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "args": [
+                                                                {
+                                                                  "FuncCall": {
+                                                                    "funcname": [
+                                                                      {
+                                                                        "String": {
+                                                                          "str": "replace"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "args": [
+                                                                      {
+                                                                        "FuncCall": {
+                                                                          "funcname": [
+                                                                            {
+                                                                              "String": {
+                                                                                "str": "replace"
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "args": [
+                                                                            {
+                                                                              "FuncCall": {
+                                                                                "funcname": [
+                                                                                  {
+                                                                                    "String": {
+                                                                                      "str": "replace"
+                                                                                    }
+                                                                                  }
+                                                                                ],
+                                                                                "args": [
+                                                                                  {
+                                                                                    "FuncCall": {
+                                                                                      "funcname": [
+                                                                                        {
+                                                                                          "String": {
+                                                                                            "str": "replace"
+                                                                                          }
+                                                                                        }
+                                                                                      ],
+                                                                                      "args": [
+                                                                                        {
+                                                                                          "FuncCall": {
+                                                                                            "funcname": [
+                                                                                              {
+                                                                                                "String": {
+                                                                                                  "str": "replace"
+                                                                                                }
+                                                                                              }
+                                                                                            ],
+                                                                                            "args": [
+                                                                                              {
+                                                                                                "TypeCast": {
+                                                                                                  "arg": {
+                                                                                                    "ColumnRef": {
+                                                                                                      "fields": [
+                                                                                                        {
+                                                                                                          "String": {
+                                                                                                            "str": "ep"
+                                                                                                          }
+                                                                                                        },
+                                                                                                        {
+                                                                                                          "String": {
+                                                                                                            "str": "phrase"
+                                                                                                          }
+                                                                                                        }
+                                                                                                      ],
+                                                                                                      "location": 256
+                                                                                                    }
+                                                                                                  },
+                                                                                                  "typeName": {
+                                                                                                    "names": [
+                                                                                                      {
+                                                                                                        "String": {
+                                                                                                          "str": "text"
+                                                                                                        }
+                                                                                                      }
+                                                                                                    ],
+                                                                                                    "typemod": -1,
+                                                                                                    "location": 267
+                                                                                                  },
+                                                                                                  "location": 265
+                                                                                                }
+                                                                                              },
+                                                                                              {
+                                                                                                "TypeCast": {
+                                                                                                  "arg": {
+                                                                                                    "A_Const": {
+                                                                                                      "val": {
+                                                                                                        "String": {
+                                                                                                          "str": "%casex"
+                                                                                                        }
+                                                                                                      },
+                                                                                                      "location": 273
+                                                                                                    }
+                                                                                                  },
+                                                                                                  "typeName": {
+                                                                                                    "names": [
+                                                                                                      {
+                                                                                                        "String": {
+                                                                                                          "str": "text"
+                                                                                                        }
+                                                                                                      }
+                                                                                                    ],
+                                                                                                    "typemod": -1,
+                                                                                                    "location": 283
+                                                                                                  },
+                                                                                                  "location": 281
+                                                                                                }
+                                                                                              },
+                                                                                              {
+                                                                                                "TypeCast": {
+                                                                                                  "arg": {
+                                                                                                    "ColumnRef": {
+                                                                                                      "fields": [
+                                                                                                        {
+                                                                                                          "String": {
+                                                                                                            "str": "e"
+                                                                                                          }
+                                                                                                        },
+                                                                                                        {
+                                                                                                          "String": {
+                                                                                                            "str": "ecasex"
+                                                                                                          }
+                                                                                                        }
+                                                                                                      ],
+                                                                                                      "location": 289
+                                                                                                    }
+                                                                                                  },
+                                                                                                  "typeName": {
+                                                                                                    "names": [
+                                                                                                      {
+                                                                                                        "String": {
+                                                                                                          "str": "text"
+                                                                                                        }
+                                                                                                      }
+                                                                                                    ],
+                                                                                                    "typemod": -1,
+                                                                                                    "location": 299
+                                                                                                  },
+                                                                                                  "location": 297
+                                                                                                }
+                                                                                              }
+                                                                                            ],
+                                                                                            "location": 248
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "TypeCast": {
+                                                                                            "arg": {
+                                                                                              "A_Const": {
+                                                                                                "val": {
+                                                                                                  "String": {
+                                                                                                    "str": "%casey"
+                                                                                                  }
+                                                                                                },
+                                                                                                "location": 306
+                                                                                              }
+                                                                                            },
+                                                                                            "typeName": {
+                                                                                              "names": [
+                                                                                                {
+                                                                                                  "String": {
+                                                                                                    "str": "text"
+                                                                                                  }
+                                                                                                }
+                                                                                              ],
+                                                                                              "typemod": -1,
+                                                                                              "location": 316
+                                                                                            },
+                                                                                            "location": 314
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "TypeCast": {
+                                                                                            "arg": {
+                                                                                              "ColumnRef": {
+                                                                                                "fields": [
+                                                                                                  {
+                                                                                                    "String": {
+                                                                                                      "str": "e"
+                                                                                                    }
+                                                                                                  },
+                                                                                                  {
+                                                                                                    "String": {
+                                                                                                      "str": "ecasey"
+                                                                                                    }
+                                                                                                  }
+                                                                                                ],
+                                                                                                "location": 322
+                                                                                              }
+                                                                                            },
+                                                                                            "typeName": {
+                                                                                              "names": [
+                                                                                                {
+                                                                                                  "String": {
+                                                                                                    "str": "text"
+                                                                                                  }
+                                                                                                }
+                                                                                              ],
+                                                                                              "typemod": -1,
+                                                                                              "location": 332
+                                                                                            },
+                                                                                            "location": 330
+                                                                                          }
+                                                                                        }
+                                                                                      ],
+                                                                                      "location": 240
+                                                                                    }
+                                                                                  },
+                                                                                  {
+                                                                                    "TypeCast": {
+                                                                                      "arg": {
+                                                                                        "A_Const": {
+                                                                                          "val": {
+                                                                                            "String": {
+                                                                                              "str": "%Nain2"
+                                                                                            }
+                                                                                          },
+                                                                                          "location": 339
+                                                                                        }
+                                                                                      },
+                                                                                      "typeName": {
+                                                                                        "names": [
+                                                                                          {
+                                                                                            "String": {
+                                                                                              "str": "text"
+                                                                                            }
+                                                                                          }
+                                                                                        ],
+                                                                                        "typemod": -1,
+                                                                                        "location": 349
+                                                                                      },
+                                                                                      "location": 347
+                                                                                    }
+                                                                                  },
+                                                                                  {
+                                                                                    "A_Expr": {
+                                                                                      "kind": "AEXPR_OP",
+                                                                                      "name": [
+                                                                                        {
+                                                                                          "String": {
+                                                                                            "str": "||"
+                                                                                          }
+                                                                                        }
+                                                                                      ],
+                                                                                      "lexpr": {
+                                                                                        "A_Expr": {
+                                                                                          "kind": "AEXPR_OP",
+                                                                                          "name": [
+                                                                                            {
+                                                                                              "String": {
+                                                                                                "str": "||"
+                                                                                              }
+                                                                                            }
+                                                                                          ],
+                                                                                          "lexpr": {
+                                                                                            "TypeCast": {
+                                                                                              "arg": {
+                                                                                                "A_Const": {
+                                                                                                  "val": {
+                                                                                                    "String": {
+                                                                                                      "str": "u003ciu003e"
+                                                                                                    }
+                                                                                                  },
+                                                                                                  "location": 356
+                                                                                                }
+                                                                                              },
+                                                                                              "typeName": {
+                                                                                                "names": [
+                                                                                                  {
+                                                                                                    "String": {
+                                                                                                      "str": "text"
+                                                                                                    }
+                                                                                                  }
+                                                                                                ],
+                                                                                                "typemod": -1,
+                                                                                                "location": 363
+                                                                                              },
+                                                                                              "location": 361
+                                                                                            }
+                                                                                          },
+                                                                                          "rexpr": {
+                                                                                            "TypeCast": {
+                                                                                              "arg": {
+                                                                                                "CoalesceExpr": {
+                                                                                                  "args": [
+                                                                                                    {
+                                                                                                      "ColumnRef": {
+                                                                                                        "fields": [
+                                                                                                          {
+                                                                                                            "String": {
+                                                                                                              "str": "vdn2"
+                                                                                                            }
+                                                                                                          },
+                                                                                                          {
+                                                                                                            "String": {
+                                                                                                              "str": "lib_nain"
+                                                                                                            }
+                                                                                                          }
+                                                                                                        ],
+                                                                                                        "location": 380
+                                                                                                      }
+                                                                                                    },
+                                                                                                    {
+                                                                                                      "TypeCast": {
+                                                                                                        "arg": {
+                                                                                                          "A_Const": {
+                                                                                                            "val": {
+                                                                                                              "String": {
+                                                                                                                "str": ""
+                                                                                                              }
+                                                                                                            },
+                                                                                                            "location": 395
+                                                                                                          }
+                                                                                                        },
+                                                                                                        "typeName": {
+                                                                                                          "names": [
+                                                                                                            {
+                                                                                                              "String": {
+                                                                                                                "str": "pg_catalog"
+                                                                                                              }
+                                                                                                            },
+                                                                                                            {
+                                                                                                              "String": {
+                                                                                                                "str": "varchar"
+                                                                                                              }
+                                                                                                            }
+                                                                                                          ],
+                                                                                                          "typemod": -1,
+                                                                                                          "location": 399
+                                                                                                        },
+                                                                                                        "location": 397
+                                                                                                      }
+                                                                                                    }
+                                                                                                  ],
+                                                                                                  "location": 371
+                                                                                                }
+                                                                                              },
+                                                                                              "typeName": {
+                                                                                                "names": [
+                                                                                                  {
+                                                                                                    "String": {
+                                                                                                      "str": "text"
+                                                                                                    }
+                                                                                                  }
+                                                                                                ],
+                                                                                                "typemod": -1,
+                                                                                                "location": 419
+                                                                                              },
+                                                                                              "location": 417
+                                                                                            }
+                                                                                          },
+                                                                                          "location": 368
+                                                                                        }
+                                                                                      },
+                                                                                      "rexpr": {
+                                                                                        "TypeCast": {
+                                                                                          "arg": {
+                                                                                            "A_Const": {
+                                                                                              "val": {
+                                                                                                "String": {
+                                                                                                  "str": "u003c/iu003e"
+                                                                                                }
+                                                                                              },
+                                                                                              "location": 428
+                                                                                            }
+                                                                                          },
+                                                                                          "typeName": {
+                                                                                            "names": [
+                                                                                              {
+                                                                                                "String": {
+                                                                                                  "str": "text"
+                                                                                                }
+                                                                                              }
+                                                                                            ],
+                                                                                            "typemod": -1,
+                                                                                            "location": 436
+                                                                                          },
+                                                                                          "location": 434
+                                                                                        }
+                                                                                      },
+                                                                                      "location": 425
+                                                                                    }
+                                                                                  }
+                                                                                ],
+                                                                                "location": 232
+                                                                              }
+                                                                            },
+                                                                            {
+                                                                              "TypeCast": {
+                                                                                "arg": {
+                                                                                  "A_Const": {
+                                                                                    "val": {
+                                                                                      "String": {
+                                                                                        "str": "%Nain"
+                                                                                      }
+                                                                                    },
+                                                                                    "location": 443
+                                                                                  }
+                                                                                },
+                                                                                "typeName": {
+                                                                                  "names": [
+                                                                                    {
+                                                                                      "String": {
+                                                                                        "str": "text"
+                                                                                      }
+                                                                                    }
+                                                                                  ],
+                                                                                  "typemod": -1,
+                                                                                  "location": 452
+                                                                                },
+                                                                                "location": 450
+                                                                              }
+                                                                            },
+                                                                            {
+                                                                              "A_Expr": {
+                                                                                "kind": "AEXPR_OP",
+                                                                                "name": [
+                                                                                  {
+                                                                                    "String": {
+                                                                                      "str": "||"
+                                                                                    }
+                                                                                  }
+                                                                                ],
+                                                                                "lexpr": {
+                                                                                  "A_Expr": {
+                                                                                    "kind": "AEXPR_OP",
+                                                                                    "name": [
+                                                                                      {
+                                                                                        "String": {
+                                                                                          "str": "||"
+                                                                                        }
+                                                                                      }
+                                                                                    ],
+                                                                                    "lexpr": {
+                                                                                      "TypeCast": {
+                                                                                        "arg": {
+                                                                                          "A_Const": {
+                                                                                            "val": {
+                                                                                              "String": {
+                                                                                                "str": "u003ciu003e"
+                                                                                              }
+                                                                                            },
+                                                                                            "location": 459
+                                                                                          }
+                                                                                        },
+                                                                                        "typeName": {
+                                                                                          "names": [
+                                                                                            {
+                                                                                              "String": {
+                                                                                                "str": "text"
+                                                                                              }
+                                                                                            }
+                                                                                          ],
+                                                                                          "typemod": -1,
+                                                                                          "location": 466
+                                                                                        },
+                                                                                        "location": 464
+                                                                                      }
+                                                                                    },
+                                                                                    "rexpr": {
+                                                                                      "TypeCast": {
+                                                                                        "arg": {
+                                                                                          "CoalesceExpr": {
+                                                                                            "args": [
+                                                                                              {
+                                                                                                "ColumnRef": {
+                                                                                                  "fields": [
+                                                                                                    {
+                                                                                                      "String": {
+                                                                                                        "str": "vdn1"
+                                                                                                      }
+                                                                                                    },
+                                                                                                    {
+                                                                                                      "String": {
+                                                                                                        "str": "lib_nain"
+                                                                                                      }
+                                                                                                    }
+                                                                                                  ],
+                                                                                                  "location": 483
+                                                                                                }
+                                                                                              },
+                                                                                              {
+                                                                                                "TypeCast": {
+                                                                                                  "arg": {
+                                                                                                    "A_Const": {
+                                                                                                      "val": {
+                                                                                                        "String": {
+                                                                                                          "str": ""
+                                                                                                        }
+                                                                                                      },
+                                                                                                      "location": 498
+                                                                                                    }
+                                                                                                  },
+                                                                                                  "typeName": {
+                                                                                                    "names": [
+                                                                                                      {
+                                                                                                        "String": {
+                                                                                                          "str": "pg_catalog"
+                                                                                                        }
+                                                                                                      },
+                                                                                                      {
+                                                                                                        "String": {
+                                                                                                          "str": "varchar"
+                                                                                                        }
+                                                                                                      }
+                                                                                                    ],
+                                                                                                    "typemod": -1,
+                                                                                                    "location": 502
+                                                                                                  },
+                                                                                                  "location": 500
+                                                                                                }
+                                                                                              }
+                                                                                            ],
+                                                                                            "location": 474
+                                                                                          }
+                                                                                        },
+                                                                                        "typeName": {
+                                                                                          "names": [
+                                                                                            {
+                                                                                              "String": {
+                                                                                                "str": "text"
+                                                                                              }
+                                                                                            }
+                                                                                          ],
+                                                                                          "typemod": -1,
+                                                                                          "location": 522
+                                                                                        },
+                                                                                        "location": 520
+                                                                                      }
+                                                                                    },
+                                                                                    "location": 471
+                                                                                  }
+                                                                                },
+                                                                                "rexpr": {
+                                                                                  "TypeCast": {
+                                                                                    "arg": {
+                                                                                      "A_Const": {
+                                                                                        "val": {
+                                                                                          "String": {
+                                                                                            "str": "u003c/iu003e"
+                                                                                          }
+                                                                                        },
+                                                                                        "location": 531
+                                                                                      }
+                                                                                    },
+                                                                                    "typeName": {
+                                                                                      "names": [
+                                                                                        {
+                                                                                          "String": {
+                                                                                            "str": "text"
+                                                                                          }
+                                                                                        }
+                                                                                      ],
+                                                                                      "typemod": -1,
+                                                                                      "location": 539
+                                                                                    },
+                                                                                    "location": 537
+                                                                                  }
+                                                                                },
+                                                                                "location": 528
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "location": 224
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "TypeCast": {
+                                                                          "arg": {
+                                                                            "A_Const": {
+                                                                              "val": {
+                                                                                "String": {
+                                                                                  "str": "%objet"
+                                                                                }
+                                                                              },
+                                                                              "location": 546
+                                                                            }
+                                                                          },
+                                                                          "typeName": {
+                                                                            "names": [
+                                                                              {
+                                                                                "String": {
+                                                                                  "str": "text"
+                                                                                }
+                                                                              }
+                                                                            ],
+                                                                            "typemod": -1,
+                                                                            "location": 556
+                                                                          },
+                                                                          "location": 554
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "TypeCast": {
+                                                                          "arg": {
+                                                                            "CoalesceExpr": {
+                                                                              "args": [
+                                                                                {
+                                                                                  "ColumnRef": {
+                                                                                    "fields": [
+                                                                                      {
+                                                                                        "String": {
+                                                                                          "str": "o"
+                                                                                        }
+                                                                                      },
+                                                                                      {
+                                                                                        "String": {
+                                                                                          "str": "nom"
+                                                                                        }
+                                                                                      }
+                                                                                    ],
+                                                                                    "location": 571
+                                                                                  }
+                                                                                },
+                                                                                {
+                                                                                  "TypeCast": {
+                                                                                    "arg": {
+                                                                                      "A_Const": {
+                                                                                        "val": {
+                                                                                          "String": {
+                                                                                            "str": ""
+                                                                                          }
+                                                                                        },
+                                                                                        "location": 578
+                                                                                      }
+                                                                                    },
+                                                                                    "typeName": {
+                                                                                      "names": [
+                                                                                        {
+                                                                                          "String": {
+                                                                                            "str": "pg_catalog"
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "String": {
+                                                                                            "str": "varchar"
+                                                                                          }
+                                                                                        }
+                                                                                      ],
+                                                                                      "typemod": -1,
+                                                                                      "location": 582
+                                                                                    },
+                                                                                    "location": 580
+                                                                                  }
+                                                                                }
+                                                                              ],
+                                                                              "location": 562
+                                                                            }
+                                                                          },
+                                                                          "typeName": {
+                                                                            "names": [
+                                                                              {
+                                                                                "String": {
+                                                                                  "str": "text"
+                                                                                }
+                                                                              }
+                                                                            ],
+                                                                            "typemod": -1,
+                                                                            "location": 602
+                                                                          },
+                                                                          "location": 600
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "location": 216
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "TypeCast": {
+                                                                    "arg": {
+                                                                      "A_Const": {
+                                                                        "val": {
+                                                                          "String": {
+                                                                            "str": "%monde"
+                                                                          }
+                                                                        },
+                                                                        "location": 609
+                                                                      }
+                                                                    },
+                                                                    "typeName": {
+                                                                      "names": [
+                                                                        {
+                                                                          "String": {
+                                                                            "str": "text"
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "typemod": -1,
+                                                                      "location": 619
+                                                                    },
+                                                                    "location": 617
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "CoalesceExpr": {
+                                                                    "args": [
+                                                                      {
+                                                                        "ColumnRef": {
+                                                                          "fields": [
+                                                                            {
+                                                                              "String": {
+                                                                                "str": "m"
+                                                                              }
+                                                                            },
+                                                                            {
+                                                                              "String": {
+                                                                                "str": "lib"
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "location": 634
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "TypeCast": {
+                                                                          "arg": {
+                                                                            "A_Const": {
+                                                                              "val": {
+                                                                                "String": {
+                                                                                  "str": ""
+                                                                                }
+                                                                              },
+                                                                              "location": 641
+                                                                            }
+                                                                          },
+                                                                          "typeName": {
+                                                                            "names": [
+                                                                              {
+                                                                                "String": {
+                                                                                  "str": "text"
+                                                                                }
+                                                                              }
+                                                                            ],
+                                                                            "typemod": -1,
+                                                                            "location": 645
+                                                                          },
+                                                                          "location": 643
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "location": 625
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "location": 208
+                                                            }
+                                                          },
+                                                          {
+                                                            "TypeCast": {
+                                                              "arg": {
+                                                                "A_Const": {
+                                                                  "val": {
+                                                                    "String": {
+                                                                      "str": "%pv"
+                                                                    }
+                                                                  },
+                                                                  "location": 653
+                                                                }
+                                                              },
+                                                              "typeName": {
+                                                                "names": [
+                                                                  {
+                                                                    "String": {
+                                                                      "str": "text"
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "typemod": -1,
+                                                                "location": 660
+                                                              },
+                                                              "location": 658
+                                                            }
+                                                          },
+                                                          {
+                                                            "CoalesceExpr": {
+                                                              "args": [
+                                                                {
+                                                                  "TypeCast": {
+                                                                    "arg": {
+                                                                      "ColumnRef": {
+                                                                        "fields": [
+                                                                          {
+                                                                            "String": {
+                                                                              "str": "e"
+                                                                            }
+                                                                          },
+                                                                          {
+                                                                            "String": {
+                                                                              "str": "epv"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "location": 675
+                                                                      }
+                                                                    },
+                                                                    "typeName": {
+                                                                      "names": [
+                                                                        {
+                                                                          "String": {
+                                                                            "str": "text"
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "typemod": -1,
+                                                                      "location": 682
+                                                                    },
+                                                                    "location": 680
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "TypeCast": {
+                                                                    "arg": {
+                                                                      "A_Const": {
+                                                                        "val": {
+                                                                          "String": {
+                                                                            "str": ""
+                                                                          }
+                                                                        },
+                                                                        "location": 688
+                                                                      }
+                                                                    },
+                                                                    "typeName": {
+                                                                      "names": [
+                                                                        {
+                                                                          "String": {
+                                                                            "str": "text"
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "typemod": -1,
+                                                                      "location": 692
+                                                                    },
+                                                                    "location": 690
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "location": 666
+                                                            }
+                                                          }
+                                                        ],
+                                                        "location": 200
+                                                      }
+                                                    },
+                                                    {
+                                                      "TypeCast": {
+                                                        "arg": {
+                                                          "A_Const": {
+                                                            "val": {
+                                                              "String": {
+                                                                "str": "%gr"
+                                                              }
+                                                            },
+                                                            "location": 700
+                                                          }
+                                                        },
+                                                        "typeName": {
+                                                          "names": [
+                                                            {
+                                                              "String": {
+                                                                "str": "text"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "typemod": -1,
+                                                          "location": 707
+                                                        },
+                                                        "location": 705
+                                                      }
+                                                    },
+                                                    {
+                                                      "CoalesceExpr": {
+                                                        "args": [
+                                                          {
+                                                            "ColumnRef": {
+                                                              "fields": [
+                                                                {
+                                                                  "String": {
+                                                                    "str": "e"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "String": {
+                                                                    "str": "egrad"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "location": 722
+                                                            }
+                                                          },
+                                                          {
+                                                            "TypeCast": {
+                                                              "arg": {
+                                                                "A_Const": {
+                                                                  "val": {
+                                                                    "String": {
+                                                                      "str": ""
+                                                                    }
+                                                                  },
+                                                                  "location": 731
+                                                                }
+                                                              },
+                                                              "typeName": {
+                                                                "names": [
+                                                                  {
+                                                                    "String": {
+                                                                      "str": "text"
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "typemod": -1,
+                                                                "location": 735
+                                                              },
+                                                              "location": 733
+                                                            }
+                                                          }
+                                                        ],
+                                                        "location": 713
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 192
+                                                }
+                                              },
+                                              {
+                                                "TypeCast": {
+                                                  "arg": {
+                                                    "A_Const": {
+                                                      "val": {
+                                                        "String": {
+                                                          "str": "%pc"
+                                                        }
+                                                      },
+                                                      "location": 743
+                                                    }
+                                                  },
+                                                  "typeName": {
+                                                    "names": [
+                                                      {
+                                                        "String": {
+                                                          "str": "text"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "typemod": -1,
+                                                    "location": 750
+                                                  },
+                                                  "location": 748
+                                                }
+                                              },
+                                              {
+                                                "TypeCast": {
+                                                  "arg": {
+                                                    "ColumnRef": {
+                                                      "fields": [
+                                                        {
+                                                          "String": {
+                                                            "str": "e"
+                                                          }
+                                                        },
+                                                        {
+                                                          "String": {
+                                                            "str": "eptcote"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "location": 756
+                                                    }
+                                                  },
+                                                  "typeName": {
+                                                    "names": [
+                                                      {
+                                                        "String": {
+                                                          "str": "text"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "typemod": -1,
+                                                    "location": 767
+                                                  },
+                                                  "location": 765
+                                                }
+                                              }
+                                            ],
+                                            "location": 184
+                                          }
+                                        },
+                                        {
+                                          "TypeCast": {
+                                            "arg": {
+                                              "A_Const": {
+                                                "val": {
+                                                  "String": {
+                                                    "str": "%ph"
+                                                  }
+                                                },
+                                                "location": 774
+                                              }
+                                            },
+                                            "typeName": {
+                                              "names": [
+                                                {
+                                                  "String": {
+                                                    "str": "text"
+                                                  }
+                                                }
+                                              ],
+                                              "typemod": -1,
+                                              "location": 781
+                                            },
+                                            "location": 779
+                                          }
+                                        },
+                                        {
+                                          "TypeCast": {
+                                            "arg": {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
+                                                      "str": "e"
+                                                    }
+                                                  },
+                                                  {
+                                                    "String": {
+                                                      "str": "ehont"
+                                                    }
+                                                  }
+                                                ],
+                                                "location": 787
+                                              }
+                                            },
+                                            "typeName": {
+                                              "names": [
+                                                {
+                                                  "String": {
+                                                    "str": "text"
+                                                  }
+                                                }
+                                              ],
+                                              "typemod": -1,
+                                              "location": 796
+                                            },
+                                            "location": 794
+                                          }
+                                        }
+                                      ],
+                                      "location": 176
+                                    }
+                                  },
+                                  {
+                                    "TypeCast": {
+                                      "arg": {
+                                        "A_Const": {
+                                          "val": {
+                                            "String": {
+                                              "str": "%xp"
+                                            }
+                                          },
+                                          "location": 803
+                                        }
+                                      },
+                                      "typeName": {
+                                        "names": [
+                                          {
+                                            "String": {
+                                              "str": "text"
+                                            }
+                                          }
+                                        ],
+                                        "typemod": -1,
+                                        "location": 810
+                                      },
+                                      "location": 808
+                                    }
+                                  },
+                                  {
+                                    "TypeCast": {
+                                      "arg": {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "e"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "exp"
+                                              }
+                                            }
+                                          ],
+                                          "location": 816
+                                        }
+                                      },
+                                      "typeName": {
+                                        "names": [
+                                          {
+                                            "String": {
+                                              "str": "text"
+                                            }
+                                          }
+                                        ],
+                                        "typemod": -1,
+                                        "location": 823
+                                      },
+                                      "location": 821
+                                    }
+                                  }
+                                ],
+                                "location": 168
+                              }
+                            },
+                            {
+                              "TypeCast": {
+                                "arg": {
+                                  "A_Const": {
+                                    "val": {
+                                      "String": {
+                                        "str": "%vh"
+                                      }
+                                    },
+                                    "location": 830
+                                  }
+                                },
+                                "typeName": {
+                                  "names": [
+                                    {
+                                      "String": {
+                                        "str": "text"
+                                      }
+                                    }
+                                  ],
+                                  "typemod": -1,
+                                  "location": 837
+                                },
+                                "location": 835
+                              }
+                            },
+                            {
+                              "TypeCast": {
+                                "arg": {
+                                  "CoalesceExpr": {
+                                    "args": [
+                                      {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "ovh"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "nom"
+                                              }
+                                            }
+                                          ],
+                                          "location": 852
+                                        }
+                                      },
+                                      {
+                                        "TypeCast": {
+                                          "arg": {
+                                            "A_Const": {
+                                              "val": {
+                                                "String": {
+                                                  "str": ""
+                                                }
+                                              },
+                                              "location": 861
+                                            }
+                                          },
+                                          "typeName": {
+                                            "names": [
+                                              {
+                                                "String": {
+                                                  "str": "pg_catalog"
+                                                }
+                                              },
+                                              {
+                                                "String": {
+                                                  "str": "varchar"
+                                                }
+                                              }
+                                            ],
+                                            "typemod": -1,
+                                            "location": 865
+                                          },
+                                          "location": 863
+                                        }
+                                      }
+                                    ],
+                                    "location": 843
+                                  }
+                                },
+                                "typeName": {
+                                  "names": [
+                                    {
+                                      "String": {
+                                        "str": "text"
+                                      }
+                                    }
+                                  ],
+                                  "typemod": -1,
+                                  "location": 885
+                                },
+                                "location": 883
+                              }
+                            }
+                          ],
+                          "location": 160
+                        }
+                      }
+                    ],
+                    "location": 140
+                  }
+                },
+                "location": 140
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "mondefromdetect",
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "m"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "lib"
+                        }
+                      }
+                    ],
+                    "location": 908
+                  }
+                },
+                "location": 908
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "e"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "etype"
+                        }
+                      }
+                    ],
+                    "location": 938
+                  }
+                },
+                "location": 938
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "o"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "image"
+                        }
+                      }
+                    ],
+                    "location": 951
+                  }
+                },
+                "location": 951
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "nain1",
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "vdn1"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "lib_nain"
+                        }
+                      }
+                    ],
+                    "location": 964
+                  }
+                },
+                "location": 964
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "couln",
+                "val": {
+                  "TypeCast": {
+                    "arg": {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": "couleur Nain"
+                          }
+                        },
+                        "location": 992
+                      }
+                    },
+                    "typeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "text"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 1008
+                    },
+                    "location": 1006
+                  }
+                },
+                "location": 992
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "userb4",
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "vdnub4"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "lib_nain"
+                        }
+                      }
+                    ],
+                    "location": 1027
+                  }
+                },
+                "location": 1027
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "recent",
+                "val": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "u003c"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "-"
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "FuncCall": {
+                            "funcname": [
+                              {
+                                "String": {
+                                  "str": "now"
+                                }
+                              }
+                            ],
+                            "location": 1059
+                          }
+                        },
+                        "rexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "e"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "str": "edateevent"
+                                    }
+                                  }
+                                ],
+                                "location": 1067
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "timestamptz"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 1081
+                            },
+                            "location": 1079
+                          }
+                        },
+                        "location": 1065
+                      }
+                    },
+                    "rexpr": {
+                      "TypeCast": {
+                        "arg": {
+                          "A_Const": {
+                            "val": {
+                              "String": {
+                                "str": "1 day"
+                              }
+                            },
+                            "location": 1109
+                          }
+                        },
+                        "typeName": {
+                          "names": [
+                            {
+                              "String": {
+                                "str": "pg_catalog"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "interval"
+                              }
+                            }
+                          ],
+                          "typemod": -1,
+                          "location": 1118
+                        },
+                        "location": 1116
+                      }
+                    },
+                    "location": 1107
+                  }
+                },
+                "location": 1058
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "e"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "eidmde"
+                        }
+                      }
+                    ],
+                    "location": 1142
+                  }
+                },
+                "location": 1142
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "datebrut",
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "e"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "edateevent"
+                        }
+                      }
+                    ],
+                    "location": 1156
+                  }
+                },
+                "location": 1156
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "JoinExpr": {
+                "jointype": "JOIN_LEFT",
+                "larg": {
+                  "JoinExpr": {
+                    "jointype": "JOIN_LEFT",
+                    "larg": {
+                      "JoinExpr": {
+                        "jointype": "JOIN_LEFT",
+                        "larg": {
+                          "JoinExpr": {
+                            "jointype": "JOIN_INNER",
+                            "larg": {
+                              "JoinExpr": {
+                                "jointype": "JOIN_INNER",
+                                "larg": {
+                                  "JoinExpr": {
+                                    "jointype": "JOIN_LEFT",
+                                    "larg": {
+                                      "JoinExpr": {
+                                        "jointype": "JOIN_LEFT",
+                                        "larg": {
+                                          "JoinExpr": {
+                                            "jointype": "JOIN_INNER",
+                                            "larg": {
+                                              "RangeVar": {
+                                                "relname": "events",
+                                                "inh": true,
+                                                "relpersistence": "p",
+                                                "alias": {
+                                                  "aliasname": "e"
+                                                },
+                                                "location": 1189
+                                              }
+                                            },
+                                            "rarg": {
+                                              "RangeVar": {
+                                                "relname": "events_phrase",
+                                                "inh": true,
+                                                "relpersistence": "p",
+                                                "alias": {
+                                                  "aliasname": "ep"
+                                                },
+                                                "location": 1208
+                                              }
+                                            },
+                                            "quals": {
+                                              "A_Expr": {
+                                                "kind": "AEXPR_OP",
+                                                "name": [
+                                                  {
+                                                    "String": {
+                                                      "str": "="
+                                                    }
+                                                  }
+                                                ],
+                                                "lexpr": {
+                                                  "ColumnRef": {
+                                                    "fields": [
+                                                      {
+                                                        "String": {
+                                                          "str": "ep"
+                                                        }
+                                                      },
+                                                      {
+                                                        "String": {
+                                                          "str": "idevent"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "location": 1228
+                                                  }
+                                                },
+                                                "rexpr": {
+                                                  "ColumnRef": {
+                                                    "fields": [
+                                                      {
+                                                        "String": {
+                                                          "str": "e"
+                                                        }
+                                                      },
+                                                      {
+                                                        "String": {
+                                                          "str": "etype"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "location": 1241
+                                                  }
+                                                },
+                                                "location": 1239
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "rarg": {
+                                          "RangeVar": {
+                                            "relname": "v_dernier_nom_nainshisto",
+                                            "inh": true,
+                                            "relpersistence": "p",
+                                            "alias": {
+                                              "aliasname": "vdn1"
+                                            },
+                                            "location": 1264
+                                          }
+                                        },
+                                        "quals": {
+                                          "A_Expr": {
+                                            "kind": "AEXPR_OP",
+                                            "name": [
+                                              {
+                                                "String": {
+                                                  "str": "="
+                                                }
+                                              }
+                                            ],
+                                            "lexpr": {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
+                                                      "str": "e"
+                                                    }
+                                                  },
+                                                  {
+                                                    "String": {
+                                                      "str": "eidnain1"
+                                                    }
+                                                  }
+                                                ],
+                                                "location": 1297
+                                              }
+                                            },
+                                            "rexpr": {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
+                                                      "str": "vdn1"
+                                                    }
+                                                  },
+                                                  {
+                                                    "String": {
+                                                      "str": "idnh"
+                                                    }
+                                                  }
+                                                ],
+                                                "location": 1310
+                                              }
+                                            },
+                                            "location": 1308
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "rarg": {
+                                      "RangeVar": {
+                                        "relname": "v_dernier_nom_nainshisto",
+                                        "inh": true,
+                                        "relpersistence": "p",
+                                        "alias": {
+                                          "aliasname": "vdn2"
+                                        },
+                                        "location": 1335
+                                      }
+                                    },
+                                    "quals": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "="
+                                            }
+                                          }
+                                        ],
+                                        "lexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "e"
+                                                }
+                                              },
+                                              {
+                                                "String": {
+                                                  "str": "eidnain2"
+                                                }
+                                              }
+                                            ],
+                                            "location": 1368
+                                          }
+                                        },
+                                        "rexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "vdn2"
+                                                }
+                                              },
+                                              {
+                                                "String": {
+                                                  "str": "idnh"
+                                                }
+                                              }
+                                            ],
+                                            "location": 1381
+                                          }
+                                        },
+                                        "location": 1379
+                                      }
+                                    }
+                                  }
+                                },
+                                "rarg": {
+                                  "RangeVar": {
+                                    "relname": "utilisateur",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "alias": {
+                                      "aliasname": "u"
+                                    },
+                                    "location": 1401
+                                  }
+                                },
+                                "quals": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "="
+                                        }
+                                      }
+                                    ],
+                                    "lexpr": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "str": "e"
+                                            }
+                                          },
+                                          {
+                                            "String": {
+                                              "str": "eiddetecteur"
+                                            }
+                                          }
+                                        ],
+                                        "location": 1418
+                                      }
+                                    },
+                                    "rexpr": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "str": "u"
+                                            }
+                                          },
+                                          {
+                                            "String": {
+                                              "str": "id"
+                                            }
+                                          }
+                                        ],
+                                        "location": 1435
+                                      }
+                                    },
+                                    "location": 1433
+                                  }
+                                }
+                              }
+                            },
+                            "rarg": {
+                              "RangeVar": {
+                                "relname": "v_dernier_nom",
+                                "inh": true,
+                                "relpersistence": "p",
+                                "alias": {
+                                  "aliasname": "vdnub4"
+                                },
+                                "location": 1450
+                              }
+                            },
+                            "quals": {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "="
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "vdnub4"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "id"
+                                        }
+                                      }
+                                    ],
+                                    "location": 1474
+                                  }
+                                },
+                                "rexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "u"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "id_nain"
+                                        }
+                                      }
+                                    ],
+                                    "location": 1486
+                                  }
+                                },
+                                "location": 1484
+                              }
+                            }
+                          }
+                        },
+                        "rarg": {
+                          "RangeVar": {
+                            "relname": "monde",
+                            "inh": true,
+                            "relpersistence": "p",
+                            "alias": {
+                              "aliasname": "m"
+                            },
+                            "location": 1511
+                          }
+                        },
+                        "quals": {
+                          "A_Expr": {
+                            "kind": "AEXPR_OP",
+                            "name": [
+                              {
+                                "String": {
+                                  "str": "="
+                                }
+                              }
+                            ],
+                            "lexpr": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "e"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "str": "eidmde"
+                                    }
+                                  }
+                                ],
+                                "location": 1522
+                              }
+                            },
+                            "rexpr": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "m"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "str": "id"
+                                    }
+                                  }
+                                ],
+                                "location": 1533
+                              }
+                            },
+                            "location": 1531
+                          }
+                        }
+                      }
+                    },
+                    "rarg": {
+                      "RangeVar": {
+                        "relname": "objet",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "alias": {
+                          "aliasname": "o"
+                        },
+                        "location": 1553
+                      }
+                    },
+                    "quals": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "="
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "str": "o"
+                                }
+                              },
+                              {
+                                "String": {
+                                  "str": "id"
+                                }
+                              }
+                            ],
+                            "location": 1564
+                          }
+                        },
+                        "rexpr": {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "str": "e"
+                                }
+                              },
+                              {
+                                "String": {
+                                  "str": "eobj1"
+                                }
+                              }
+                            ],
+                            "location": 1571
+                          }
+                        },
+                        "location": 1569
+                      }
+                    }
+                  }
+                },
+                "rarg": {
+                  "RangeVar": {
+                    "relname": "objet",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "alias": {
+                      "aliasname": "ovh"
+                    },
+                    "location": 1594
+                  }
+                },
+                "quals": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "ovh"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "id"
+                            }
+                          }
+                        ],
+                        "location": 1607
+                      }
+                    },
+                    "rexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "e"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "evh"
+                            }
+                          }
+                        ],
+                        "location": 1616
+                      }
+                    },
+                    "location": 1614
+                  }
+                }
+              }
+            }
+          ],
+          "whereClause": {
+            "BoolExpr": {
+              "boolop": "AND_EXPR",
+              "args": [
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "u003e"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "e"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "edateevent"
+                            }
+                          }
+                        ],
+                        "location": 1630
+                      }
+                    },
+                    "rexpr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "-"
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "FuncCall": {
+                            "funcname": [
+                              {
+                                "String": {
+                                  "str": "now"
+                                }
+                              }
+                            ],
+                            "location": 1646
+                          }
+                        },
+                        "rexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "5 days"
+                                  }
+                                },
+                                "location": 1654
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "interval"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 1664
+                            },
+                            "location": 1662
+                          }
+                        },
+                        "location": 1652
+                      }
+                    },
+                    "location": 1643
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "u003c"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "e"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "edateevent"
+                            }
+                          }
+                        ],
+                        "location": 1678
+                      }
+                    },
+                    "rexpr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "+"
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "FuncCall": {
+                            "funcname": [
+                              {
+                                "String": {
+                                  "str": "now"
+                                }
+                              }
+                            ],
+                            "location": 1694
+                          }
+                        },
+                        "rexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "02:00:00"
+                                  }
+                                },
+                                "location": 1702
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "interval"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 1714
+                            },
+                            "location": 1712
+                          }
+                        },
+                        "location": 1700
+                      }
+                    },
+                    "location": 1691
+                  }
+                }
+              ],
+              "location": 1674
+            }
+          },
+          "groupClause": [
+            {
+              "ColumnRef": {
+                "fields": [
+                  {
+                    "String": {
+                      "str": "e"
+                    }
+                  },
+                  {
+                    "String": {
+                      "str": "etype"
+                    }
+                  }
+                ],
+                "location": 1735
+              }
+            }
+          ],
+          "havingClause": {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "name": [
+                {
+                  "String": {
+                    "str": "="
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "e"
+                      }
+                    },
+                    {
+                      "String": {
+                        "str": "etype"
+                      }
+                    }
+                  ],
+                  "location": 1752
+                }
+              },
+              "rexpr": {
+                "A_Const": {
+                  "val": {
+                    "Integer": {
+                      "ival": 42
+                    }
+                  },
+                  "location": 1762
+                }
+              },
+              "location": 1760
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "m"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "lib"
+                        }
+                      }
+                    ],
+                    "location": 1776
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            },
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "e"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "edateevent"
+                        }
+                      }
+                    ],
+                    "location": 1783
+                  }
+                },
+                "sortby_dir": "SORTBY_DESC",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOffset": {
+            "A_Const": {
+              "val": {
+                "Integer": {
+                  "ival": 2
+                }
+              },
+              "location": 1819
+            }
+          },
+          "limitCount": {
+            "A_Const": {
+              "val": {
+                "Integer": {
+                  "ival": 50
+                }
+              },
+              "location": 1809
+            }
+          },
+          "limitOption": "LIMIT_OPTION_COUNT",
+          "withClause": {
+            "ctes": [
+              {
+                "CommonTableExpr": {
+                  "ctename": "g",
+                  "aliascolnames": [
+                    {
+                      "String": {
+                        "str": "n"
+                      }
+                    }
+                  ],
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "generate_series"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "Integer": {
+                                          "ival": 1
+                                        }
+                                      },
+                                      "location": 39
+                                    }
+                                  },
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "Integer": {
+                                          "ival": 1000
+                                        }
+                                      },
+                                      "location": 41
+                                    }
+                                  }
+                                ],
+                                "location": 23
+                              }
+                            },
+                            "location": 23
+                          }
+                        }
+                      ],
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 6
+                }
+              }
+            ],
+            "location": 1
+          },
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 1820
+    }
+  ]
+}
