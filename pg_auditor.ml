@@ -30,6 +30,16 @@ SELECT to_char(e.edateevent, 'HH24hMI (dy DD/MM)'::text) AS edateevent,
   Having e.etype = 42
   ORDER BY m.lib, e.edateevent DESC
   Limit 50 Offset 2;";;
+
+
+let sql_index = "
+CREATE INDEX \"AllDetect2\" ON public.detects USING btree (didnain, ddatecreat, dest_actif, didnaindetecteur, dxpos, dypos, dmonde, didobj);
+CREATE INDEX \"ObjsIdo\" ON public.objrins USING hash (ido);
+CREATE INDEX avoir_nom_id_idx ON public.avoir_nom USING btree (id) INCLUDE (date_nom);
+CREATE INDEX planet_osm_polygon_way_idx ON public.planet_osm_polygon USING gist (way) WITH (fillfactor='100');
+CREATE INDEX trgm_idx_synonyms_complets_m1 ON public.synonyms_complets USING gin (m1 public.gin_trgm_ops);
+
+";;
 (*
 type t =
   | String of string
@@ -257,7 +267,7 @@ let json2Grammar ( json : Tiny_json.Json.t)  =
 
 let () =
   let statement = "SELECT user, email FROM users WHERE id = 7" in
-  let ast = (Pg_query.raw_parse sql2).parse_tree  in
+  let ast = (Pg_query.raw_parse sql_index).parse_tree  in
   (*let _ = BatString.nreplace ~str:ast  ~sub:"\\" ~by:""  |> print_endline in
   let _ = print_endline ast in*)
   let json = BatString.nreplace ~str:ast  ~sub:"\\" ~by:""  |> Tiny_json.Json.parse  in

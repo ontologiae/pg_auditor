@@ -1,0 +1,219 @@
+
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "IndexStmt": {
+          "idxname": "AllDetect2",
+          "relation": {
+            "schemaname": "public",
+            "relname": "detects",
+            "inh": true,
+            "relpersistence": "p",
+            "location": 30
+          },
+          "accessMethod": "btree",
+          "indexParams": [
+            {
+              "IndexElem": {
+                "name": "didnain",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            },
+            {
+              "IndexElem": {
+                "name": "ddatecreat",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            },
+            {
+              "IndexElem": {
+                "name": "dest_actif",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            },
+            {
+              "IndexElem": {
+                "name": "didnaindetecteur",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            },
+            {
+              "IndexElem": {
+                "name": "dxpos",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            },
+            {
+              "IndexElem": {
+                "name": "dypos",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            },
+            {
+              "IndexElem": {
+                "name": "dmonde",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            },
+            {
+              "IndexElem": {
+                "name": "didobj",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            }
+          ]
+        }
+      },
+      "stmt_len": 138
+    },
+    {
+      "stmt": {
+        "IndexStmt": {
+          "idxname": "ObjsIdo",
+          "relation": {
+            "schemaname": "public",
+            "relname": "objrins",
+            "inh": true,
+            "relpersistence": "p",
+            "location": 166
+          },
+          "accessMethod": "hash",
+          "indexParams": [
+            {
+              "IndexElem": {
+                "name": "ido",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            }
+          ]
+        }
+      },
+      "stmt_location": 139,
+      "stmt_len": 58
+    },
+    {
+      "stmt": {
+        "IndexStmt": {
+          "idxname": "avoir_nom_id_idx",
+          "relation": {
+            "schemaname": "public",
+            "relname": "avoir_nom",
+            "inh": true,
+            "relpersistence": "p",
+            "location": 232
+          },
+          "accessMethod": "btree",
+          "indexParams": [
+            {
+              "IndexElem": {
+                "name": "id",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            }
+          ],
+          "indexIncludingParams": [
+            {
+              "IndexElem": {
+                "name": "date_nom",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            }
+          ]
+        }
+      },
+      "stmt_location": 198,
+      "stmt_len": 86
+    },
+    {
+      "stmt": {
+        "IndexStmt": {
+          "idxname": "planet_osm_polygon_way_idx",
+          "relation": {
+            "schemaname": "public",
+            "relname": "planet_osm_polygon",
+            "inh": true,
+            "relpersistence": "p",
+            "location": 329
+          },
+          "accessMethod": "gist",
+          "indexParams": [
+            {
+              "IndexElem": {
+                "name": "way",
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            }
+          ],
+          "options": [
+            {
+              "DefElem": {
+                "defname": "fillfactor",
+                "arg": {
+                  "String": {
+                    "str": "100"
+                  }
+                },
+                "defaction": "DEFELEM_UNSPEC",
+                "location": 378
+              }
+            }
+          ]
+        }
+      },
+      "stmt_location": 285,
+      "stmt_len": 110
+    },
+    {
+      "stmt": {
+        "IndexStmt": {
+          "idxname": "trgm_idx_synonyms_complets_m1",
+          "relation": {
+            "schemaname": "public",
+            "relname": "synonyms_complets",
+            "inh": true,
+            "relpersistence": "p",
+            "location": 443
+          },
+          "accessMethod": "gin",
+          "indexParams": [
+            {
+              "IndexElem": {
+                "name": "m1",
+                "opclass": [
+                  {
+                    "String": {
+                      "str": "public"
+                    }
+                  },
+                  {
+                    "String": {
+                      "str": "gin_trgm_ops"
+                    }
+                  }
+                ],
+                "ordering": "SORTBY_DEFAULT",
+                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+              }
+            }
+          ]
+        }
+      },
+      "stmt_location": 396,
+      "stmt_len": 106
+    }
+  ]
+}
