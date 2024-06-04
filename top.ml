@@ -12,6 +12,20 @@ let validJsonOfJsont  j =
 
 
 #print_depth  500;;
+
+
+type tableName = string 
+and schemaName = string
+and  indexStmt =
+       |  Btree of string  * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+       |  Hash of string   * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+       |  Gin of string    * schemaName * tableName * string  * string option * ( string * string) list (* champ, opérateur, options*)
+       |  Gist of string   * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+       |  Brin of string   * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+       |  SpGist of string * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+;;
+
+
 type
 joinType =
         | Inner | FullOuter | Left | Right | Lateral | Cross
@@ -111,6 +125,30 @@ let rec json_to_condJoin = function
     | json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json);;
 
 
+let json_to_indexElem elem = 
+        match elem with 
+        |  Object
+             (("name", String column)::
+              ("opclass",
+                        Array
+                         [
+                                 Object [("String", Object [("str", String schema)])];
+                                 Object [("String", Object [("str", String operateur)])]
+                          ]
+                       )::
+              ("ordering", String ordre)::
+              ("nulls_ordering", String null_ordre)::_)
+           -> (
+                   match 
+              )
+        | Object
+            (("name", String column)::
+             ("ordering", String ordre)::
+             ("nulls_ordering", String null_ordre)::_)
+           -> (
+            )
+
+
 
 let json2Grammar ( json : Tiny_json.Json.t)  =
         let printJsonList  = List.iter (fun elem -> validJsonOfJsont elem |> print_endline) in
@@ -135,6 +173,9 @@ let json2Grammar ( json : Tiny_json.Json.t)  =
                 | ("limitOffset",limitOffset) -> Some(Top(limitOffset))
                 | ("TODO",select ) -> None
                 | _ -> None in
+        let getIndexesStatement elem =
+                match elem with
+                | 
         match json with
         | Object( version::("stmts",Array( stmt ) )::_   ) -> (*printJsonList stmt ;*)
                         (
@@ -146,6 +187,27 @@ let json2Grammar ( json : Tiny_json.Json.t)  =
                       let select, from = getSelectAndFrom selectStmt in
                                 printJsonList select;
                                 printJsonList from;*) 
+                |    Object ( ("stmt", Object [("IndexStmt",
+
+	       Object (
+		("idxname", String idxname)::
+
+               	("relation",
+                Object
+                 (("schemaname", String schemaName)::
+                  ("relname", String tableName):: ("inh", _)::
+                  ("relpersistence", _)::_))::
+
+               ("accessMethod", String typeIndex)::
+               ("indexParams",
+                Array
+                 (Object
+                   (("IndexElem",
+                    ))::_
+                 )::_)::_
+               )
+)])::_ )
+
         
                 | _ -> failwith "pas pas  match"
         )

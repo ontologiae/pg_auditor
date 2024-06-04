@@ -40,6 +40,19 @@ CREATE INDEX planet_osm_polygon_way_idx ON public.planet_osm_polygon USING gist 
 CREATE INDEX trgm_idx_synonyms_complets_m1 ON public.synonyms_complets USING gin (m1 public.gin_trgm_ops);
 
 ";;
+
+
+(*TODO : conditions*)
+type tableName = string 
+and schemaName = string
+and  indexStmt =
+       |  Btree of string  * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+       |  Hash of string   * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+       |  Gin of string    * schemaName * tableName * string  * string option * ( string * string) list (* champ, opérateur, options*)
+       |  Gist of string   * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+       |  Brin of string   * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+       |  SpGist of string * schemaName * tableName * string  * ( string * string) list (* champ, opérateur, options*)
+;;
 (*
 type t =
   | String of string
