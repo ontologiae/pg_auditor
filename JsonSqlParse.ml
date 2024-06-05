@@ -26,21 +26,38 @@ joinType =
         | Inner | FullOuter | Left | Right | Lateral | Cross
 and  fromClause =
         | JoinExpre of joinType * fromClause * fromClause * condJoin
-        | CondExpre of expreCond
+        | CondExpre of expreCondTerm
         | Inconnu (*Grammaire non gérée*)
 and op = Equal | NotEqual | Inf | InfEq | Sup | SupEq | Any | All | Like | Ilike
 and condJoin = 
         | Cond of op * condJoin * condJoin
-        | CondExpre of expreCond
+        | CondExpre of expreCondTerm
         | NA
-and expreCond =
+and whereClause =
+        | AndBoolExpre of whereClause * whereClause
+        | OrBoolExpre of whereClause * whereClause
+        | InBoolExpre of expreCondTerm * expreCondTerm
+        | NotBoolExpre of whereClause
+        | AllBoolExpre of whereClause
+        | AnyBoolExpre of whereClause
+        | SomeBoolExpre of whereClause
+        | ExistsBoolExpre of selectQuery
+        | Between of expreCondTerm * expreCondTerm
+        | LikeBoolExpre of expreCondTerm * expreCondTerm
+        | WhereCondExpre of condWhere
+and condWhere =
+        | EqualCond of expreCondTerm * expreCondTerm
+        | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
+and expreCondTerm =
         | TableChampRef of string * string (*table Alias*)
+        | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
         | ColumnRef of string * string (*Alias.champ*)
         | SubQuery of selectQuery (**)
         | ConstStr of string
         | ConstNbr of int64
         | ConstTimestamp of string
         | ConstDate of string
+        | ConstNull
 and selectQuery =
         | WithClause of Tiny_json.Json.t
         | Select of Tiny_json.Json.t
