@@ -46,7 +46,7 @@ and whereClause =
         | LikeBoolExpre of expreCondTerm * expreCondTerm
         | WhereCondExpre of condWhere
 and condWhere =
-        | EqualCond of expreCondTerm * expreCondTerm
+        | OpCond of op * expreCondTerm * expreCondTerm
         | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
 and expreCondTerm =
         | TableChampRef of string * string (*table Alias*)
@@ -57,6 +57,7 @@ and expreCondTerm =
         | ConstNbr of int64
         | ConstTimestamp of string
         | ConstDate of string
+        | TypeCast of string * expreCondTerm
         | ConstNull
 and selectQuery =
         | WithClause of Tiny_json.Json.t
@@ -97,8 +98,10 @@ let string_to_join_type = function
 let string_to_op = function (*TODO Uppercase*)
     | "=" -> Equal
     | "<>" -> NotEqual
+    | "u003c" -> Inf
     | "<" -> Inf
     | "<=" -> InfEq
+    | "u003e" -> Sup
     | ">" -> Sup
     | ">=" -> SupEq
     | "ANY" -> Any
@@ -107,6 +110,73 @@ let string_to_op = function (*TODO Uppercase*)
     | "ILIKE" -> Ilike
     | _ -> failwith "Unsupported operator";;
 
+
+
+let rec jsonToWhereClause json =
+        match json with
+        |    Object (("BoolExpr", Object (("boolop", String "AND_EXPR")::("args", Array l)::_))::_)  ->  l
+        |    Object (("BoolExpr", Object (("boolop", String "OR_EXPR")::("args", Array l)::_))::_)   -> l
+
+
+
+(* Helper function to parse a JSON string to int64 *)
+let int64_of_json_string json = match json with
+                                | Number u -> Int64.of_string u
+                                | _ -> failwith ("Unsupported int64_of_json_string: " ^ validJsonOfJsont json)
+
+(* Helper function to extract a string from JSON *)
+let extract_string json = match json with
+  | String s -> s
+  | _ -> failwith "Expected a JSON string"
+
+(*  parse expreCondTerm *)
+let rec parse_expreCondTerm json =
+        let getTypeName json =
+                match json with
+                | Object (("names",  Array  [Object [("String", Object [("str", String schemat)])];
+                                             Object [("String", Object [("str", String typen)])]]
+                          )::_) -> schemat ^"."^typen 
+                | _ -> failwith ("Unsupported getTypeName: " ^ validJsonOfJsont json) in
+  match json with
+  | Object (("ColumnRef", Object (("fields", Array fields)::("location", _)::_))::_) ->
+      (match fields with
+       | [Object [("String", Object [("str", String table)])];
+          Object [("String", Object [("str", String column)])]] ->
+         ColumnRef (table, column)
+       | _ -> failwith "Unrecognized ColumnRef structure")
+  | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("location", _)])] ->
+      FunctionCall (fname, [])
+  | Object [("A_Expr", Object [("kind", String "AEXPR_OP"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
+      let lexpr_parsed = parse_expreCondTerm lexpr in
+      let rexpr_parsed = parse_expreCondTerm rexpr in
+      (* Placeholder for now based on the specific structure *)
+      FunctionCall (op, [lexpr_parsed; rexpr_parsed]) (*TODO : c'est as du tout un funcall !!*)
+
+  | Object (("TypeCast", Object (("arg", arg)::("typeName", typename)::_))::_) ->
+      let arg_parsed = parse_expreCondTerm arg in
+      TypeCast (getTypeName typename, arg_parsed)
+
+  | Object [("A_Const", Object (("val", Object ( ("String", Object [("str", String str)] )::_ ))::_ ))] ->
+      ConstStr str
+  | _ -> failwith "Unknown expreCondTerm structure"
+
+(*  parse whereClause BoolExpr *)
+let rec parse_whereClause json =
+  match json with
+  (* AND boolean expression *)
+  | Object [("BoolExpr", Object [("boolop", String "AND_EXPR"); ("args", Array [arg1; arg2]); ("location", _)])] ->
+      let arg1_parsed = parse_whereClause arg1 in 
+      let arg2_parsed = parse_whereClause arg2 in
+      AndBoolExpre (arg1_parsed, arg2_parsed)
+  | Object [("A_Expr", Object [("kind", String "AEXPR_OP"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
+      let lexpr_parsed = parse_expreCondTerm lexpr in
+      let rexpr_parsed = parse_expreCondTerm rexpr in
+        WhereCondExpre(OpCond(string_to_op op,lexpr_parsed, rexpr_parsed ))
+  | _ -> print_endline (validJsonOfJsont json); failwith ("Unknown whereClause structure: " ^ validJsonOfJsont json) 
+
+
+
+  
 
 let rec json_to_expreCond = function
     | Object [("ColumnRef", Object (("fields", Array [Object [("String", Object [("str", String alias)])];
