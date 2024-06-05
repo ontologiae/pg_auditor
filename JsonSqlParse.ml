@@ -52,9 +52,10 @@ and selectQuery =
         | Limit of Tiny_json.Json.t
         | Top of Tiny_json.Json.t
         | Offset of Tiny_json.Json.t
-and sql =
+and sqlEntry =
         | SelectStatement of selectQuery option list (*provisoir*)
-        | IndexCreation of indexStmt ;;    
+        | IndexCreation of indexStmt
+and scriptSql = sqlEntry list;;    
 
 let validJsonOfJsont  j =
         let buffer = Buffer.create 65535 in
@@ -151,72 +152,8 @@ let json_to_indexElem idxname schemaname tblname typ elem =
              ("ordering", String ordre)::
              ("nulls_ordering", String null_ordre)::_)
            -> makeIdxElem typ idxname schemaname tblname column "" ordre  null_ordre
+        |  json -> failwith ("Unsupported json_to_indexElem: " ^ validJsonOfJsont json);;
             
-
-
-
-let json2Grammar ( json : Tiny_json.Json.t)  =
-        let printJsonList  = List.iter (fun elem -> validJsonOfJsont elem |> print_endline) in
-        let getSelectStatement elem =
-                match elem with
-                | Object ( ("SelectStmt", champs )::_) -> champs 
-                | _ -> failwith "SelectStmt pas trouvé" in
-        let getSelectClauses elem =
-                match elem with 
-                | Object ( ("targetList",Array( select ))::("fromClause",Array( from ))::_) -> select, from
-                | _ -> failwith "SelectStmt pas trouvé" in
-        let getGoodClause j =
-                match j with 
-                | ("targetList",select ) -> Some(Select(select))
-                | ("fromClause", from ) -> Some(From(Inconnu,from))
-                | ("whereClause", subWhere) -> Some(Where(subWhere))
-                | ("groupClause", groupClause ) -> Some(GroupBy(groupClause))
-                | ("havingClause",  havingClause ) -> Some(Having(havingClause))
-                | ("withClause",  Object (("ctes",   ctessub )::_ ))    -> Some(WithClause(ctessub))
-                | ("sortClause", orderBy ) -> Some(OrderBy(orderBy))
-                | ("limitCount",limitCount) -> Some(Limit(limitCount))
-                | ("limitOffset",limitOffset) -> Some(Top(limitOffset))
-                | ("TODO",select ) -> None
-                | _ -> None in
-        match json with
-        | Object( version::("stmts",Array( stmt ) )::_   ) -> (*printJsonList stmt ;*)
-                        (
-                match stmt with
-                | (Object ( ("stmt", Object ( ("SelectStmt", Object(clauses) )::_) )::_ ) )::[] ->
-                               SelectStatement (List.map  getGoodClause clauses)
-                     (* let selectStmt =  getSelectStatement selectStmt in
-                      validJsonOfJsont selectStmt |> print_endline;
-                      let select, from = getSelectAndFrom selectStmt in
-                                printJsonList select;
-                                printJsonList from;*) 
-                |    (Object ( ("stmt", Object [("IndexStmt",
-
-	       (Object (
-		("idxname", String idxname)::
-
-               	("relation",
-                Object
-                 (("schemaname", String schemaName)::
-                  ("relname", String tableName):: ("inh", _)::
-                  ("relpersistence", _)::_))::
-
-               ("accessMethod", String typeIndex)::
-               ("indexParams",
-                Array
-                 (Object
-                   (("IndexElem",  elem    )::_)::_
-                 ))::_
-                ))
-                )])::_ ))::_ -> IndexCreation (json_to_indexElem idxname schemaName tableName typeIndex elem)
-
-        
-                | _ -> failwith "pas pas  match"
-        )
-        | _ -> failwith "pas pas  match"
-
-;;
-
-
 let rec json_to_fromClause clause =
         let rec array_to_JoinExpreCross l =
                 match l with
@@ -244,4 +181,99 @@ let rec json_to_fromClause clause =
 
         | json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json)
 ;;
+
+
+
+let json2Grammar ( json : Tiny_json.Json.t)  =
+        let printJsonList  = List.iter (fun elem -> validJsonOfJsont elem |> print_endline) in
+        let getSelectStatement elem =
+                match elem with
+                | Object ( ("SelectStmt", champs )::_) -> champs 
+                | _ -> failwith "SelectStmt pas trouvé" in
+        let getSelectClauses elem =
+                match elem with 
+                | Object ( ("targetList",Array( select ))::("fromClause",Array( from ))::_) -> select, from
+                | _ -> failwith "SelectStmt pas trouvé" in
+        let getGoodClause j =
+                match j with 
+                | ("targetList",select ) -> Some(Select(select))
+                | ("fromClause", from ) -> Some(From(Inconnu,from))
+                | ("whereClause", subWhere) -> Some(Where(subWhere))
+                | ("groupClause", groupClause ) -> Some(GroupBy(groupClause))
+                | ("havingClause",  havingClause ) -> Some(Having(havingClause))
+                | ("withClause",  Object (("ctes",   ctessub )::_ ))    -> Some(WithClause(ctessub))
+                | ("sortClause", orderBy ) -> Some(OrderBy(orderBy))
+                | ("limitCount",limitCount) -> Some(Limit(limitCount))
+                | ("limitOffset",limitOffset) -> Some(Top(limitOffset))
+                | ("TODO",select ) -> None
+                | _ -> None in
+   (*     let getOneIndexCreation idxcreat = 
+                match idxcreat with
+                | ("stmt", Object [("IndexStmt",
+
+	       (Object (
+		("idxname", String idxname)::
+
+               	("relation",
+                Object
+                 (("schemaname", String schemaName)::
+                  ("relname", String tableName):: ("inh", _)::
+                  ("relpersistence", _)::_))::
+
+               ("accessMethod", String typeIndex)::
+               ("indexParams",
+                Array
+                 (Object
+                   (("IndexElem",  elem    )::_)::_
+                 ))::_
+                ))
+                )]) -> IndexCreation (json_to_indexElem idxname schemaName tableName typeIndex elem) in*)
+        let getOneStatement statement = 
+                match statement with
+
+                | Object ( ("stmt", Object ( ("SelectStmt", Object(clauses) )::_) )::_ )  -> SelectStatement (List.map  getGoodClause clauses)
+
+                | Object (("stmt", Object [("IndexStmt",
+
+	       (Object (
+		("idxname", String idxname)::
+
+               	("relation",
+                Object
+                 (("schemaname", String schemaName)::
+                  ("relname", String tableName):: ("inh", _)::
+                  ("relpersistence", _)::_))::
+
+               ("accessMethod", String typeIndex)::
+               ("indexParams",
+                Array
+                 (Object
+                   (("IndexElem",  elem    )::_)::_
+                 ))::_
+                ))
+                )])::_ ) -> IndexCreation (json_to_indexElem idxname schemaName tableName typeIndex elem) 
+                | json -> failwith ("Unsupported getOneSelectQuery: " ^ validJsonOfJsont json) in
+        match json with
+        | Object( version::("stmts",Array( stmts ) )::_   ) -> (*printJsonList stmt ;*)
+                        let idxParsedList = List.map getOneStatement stmts
+                        in idxParsedList
+                        (*(
+                match stmts with
+                | (Object ( ("stmt", Object ( ("SelectStmt", Object(clauses) )::_) )::_ ) )::[] ->
+                               SelectStatement (List.map  getGoodClause clauses)
+                     (* let selectStmt =  getSelectStatement selectStmt in
+                      validJsonOfJsont selectStmt |> print_endline;
+                      let select, from = getSelectAndFrom selectStmt in
+                                printJsonList select;
+                                printJsonList from;*) 
+                |    (Object ( idxlist ))::_ -> let idxParsedList = List.map getOneIndexCreation idxlist in
+
+        
+                | _ -> failwith "pas pas  match"
+        ) *)
+        | _ -> failwith "pas pas  match"
+
+;;
+
+
 
