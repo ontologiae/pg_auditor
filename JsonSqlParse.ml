@@ -30,7 +30,7 @@ and  fromClause =
         | JoinExpre of joinType * fromClause * fromClause * condJoin
         | CondExpre of expreCondTerm
         | Inconnu (*Grammaire non gérée*)
-and op = Equal | NotEqual | Inf | InfEq | Sup | SupEq | Any | All | Like | Ilike
+and op = And | Or | Equal | NotEqual | Inf | InfEq | Sup | SupEq | Any | All | Like | Ilike | Between | In
 and condJoin = 
         | Cond of op * condJoin * condJoin
         | CondExpre of expreCondTerm
@@ -52,17 +52,19 @@ and condWhere =
         | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
 and expreCondTerm =
         | TableChampRef of string * string (*table Alias*)
+        | TableName of string
         | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
-        | ColumnRef of string * string (*Alias.champ*)
+        | ColumnRef of string option * string (*Alias.champ*)
         | SubQuery of selectQuery (**)
         | ConstStr of string
         | ConstNbr of int64
         | ConstTimestamp of string
         | ConstDate of string
         | TypeCast of string * expreCondTerm
+        | ListTerm of expreCondTerm list
         | ConstNull
 and selectQuery =
-        | WithClause of Tiny_json.Json.t * tableName * sqlEntry
+        | WithClauses of ( Tiny_json.Json.t * tableName * sqlEntry) list
         | Select of Tiny_json.Json.t
         | From of fromClause * Tiny_json.Json.t (*On garde le sous arbre JSON pour le moment, on a pas encore couvert la grammaire entière*)
         | Where  of  whereClause * Tiny_json.Json.t
@@ -110,6 +112,8 @@ let string_to_op = function (*TODO Uppercase*)
     | "ALL" -> All
     | "LIKE" -> Like
     | "ILIKE" -> Ilike
+    | "BETWEEN" -> Between
+    | "IN" -> In
     | _ -> failwith "Unsupported operator";;
 
 
@@ -138,7 +142,7 @@ let rec json_to_expreCond = function
                                                                          Object [("String", Object [("str", String column)])]
                                                      ])::_
                                    ))] ->
-        ColumnRef (alias, column)
+        ColumnRef (Some(alias), column)
    
     | Object [("A_Const", Object ((("val", Object [("String", Object [("str", String s)])]))::_))] ->
         ConstStr s
@@ -146,7 +150,7 @@ let rec json_to_expreCond = function
     | Object [("A_Const", Object ((("val", Object [("Integer", Object [("ival", Number n)] )]))::_)  )] ->
         ConstNbr (Int64.of_string n)
 
-    | Object [("A_Const", Object ((("val", Object [("Float", Object [("fval", Number n)])]))::_))] ->
+    | Object [("A_Const", Object ((("val", Object [("Float", Object [("str", String n)])]))::_))] ->
         ConstNbr (Int64.of_float (float_of_string n))
 
     | json -> failwith ("Unsupported expression condition: " ^ validJsonOfJsont json);;
@@ -170,10 +174,17 @@ let rec parse_expreCondTerm json =
       (match fields with
        | [Object [("String", Object [("str", String table)])];
           Object [("String", Object [("str", String column)])]] ->
-         ColumnRef (table, column)
-       | _ -> failwith "Unrecognized ColumnRef structure")
+         ColumnRef (Some(table), column)
+       | [Object [("String", Object [("str", String column)])]] -> ColumnRef (None, column)
+       | _ -> let jsonprint = L.map validJsonOfJsont fields |> String.concat "\n" in
+                let _ = print_endline jsonprint in
+                failwith ("Unrecognized ColumnRef structure: " ))
+      
   | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("location", _)])] ->
       FunctionCall (fname, [])
+     | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("args",Array l); ("location", _)])] ->
+      FunctionCall (fname, L.map parse_expreCondTerm l)
+
   | Object [("A_Expr", Object [("kind", String "AEXPR_OP"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
       let lexpr_parsed = parse_expreCondTerm lexpr in
       let rexpr_parsed = parse_expreCondTerm rexpr in
@@ -186,8 +197,9 @@ let rec parse_expreCondTerm json =
 
   | Object [("A_Const", Object (("val", Object ( ("String", Object [("str", String str)] )::_ ))::_ ))] ->
       ConstStr str
-  | Object [("A_Const", Object (("val", Object ( ("Integer", Object [("ival", Number n)] )::_ ))::_ ))] ->
+  | Object [("A_Const", Object (("val", _ )::_ ))] ->
       json_to_expreCond json
+  |   Object [("List",  Object [("items",  Array l )])] -> ListTerm ( L.map parse_expreCondTerm l )
 
   | _ -> let jsonprint = validJsonOfJsont json in
                 let _ = print_endline jsonprint in
@@ -210,7 +222,18 @@ let rec parse_whereClause json =
       let lexpr_parsed = parse_expreCondTerm lexpr in
       let rexpr_parsed = parse_expreCondTerm rexpr in
         WhereCondExpre(OpCond(string_to_op op,lexpr_parsed, rexpr_parsed ))
-  | _ -> print_endline (validJsonOfJsont json); failwith ("Unknown whereClause structure: " ^ validJsonOfJsont json) 
+  | Object [("A_Expr", Object [("kind", String "AEXPR_BETWEEN"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
+      let lexpr_parsed = parse_expreCondTerm lexpr in
+      let rexpr_parsed = parse_expreCondTerm rexpr in
+        WhereCondExpre(OpCond(string_to_op op,lexpr_parsed, rexpr_parsed ))
+  | Object [("A_Expr", Object [("kind", String "AEXPR_IN"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
+      let lexpr_parsed = parse_expreCondTerm lexpr in
+      let rexpr_parsed = parse_expreCondTerm rexpr in
+        WhereCondExpre(OpCond(In,lexpr_parsed, rexpr_parsed ))
+
+
+  | _ -> print_endline (validJsonOfJsont json);
+         failwith ("Unknown whereClause structure: " ^ validJsonOfJsont json) 
 
 
 
@@ -228,7 +251,19 @@ let rec json_to_condJoin = function
         let rexpr = json_to_expreCond rexpr in
          (* Placeholder for pattern matching, replace with actual condition parsing *)
         Cond(op,CondExpre lexpr, CondExpre rexpr)
+    | Object   [("BoolExpr",      Object      (("boolop", String "AND_EXPR")::("args",Array (arg1::arg2::[]) )::_))] ->
+                   let lexpr = json_to_expreCond arg1 in
+                   let rexpr = json_to_expreCond arg2 in
+                    Cond(And, CondExpre lexpr, CondExpre rexpr)
+                    
+    | Object   [("BoolExpr",      Object      (("boolop", String "AND_EXPR")::("args",Array (arg1::q) )::_))] ->
+                    L.fold_left ( fun a -> fun b -> Cond(And,  a, json_to_condJoin b) ) (json_to_condJoin arg1) q
+
     | json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json);;
+
+
+
+
 
 
 
@@ -287,8 +322,11 @@ let rec json_to_fromClause clause =
 
         | Array l -> array_to_JoinExpreCross l
 
-        | Object [("RangeVar", Object  (("relname", String n)::("inh", Bool _)::("relpersistence", String _)::("alias", Object [("aliasname", String alias)])::_))]
+        | Object [("RangeVar", Object  (("relname", String n)::("inh", Bool heritage)::("relpersistence", String persist)::("alias", Object [("aliasname", String alias)])::_))]
          -> CondExpre(TableChampRef(n,alias))
+        | Object [("RangeVar", Object  (("relname", String n)::("inh", Bool heritage)::("relpersistence", String persist)::_))]
+        -> CondExpre(TableName(n))
+
 
         | json -> let jsonprint = validJsonOfJsont json in
                 let _ = print_endline jsonprint in
@@ -305,13 +343,13 @@ let rec parseWithClause withClause =
                                  ("ctequery",  selectStmt )::_
                                )
                     )
-                   ] ->  WithClause( withClause, ctename, getOneStatement selectStmt)
+                   ] ->   Null, ctename, getOneStatement selectStmt
         |  Object  [("CommonTableExpr",                         (*Joker*) 
                         Object ( ("ctename", String ctename)::(_,_)::("ctematerialized", String cTEMaterializeDefault_param)::
                                  ("ctequery",  selectStmt )::_
                                )
                     )
-                   ] ->  WithClause( withClause, ctename, getOneStatement selectStmt)
+                   ] ->   Null, ctename, getOneStatement selectStmt
 
         | _ ->  let jsonprint = validJsonOfJsont withClause in
                 let _ = print_endline jsonprint in
@@ -327,7 +365,7 @@ and  getGoodClause j =
                 | ("whereClause", subWhere) -> Some(Where(parse_whereClause subWhere,  subWhere))
                 | ("groupClause", groupClause ) -> Some(GroupBy(groupClause))
                 | ("havingClause",  havingClause ) -> Some(Having(parse_whereClause havingClause, havingClause))
-                | ("withClause",  Object (("ctes",   Array [ctessub] )::_ ))    -> Some( parseWithClause ctessub )
+                | ("withClause",  Object (("ctes",  Array ctessubs )::_ ))  -> Some( WithClauses (L.map parseWithClause ctessubs ))
                 | ("sortClause", orderBy ) -> Some(OrderBy(orderBy))
                 | ("limitCount",limitCount) -> Some(Limit(limitCount))
                 | ("limitOffset",limitOffset) -> Some(Top(limitOffset))
@@ -341,24 +379,20 @@ and getOneStatement statement =
                 | Object ( ("SelectStmt", Object(clauses) )::_) -> SelectStatement (List.map  getGoodClause clauses)
 
                 | Object (("stmt", Object [("IndexStmt",
-
-	       (Object (
-		("idxname", String idxname)::
-
-               	("relation",
-                Object
-                 (("schemaname", String schemaName)::
-                  ("relname", String tableName):: ("inh", _)::
-                  ("relpersistence", _)::_))::
-
-               ("accessMethod", String typeIndex)::
-               ("indexParams",
-                Array
-                 (Object
-                   (("IndexElem",  elem    )::_)::_
-                 ))::_
-                ))
-                )])::_ ) -> IndexCreation (json_to_indexElem idxname schemaName tableName typeIndex elem) 
+                        (Object (
+                                ("idxname", String idxname)::
+                                        ("relation",
+                         Object
+                               (("schemaname", String schemaName)::
+                                ("relname", String tableName):: ("inh", _)::
+                                 ("relpersistence", _)::_))::
+                                         ("accessMethod", String typeIndex)::
+                                                 ("indexParams",
+                                Array (Object        
+                                   (("IndexElem",  elem    )::_)::_
+                                   ))::_
+                                                 ))
+                        )])::_ ) -> IndexCreation (json_to_indexElem idxname schemaName tableName typeIndex elem) 
 
                 | json -> failwith ("Unsupported getOneSelectQuery: " ^ validJsonOfJsont json)
 

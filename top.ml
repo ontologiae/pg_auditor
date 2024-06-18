@@ -22,9 +22,10 @@ let validJsonOfJsont  j =
 #trace json_to_expreCond;;
 #trace json_to_condJoin;;
 #trace json_to_fromClause;;
-#trace parseWithClause;;
-#trace getOneStatement;;
-
+(*#trace parseWithClause;;
+#trace getOneStatement;;*)
+#trace parse_whereClause;;
+#trace parse_expreCondTerm;;
 
 let file2string filename =
   let ic = open_in filename in
