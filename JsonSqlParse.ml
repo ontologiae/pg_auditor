@@ -1,5 +1,7 @@
 open Tiny_json.Json;;
 
+module L = List;;
+
 let validJsonOfJsont  j =
         let buffer = Buffer.create 65535 in
         let formatter = Format.formatter_of_buffer buffer in
@@ -60,12 +62,12 @@ and expreCondTerm =
         | TypeCast of string * expreCondTerm
         | ConstNull
 and selectQuery =
-        | WithClause of Tiny_json.Json.t
+        | WithClause of Tiny_json.Json.t * tableName * sqlEntry
         | Select of Tiny_json.Json.t
         | From of fromClause * Tiny_json.Json.t (*On garde le sous arbre JSON pour le moment, on a pas encore couvert la grammaire entière*)
-        | Where  of Tiny_json.Json.t
+        | Where  of  whereClause * Tiny_json.Json.t
         | GroupBy of Tiny_json.Json.t
-        | Having of Tiny_json.Json.t
+        | Having of whereClause * Tiny_json.Json.t
         | OrderBy of Tiny_json.Json.t
         | Limit of Tiny_json.Json.t
         | Top of Tiny_json.Json.t
@@ -129,7 +131,33 @@ let extract_string json = match json with
   | String s -> s
   | _ -> failwith "Expected a JSON string"
 
-(*  parse expreCondTerm *)
+
+(*   - : t -> expreCondTerm *)
+let rec json_to_expreCond = function
+    | Object [("ColumnRef", Object (("fields", Array [Object [("String", Object [("str", String alias)])];
+                                                                         Object [("String", Object [("str", String column)])]
+                                                     ])::_
+                                   ))] ->
+        ColumnRef (alias, column)
+   
+    | Object [("A_Const", Object ((("val", Object [("String", Object [("str", String s)])]))::_))] ->
+        ConstStr s
+
+    | Object [("A_Const", Object ((("val", Object [("Integer", Object [("ival", Number n)] )]))::_)  )] ->
+        ConstNbr (Int64.of_string n)
+
+    | Object [("A_Const", Object ((("val", Object [("Float", Object [("fval", Number n)])]))::_))] ->
+        ConstNbr (Int64.of_float (float_of_string n))
+
+    | json -> failwith ("Unsupported expression condition: " ^ validJsonOfJsont json);;
+
+
+
+
+(*  parse expreCondTerm
+- : t -> expreCondTerm = <fun>
+
+*)
 let rec parse_expreCondTerm json =
         let getTypeName json =
                 match json with
@@ -158,9 +186,19 @@ let rec parse_expreCondTerm json =
 
   | Object [("A_Const", Object (("val", Object ( ("String", Object [("str", String str)] )::_ ))::_ ))] ->
       ConstStr str
-  | _ -> failwith "Unknown expreCondTerm structure"
+  | Object [("A_Const", Object (("val", Object ( ("Integer", Object [("ival", Number n)] )::_ ))::_ ))] ->
+      json_to_expreCond json
 
-(*  parse whereClause BoolExpr *)
+  | _ -> let jsonprint = validJsonOfJsont json in
+                let _ = print_endline jsonprint in
+                failwith ("Unsupported parse_expreCondTerm: " ^ validJsonOfJsont json)
+
+
+
+
+(*  parse whereClause BoolExpr 
+- : t -> whereClause = <fun>
+ *)
 let rec parse_whereClause json =
   match json with
   (* AND boolean expression *)
@@ -178,25 +216,7 @@ let rec parse_whereClause json =
 
   
 
-let rec json_to_expreCond = function
-    | Object [("ColumnRef", Object (("fields", Array [Object [("String", Object [("str", String alias)])];
-                                                                         Object [("String", Object [("str", String column)])]
-                                                     ])::_
-                                   ))] ->
-        ColumnRef (alias, column)
-   
-    | Object [("A_Const", Object [("val", Object [("String", Object [("str", String s)])])])] ->
-        ConstStr s
-
-    | Object [("A_Const", Object [("val", Object [("Integer", Number n)])])] ->
-        ConstNbr (Int64.of_string n)
-
-    | Object [("A_Const", Object [("val", Object [("Float", Number n)])])] ->
-        ConstNbr (Int64.of_float (float_of_string n))
-
-    | json -> failwith ("Unsupported expression condition: " ^ validJsonOfJsont json);;
-
-
+(*  - : t -> condJoin   *)
 let rec json_to_condJoin = function
     | Object [("A_Expr", Object (("kind", String "AEXPR_OP")::
                                            ("name", Array [Object [("String", Object [("str", String op)])]])::
@@ -211,6 +231,8 @@ let rec json_to_condJoin = function
     | json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json);;
 
 
+
+(*  - : string -> string -> string -> string -> t -> indexStmt *)
 let json_to_indexElem idxname schemaname tblname typ elem = 
 
         let makeIdxElem methodName idxname shema tbl col op ordr  nullordr =
@@ -240,7 +262,9 @@ let json_to_indexElem idxname schemaname tblname typ elem =
              ("nulls_ordering", String null_ordre)::_)
            -> makeIdxElem typ idxname schemaname tblname column "" ordre  null_ordre
         |  json -> failwith ("Unsupported json_to_indexElem: " ^ validJsonOfJsont json);;
-            
+           
+
+(*- : t -> fromClause*)
 let rec json_to_fromClause clause =
         let rec array_to_JoinExpreCross l =
                 match l with
@@ -266,59 +290,55 @@ let rec json_to_fromClause clause =
         | Object [("RangeVar", Object  (("relname", String n)::("inh", Bool _)::("relpersistence", String _)::("alias", Object [("aliasname", String alias)])::_))]
          -> CondExpre(TableChampRef(n,alias))
 
-        | json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json)
+        | json -> let jsonprint = validJsonOfJsont json in
+                let _ = print_endline jsonprint in
+                failwith ("Unsupported json_to_fromClause: " ^ validJsonOfJsont json)
 ;;
 
 
 
-let json2Grammar ( json : Tiny_json.Json.t)  =
-        let printJsonList  = List.iter (fun elem -> validJsonOfJsont elem |> print_endline) in
-        let getSelectStatement elem =
-                match elem with
-                | Object ( ("SelectStmt", champs )::_) -> champs 
-                | _ -> failwith "SelectStmt pas trouvé" in
-        let getSelectClauses elem =
-                match elem with 
-                | Object ( ("targetList",Array( select ))::("fromClause",Array( from ))::_) -> select, from
-                | _ -> failwith "SelectStmt pas trouvé" in
-        let getGoodClause j =
+
+let rec parseWithClause withClause = 
+        match withClause with
+        |  Object  [("CommonTableExpr", 
+                        Object ( ("ctename", String ctename)::("ctematerialized", String cTEMaterializeDefault_param)::
+                                 ("ctequery",  selectStmt )::_
+                               )
+                    )
+                   ] ->  WithClause( withClause, ctename, getOneStatement selectStmt)
+        |  Object  [("CommonTableExpr",                         (*Joker*) 
+                        Object ( ("ctename", String ctename)::(_,_)::("ctematerialized", String cTEMaterializeDefault_param)::
+                                 ("ctequery",  selectStmt )::_
+                               )
+                    )
+                   ] ->  WithClause( withClause, ctename, getOneStatement selectStmt)
+
+        | _ ->  let jsonprint = validJsonOfJsont withClause in
+                let _ = print_endline jsonprint in
+                failwith ("Unsupported parseWithClause: " ^ validJsonOfJsont withClause)
+
+
+
+(*    : string * t -> selectQuery option *)
+and  getGoodClause j =
                 match j with 
                 | ("targetList",select ) -> Some(Select(select))
-                | ("fromClause", from ) -> Some(From(Inconnu,from))
-                | ("whereClause", subWhere) -> Some(Where(subWhere))
+                | ("fromClause", from ) -> Some(From(json_to_fromClause from,from))
+                | ("whereClause", subWhere) -> Some(Where(parse_whereClause subWhere,  subWhere))
                 | ("groupClause", groupClause ) -> Some(GroupBy(groupClause))
-                | ("havingClause",  havingClause ) -> Some(Having(havingClause))
-                | ("withClause",  Object (("ctes",   ctessub )::_ ))    -> Some(WithClause(ctessub))
+                | ("havingClause",  havingClause ) -> Some(Having(parse_whereClause havingClause, havingClause))
+                | ("withClause",  Object (("ctes",   Array [ctessub] )::_ ))    -> Some( parseWithClause ctessub )
                 | ("sortClause", orderBy ) -> Some(OrderBy(orderBy))
                 | ("limitCount",limitCount) -> Some(Limit(limitCount))
                 | ("limitOffset",limitOffset) -> Some(Top(limitOffset))
                 | ("TODO",select ) -> None
-                | _ -> None in
-   (*     let getOneIndexCreation idxcreat = 
-                match idxcreat with
-                | ("stmt", Object [("IndexStmt",
+                | _ -> None
 
-	       (Object (
-		("idxname", String idxname)::
-
-               	("relation",
-                Object
-                 (("schemaname", String schemaName)::
-                  ("relname", String tableName):: ("inh", _)::
-                  ("relpersistence", _)::_))::
-
-               ("accessMethod", String typeIndex)::
-               ("indexParams",
-                Array
-                 (Object
-                   (("IndexElem",  elem    )::_)::_
-                 ))::_
-                ))
-                )]) -> IndexCreation (json_to_indexElem idxname schemaName tableName typeIndex elem) in*)
-        let getOneStatement statement = 
+and getOneStatement statement = 
                 match statement with
 
                 | Object ( ("stmt", Object ( ("SelectStmt", Object(clauses) )::_) )::_ )  -> SelectStatement (List.map  getGoodClause clauses)
+                | Object ( ("SelectStmt", Object(clauses) )::_) -> SelectStatement (List.map  getGoodClause clauses)
 
                 | Object (("stmt", Object [("IndexStmt",
 
@@ -339,25 +359,15 @@ let json2Grammar ( json : Tiny_json.Json.t)  =
                  ))::_
                 ))
                 )])::_ ) -> IndexCreation (json_to_indexElem idxname schemaName tableName typeIndex elem) 
-                | json -> failwith ("Unsupported getOneSelectQuery: " ^ validJsonOfJsont json) in
-        match json with
+
+                | json -> failwith ("Unsupported getOneSelectQuery: " ^ validJsonOfJsont json)
+
+and  json2Grammar ( json : Tiny_json.Json.t) :  sqlEntry list =
+        let printJsonList  = List.iter (fun elem -> validJsonOfJsont elem |> print_endline) in
+                match json with
         | Object( version::("stmts",Array( stmts ) )::_   ) -> (*printJsonList stmt ;*)
                         let idxParsedList = List.map getOneStatement stmts
                         in idxParsedList
-                        (*(
-                match stmts with
-                | (Object ( ("stmt", Object ( ("SelectStmt", Object(clauses) )::_) )::_ ) )::[] ->
-                               SelectStatement (List.map  getGoodClause clauses)
-                     (* let selectStmt =  getSelectStatement selectStmt in
-                      validJsonOfJsont selectStmt |> print_endline;
-                      let select, from = getSelectAndFrom selectStmt in
-                                printJsonList select;
-                                printJsonList from;*) 
-                |    (Object ( idxlist ))::_ -> let idxParsedList = List.map getOneIndexCreation idxlist in
-
-        
-                | _ -> failwith "pas pas  match"
-        ) *)
         | _ -> failwith "pas pas  match"
 
 ;;

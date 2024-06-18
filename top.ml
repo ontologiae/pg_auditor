@@ -22,7 +22,8 @@ let validJsonOfJsont  j =
 #trace json_to_expreCond;;
 #trace json_to_condJoin;;
 #trace json_to_fromClause;;
-
+#trace parseWithClause;;
+#trace getOneStatement;;
 
 
 let file2string filename =
@@ -71,7 +72,7 @@ let indexesReq = parseJsonFile "indexesAST.json";;
 
 
 let getW s = match s with
-| Where j -> Some(j)
+| Where (_,j) -> Some(j)
 |  _ -> None
 
 let whereClause = match selectReq |> List.hd with  SelectStatement gram -> List.filter_map (fun e -> match e with Some(f) -> getW f | None -> getW (Top(Null)) )  gram;;
