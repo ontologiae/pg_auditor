@@ -43,6 +43,31 @@ CREATE INDEX trgm_idx_synonyms_complets_m1 ON public.synonyms_complets USING gin
 ";;
 
 
+let sql3 = "	With counts as (
+		Select count(*) as lancers, phom, pfem,nb from tirages_planetesproc where taille_echantillon = 24925 and source = 'mariages44' group by 2,3,4 order by 2,3 desc
+	), minmax as (
+		Select count(*) as total, min(nb), trunc(max(lancers),1) as milieuH, max(nb) , phom, pfem from counts Group by phom, pfem
+	), tailleHisto as (
+		Select sum(lancers) som, phom, pfem from counts group by phom, pfem -- toutes les sommes sont les mêmes, puisque c'est le nombre de tours de 
+		--la boucle du bloc anonyme plus haut
+	) -- Faut trouver le nb où on a 4360/2 lancers d'un côté et de l'autre
+	--Ensuite, pour chaque ligne, on fait une somme des n premiers
+	,datafin as (
+		Select som, (100.0/som)*lancers , lancers
+		, sum(lancers) over (partition by (t.phom, t.pfem) order by nb) as sumfcmilieu, nb, t.phom, t.pfem 
+		From tailleHisto t inner join counts c on c.phom = t.phom and c.pfem = t.pfem
+		--	Inner join 
+		Order by phom, pfem, nb
+	)
+	Select 'mariages44' as nom_src, 24925 as taille_echantillon , pc, lancers
+		,  Case When sumfcmilieu > som/2 then
+			- ((100.0/som)*(sumfcmilieu-som)) --permet de savoir si on est à droite ou à gauche de la courbe gaussiene
+		   Else -(100.0/som)*sumfcmilieu End as proba
+		   , nb, (avg(nb) over (partition by (phom, pfem)))::int as nbmil
+		   , phom, pfem
+	From datafin
+        Order by phom, pfem, nb;";;
+
 
 (*
 type t =
@@ -59,14 +84,39 @@ and obj = (string * t) list
 (*
 *)
 
+let file2string filename =
+  let ic = open_in filename in
+  let buffer = Buffer.create 1024 in
+  try
+    while true do
+      let linha = input_line ic in
+      Buffer.add_string buffer linha;
+      Buffer.add_char buffer '\n'
+    done;
+    close_in ic;
+    Buffer.contents buffer
+  with
+  | End_of_file ->
+    close_in ic;
+    Buffer.contents buffer;;
+
+
+let sql2Json  filename =
+        let contenu = file2string filename in
+        (*let _ = print_endline contenu in*)
+         let ast = (Pg_query.raw_parse contenu).parse_tree  in
+        (* let _ = print_endline ast in*)
+         let json = BatString.nreplace ~str:ast  ~sub:"\\" ~by:""  |> Tiny_json.Json.parse  in
+          validJsonOfJsont json |> print_endline 
 
 
 let () =
-  let statement = "SELECT user, email FROM users WHERE id = 7" in
-  let ast = (Pg_query.raw_parse sql_index).parse_tree  in
+        sql2Json Sys.argv.(1)
+ (* let statement = "SELECT user, email FROM users WHERE id = 7" in
+  let ast = (Pg_query.raw_parse sql3).parse_tree  in
   (*let _ = BatString.nreplace ~str:ast  ~sub:"\\" ~by:""  |> print_endline in
   let _ = print_endline ast in*)
   let json = BatString.nreplace ~str:ast  ~sub:"\\" ~by:""  |> Tiny_json.Json.parse  in
   let _ = validJsonOfJsont json |> print_endline in 
   let _ = json2Grammar json in
-  ()
+  ()*)
