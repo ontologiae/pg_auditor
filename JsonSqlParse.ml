@@ -25,10 +25,11 @@ and  indexStmt =
 
 type
 joinType =
-        | Inner | FullOuter | Left | Right | Lateral | Cross
+        | Inner | FullOuter | Left | Right | Lateral | Cross | Natural
 and  fromClause =
         | JoinExpre of joinType * fromClause * fromClause * condJoin
         | CondExpre of expreCondTerm
+        | SubQuery of sqlEntry
         | Inconnu (*Grammaire non gérée*)
 and op = And | Or | Equal | NotEqual | Inf | InfEq | Sup | SupEq | Any | All | Like | Ilike | Between | In
 and condJoin = 
@@ -39,6 +40,9 @@ and whereClause =
         | AndBoolExpre of whereClause * whereClause
         | OrBoolExpre of whereClause * whereClause
         | InBoolExpre of expreCondTerm * expreCondTerm
+        | IsNullExpre of expreCondTerm
+        | IsNotNullExpre of expreCondTerm
+        | IsTrueOrNot of bool * expreCondTerm
         | NotBoolExpre of whereClause
         | AllBoolExpre of whereClause
         | AnyBoolExpre of whereClause
@@ -47,6 +51,7 @@ and whereClause =
         | Between of expreCondTerm * expreCondTerm
         | LikeBoolExpre of expreCondTerm * expreCondTerm
         | WhereCondExpre of condWhere
+        | SubQuery of selectQuery
 and condWhere =
         | OpCond of op * expreCondTerm * expreCondTerm
         | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
@@ -62,6 +67,8 @@ and expreCondTerm =
         | ConstDate of string
         | TypeCast of string * expreCondTerm
         | ListTerm of expreCondTerm list
+        | ParamRef of int64
+        | ArgStarAll
         | ConstNull
 and selectQuery =
         | WithClauses of ( Tiny_json.Json.t * tableName * sqlEntry) list
@@ -99,7 +106,8 @@ let string_to_join_type = function
     | _ -> failwith "Unsupported join type";;
 
 
-let string_to_op = function (*TODO Uppercase*)
+let string_to_op op =  (*TODO Uppercase*)
+        match op with
     | "=" -> Equal
     | "<>" -> NotEqual
     | "u003c" -> Inf
@@ -107,6 +115,8 @@ let string_to_op = function (*TODO Uppercase*)
     | "<=" -> InfEq
     | "u003e" -> Sup
     | ">" -> Sup
+    | "u003e="  -> SupEq
+    | "u003e"   -> Sup  
     | ">=" -> SupEq
     | "ANY" -> Any
     | "ALL" -> All
@@ -114,7 +124,7 @@ let string_to_op = function (*TODO Uppercase*)
     | "ILIKE" -> Ilike
     | "BETWEEN" -> Between
     | "IN" -> In
-    | _ -> failwith "Unsupported operator";;
+    | _ -> failwith ("Unsupported operator : "^op);;
 
 
 
@@ -135,7 +145,7 @@ let extract_string json = match json with
   | String s -> s
   | _ -> failwith "Expected a JSON string"
 
-
+(*TODO fusionner avec parse_expreCondTerm ?*)
 (*   - : t -> expreCondTerm *)
 let rec json_to_expreCond = function
     | Object [("ColumnRef", Object (("fields", Array [Object [("String", Object [("str", String alias)])];
@@ -167,7 +177,8 @@ let rec parse_expreCondTerm json =
                 match json with
                 | Object (("names",  Array  [Object [("String", Object [("str", String schemat)])];
                                              Object [("String", Object [("str", String typen)])]]
-                          )::_) -> schemat ^"."^typen 
+                          )::_) -> schemat ^"."^typen
+                | Object (("names", Array (Object [("String", Object [("str", String typenam)])] ::_) )::_ ) -> typenam
                 | _ -> failwith ("Unsupported getTypeName: " ^ validJsonOfJsont json) in
   match json with
   | Object (("ColumnRef", Object (("fields", Array fields)::("location", _)::_))::_) ->
@@ -182,8 +193,12 @@ let rec parse_expreCondTerm json =
       
   | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("location", _)])] ->
       FunctionCall (fname, [])
-     | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("args",Array l); ("location", _)])] ->
+
+  | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("args",Array l); ("location", _)])] ->
       FunctionCall (fname, L.map parse_expreCondTerm l)
+
+  | Object [("FuncCall", Object (("funcname", Array [Object [("String", Object [("str", String fname)])]]) :: ("agg_star",Bool true)::_ ))] ->
+                  FunctionCall (fname, [ArgStarAll])
 
   | Object [("A_Expr", Object [("kind", String "AEXPR_OP"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
       let lexpr_parsed = parse_expreCondTerm lexpr in
@@ -199,7 +214,9 @@ let rec parse_expreCondTerm json =
       ConstStr str
   | Object [("A_Const", Object (("val", _ )::_ ))] ->
       json_to_expreCond json
-  |   Object [("List",  Object [("items",  Array l )])] -> ListTerm ( L.map parse_expreCondTerm l )
+  |   Object [("List",  Object [("items",  Array l )])] -> ListTerm ( L.filter_map (fun e -> match e with Object [] -> None | _ -> Some(parse_expreCondTerm e)) l  )
+
+  |   Object (("ParamRef", Object (("number", Number nbr)::_))::_) -> ParamRef (Int64.of_string nbr)
 
   | _ -> let jsonprint = validJsonOfJsont json in
                 let _ = print_endline jsonprint in
@@ -218,6 +235,9 @@ let rec parse_whereClause json =
       let arg1_parsed = parse_whereClause arg1 in 
       let arg2_parsed = parse_whereClause arg2 in
       AndBoolExpre (arg1_parsed, arg2_parsed)
+  | Object   [("BoolExpr",      Object      (("boolop", String "AND_EXPR")::("args",Array (arg1::q) )::_))] ->
+                  L.fold_left ( fun a -> fun b -> AndBoolExpre(  a, parse_whereClause b) ) (parse_whereClause arg1) q
+
   | Object [("A_Expr", Object [("kind", String "AEXPR_OP"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
       let lexpr_parsed = parse_expreCondTerm lexpr in
       let rexpr_parsed = parse_expreCondTerm rexpr in
@@ -230,6 +250,10 @@ let rec parse_whereClause json =
       let lexpr_parsed = parse_expreCondTerm lexpr in
       let rexpr_parsed = parse_expreCondTerm rexpr in
         WhereCondExpre(OpCond(In,lexpr_parsed, rexpr_parsed ))
+  | Object  (("NullTest",  Object (("arg", arg)::_))::_) -> IsNullExpre( parse_expreCondTerm arg)
+
+  | Object (("ColumnRef", colref)::_) -> IsTrueOrNot(true, parse_expreCondTerm json)
+  
 
 
   | _ -> print_endline (validJsonOfJsont json);
@@ -247,13 +271,13 @@ let rec json_to_condJoin = function
                                            ("rexpr", rexpr)::_
                                 ))] ->
         let op = string_to_op op in
-        let lexpr = json_to_expreCond lexpr in
-        let rexpr = json_to_expreCond rexpr in
+        let lexpr = parse_expreCondTerm lexpr in
+        let rexpr = parse_expreCondTerm rexpr in
          (* Placeholder for pattern matching, replace with actual condition parsing *)
         Cond(op,CondExpre lexpr, CondExpre rexpr)
     | Object   [("BoolExpr",      Object      (("boolop", String "AND_EXPR")::("args",Array (arg1::arg2::[]) )::_))] ->
-                   let lexpr = json_to_expreCond arg1 in
-                   let rexpr = json_to_expreCond arg2 in
+                   let lexpr = parse_expreCondTerm arg1 in
+                   let rexpr = parse_expreCondTerm arg2 in
                     Cond(And, CondExpre lexpr, CondExpre rexpr)
                     
     | Object   [("BoolExpr",      Object      (("boolop", String "AND_EXPR")::("args",Array (arg1::q) )::_))] ->
@@ -301,6 +325,7 @@ let json_to_indexElem idxname schemaname tblname typ elem =
 
 (*- : t -> fromClause*)
 let rec json_to_fromClause clause =
+        (*TODO range subselect f70 f68 et f75 et f72*)
         let rec array_to_JoinExpreCross l =
                 match l with
                 | t::t2::[]     -> JoinExpre(Cross,json_to_fromClause t,json_to_fromClause t2, NA)                
@@ -317,6 +342,40 @@ let rec json_to_fromClause clause =
                                                      let rarg = json_to_fromClause rarg in
                                                      let quals = json_to_condJoin quals in
                                                      JoinExpre (join_type, larg, rarg, quals)
+         | Object [("JoinExpr", Object (("jointype", String jointype):: (*Cas subtil d'inner sans condition : Lateral*)
+                                             ("larg", larg)::
+                                             ("rarg", Object (("RangeFunction", Object (("lateral", Bool true)::("functions",Array funcs)::("alias", Object [("aliasname", String aliasname)] )::_))::_ )
+                                             )::_
+         )
+                    )
+                   ]  ->
+                                                     let join_type = string_to_join_type jointype in
+                                                     let larg = json_to_fromClause larg in
+                                                     let rarg = L.hd funcs |> parse_expreCondTerm  in
+                                                     JoinExpre (Lateral, larg, CondExpre rarg, NA)
+
+
+         | Object [("JoinExpr", Object (("jointype", String jointype):: (*Cas subtil d'inner sans condition : Lateral*)
+                                             ("larg", larg)::
+                                             ("rarg", Object (("RangeSubselect", Object (("lateral", Bool true)::("subquery",selectStmt)::("alias", Object [("aliasname", String aliasname)] )::_))::_ )
+                                             )::_
+         )
+                    )
+                   ]  ->
+                                                     let join_type = string_to_join_type jointype in
+                                                     let larg = json_to_fromClause larg in
+                                                     let rarg = getOneStatement selectStmt  in
+                                                     JoinExpre (Lateral, larg, SubQuery rarg, NA)
+                                                     
+
+         | Object (("JoinExpr", Object (("jointype", String jointype)::("isNatural", Bool true)::
+                                             ("larg", larg)::
+                                             ("rarg", rarg)::_ ))::_) ->
+                                                     let join_type = string_to_join_type jointype in
+                                                     let larg = json_to_fromClause larg in
+                                                     let rarg = json_to_fromClause rarg in
+                                                     JoinExpre (Natural, larg, rarg, NA)
+
                                                      
         | Array (t::[]) -> json_to_fromClause t
 
@@ -324,19 +383,19 @@ let rec json_to_fromClause clause =
 
         | Object [("RangeVar", Object  (("relname", String n)::("inh", Bool heritage)::("relpersistence", String persist)::("alias", Object [("aliasname", String alias)])::_))]
          -> CondExpre(TableChampRef(n,alias))
+
         | Object [("RangeVar", Object  (("relname", String n)::("inh", Bool heritage)::("relpersistence", String persist)::_))]
         -> CondExpre(TableName(n))
+
+
+        |  Object   (("RangeSubselect", Object (("subquery", subquery)::_))::_) -> SubQuery ( getOneStatement subquery  ) (*Il est normalement impossible qu'il y ait 2 subquery*)
 
 
         | json -> let jsonprint = validJsonOfJsont json in
                 let _ = print_endline jsonprint in
                 failwith ("Unsupported json_to_fromClause: " ^ validJsonOfJsont json)
-;;
 
-
-
-
-let rec parseWithClause withClause = 
+and parseWithClause withClause = 
         match withClause with
         |  Object  [("CommonTableExpr", 
                         Object ( ("ctename", String ctename)::("ctematerialized", String cTEMaterializeDefault_param)::
@@ -360,11 +419,11 @@ let rec parseWithClause withClause =
 (*    : string * t -> selectQuery option *)
 and  getGoodClause j =
                 match j with 
-                | ("targetList",select ) -> Some(Select(select))
-                | ("fromClause", from ) -> Some(From(json_to_fromClause from,from))
-                | ("whereClause", subWhere) -> Some(Where(parse_whereClause subWhere,  subWhere))
+                | ("targetList",select ) -> Some(Select(Null))
+                | ("fromClause", from ) -> Some(From(json_to_fromClause from,Null))
+                | ("whereClause", subWhere) -> Some(Where(parse_whereClause subWhere,  Null))
                 | ("groupClause", groupClause ) -> Some(GroupBy(groupClause))
-                | ("havingClause",  havingClause ) -> Some(Having(parse_whereClause havingClause, havingClause))
+                | ("havingClause",  havingClause ) -> Some(Having(parse_whereClause havingClause, Null))
                 | ("withClause",  Object (("ctes",  Array ctessubs )::_ ))  -> Some( WithClauses (L.map parseWithClause ctessubs ))
                 | ("sortClause", orderBy ) -> Some(OrderBy(orderBy))
                 | ("limitCount",limitCount) -> Some(Limit(limitCount))
@@ -375,8 +434,8 @@ and  getGoodClause j =
 and getOneStatement statement = 
                 match statement with
 
-                | Object ( ("stmt", Object ( ("SelectStmt", Object(clauses) )::_) )::_ )  -> SelectStatement (List.map  getGoodClause clauses)
-                | Object ( ("SelectStmt", Object(clauses) )::_) -> SelectStatement (List.map  getGoodClause clauses)
+                | Object ( ("stmt", Object ( ("SelectStmt", Object(clauses) )::_) )::_ )  -> SelectStatement (L.map  getGoodClause clauses)
+                | Object ( ("SelectStmt", Object(clauses) )::_) -> SelectStatement (L.map  getGoodClause clauses)
 
                 | Object (("stmt", Object [("IndexStmt",
                         (Object (
@@ -397,10 +456,10 @@ and getOneStatement statement =
                 | json -> failwith ("Unsupported getOneSelectQuery: " ^ validJsonOfJsont json)
 
 and  json2Grammar ( json : Tiny_json.Json.t) :  sqlEntry list =
-        let printJsonList  = List.iter (fun elem -> validJsonOfJsont elem |> print_endline) in
+        let printJsonList  = L.iter (fun elem -> validJsonOfJsont elem |> print_endline) in
                 match json with
         | Object( version::("stmts",Array( stmts ) )::_   ) -> (*printJsonList stmt ;*)
-                        let idxParsedList = List.map getOneStatement stmts
+                        let idxParsedList = L.map getOneStatement stmts
                         in idxParsedList
         | _ -> failwith "pas pas  match"
 
