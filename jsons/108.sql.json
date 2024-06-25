@@ -1,0 +1,1339 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "name": "geojson",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "json_build_object"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Const": {
+                          "val": {
+                            "String": {
+                              "str": "type"
+                            }
+                          },
+                          "location": 769
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "String": {
+                              "str": "FeatureCollection"
+                            }
+                          },
+                          "location": 777
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "String": {
+                              "str": "features"
+                            }
+                          },
+                          "location": 806
+                        }
+                      },
+                      {
+                        "FuncCall": {
+                          "funcname": [
+                            {
+                              "String": {
+                                "str": "json_agg"
+                              }
+                            }
+                          ],
+                          "args": [
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "json_build_object"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "type"
+                                        }
+                                      },
+                                      "location": 875
+                                    }
+                                  },
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "Feature"
+                                        }
+                                      },
+                                      "location": 883
+                                    }
+                                  },
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "geometry"
+                                        }
+                                      },
+                                      "location": 910
+                                    }
+                                  },
+                                  {
+                                    "FuncCall": {
+                                      "funcname": [
+                                        {
+                                          "String": {
+                                            "str": "json_build_object"
+                                          }
+                                        }
+                                      ],
+                                      "args": [
+                                        {
+                                          "A_Const": {
+                                            "val": {
+                                              "String": {
+                                                "str": "type"
+                                              }
+                                            },
+                                            "location": 961
+                                          }
+                                        },
+                                        {
+                                          "FuncCall": {
+                                            "funcname": [
+                                              {
+                                                "String": {
+                                                  "str": "json_extract_path_text"
+                                                }
+                                              }
+                                            ],
+                                            "args": [
+                                              {
+                                                "TypeCast": {
+                                                  "arg": {
+                                                    "ColumnRef": {
+                                                      "fields": [
+                                                        {
+                                                          "String": {
+                                                            "str": "geometry"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "location": 992
+                                                    }
+                                                  },
+                                                  "typeName": {
+                                                    "names": [
+                                                      {
+                                                        "String": {
+                                                          "str": "json"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "typemod": -1,
+                                                    "location": 1002
+                                                  },
+                                                  "location": 1000
+                                                }
+                                              },
+                                              {
+                                                "A_Const": {
+                                                  "val": {
+                                                    "String": {
+                                                      "str": "type"
+                                                    }
+                                                  },
+                                                  "location": 1008
+                                                }
+                                              }
+                                            ],
+                                            "location": 969
+                                          }
+                                        },
+                                        {
+                                          "A_Const": {
+                                            "val": {
+                                              "String": {
+                                                "str": "coordinates"
+                                              }
+                                            },
+                                            "location": 1037
+                                          }
+                                        },
+                                        {
+                                          "FuncCall": {
+                                            "funcname": [
+                                              {
+                                                "String": {
+                                                  "str": "json_extract_path"
+                                                }
+                                              }
+                                            ],
+                                            "args": [
+                                              {
+                                                "TypeCast": {
+                                                  "arg": {
+                                                    "ColumnRef": {
+                                                      "fields": [
+                                                        {
+                                                          "String": {
+                                                            "str": "geometry"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "location": 1070
+                                                    }
+                                                  },
+                                                  "typeName": {
+                                                    "names": [
+                                                      {
+                                                        "String": {
+                                                          "str": "json"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "typemod": -1,
+                                                    "location": 1080
+                                                  },
+                                                  "location": 1078
+                                                }
+                                              },
+                                              {
+                                                "A_Const": {
+                                                  "val": {
+                                                    "String": {
+                                                      "str": "coordinates"
+                                                    }
+                                                  },
+                                                  "location": 1086
+                                                }
+                                              }
+                                            ],
+                                            "location": 1052
+                                          }
+                                        }
+                                      ],
+                                      "location": 922
+                                    }
+                                  },
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "properties"
+                                        }
+                                      },
+                                      "location": 1136
+                                    }
+                                  },
+                                  {
+                                    "FuncCall": {
+                                      "funcname": [
+                                        {
+                                          "String": {
+                                            "str": "json_build_object"
+                                          }
+                                        }
+                                      ],
+                                      "args": [
+                                        {
+                                          "A_Const": {
+                                            "val": {
+                                              "String": {
+                                                "str": "pcent"
+                                              }
+                                            },
+                                            "location": 1189
+                                          }
+                                        },
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "pcent"
+                                                }
+                                              }
+                                            ],
+                                            "location": 1198
+                                          }
+                                        },
+                                        {
+                                          "A_Const": {
+                                            "val": {
+                                              "String": {
+                                                "str": "color"
+                                              }
+                                            },
+                                            "location": 1225
+                                          }
+                                        },
+                                        {
+                                          "CaseExpr": {
+                                            "args": [
+                                              {
+                                                "CaseWhen": {
+                                                  "expr": {
+                                                    "A_Expr": {
+                                                      "kind": "AEXPR_OP",
+                                                      "name": [
+                                                        {
+                                                          "String": {
+                                                            "str": "u003e="
+                                                          }
+                                                        }
+                                                      ],
+                                                      "lexpr": {
+                                                        "ColumnRef": {
+                                                          "fields": [
+                                                            {
+                                                              "String": {
+                                                                "str": "pcent"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "location": 1268
+                                                        }
+                                                      },
+                                                      "rexpr": {
+                                                        "A_Const": {
+                                                          "val": {
+                                                            "Integer": {
+                                                              "ival": 60
+                                                            }
+                                                          },
+                                                          "location": 1277
+                                                        }
+                                                      },
+                                                      "location": 1274
+                                                    }
+                                                  },
+                                                  "result": {
+                                                    "A_Const": {
+                                                      "val": {
+                                                        "String": {
+                                                          "str": "#FF0000"
+                                                        }
+                                                      },
+                                                      "location": 1285
+                                                    }
+                                                  },
+                                                  "location": 1263
+                                                }
+                                              }
+                                            ],
+                                            "defresult": {
+                                              "A_Expr": {
+                                                "kind": "AEXPR_OP",
+                                                "name": [
+                                                  {
+                                                    "String": {
+                                                      "str": "||"
+                                                    }
+                                                  }
+                                                ],
+                                                "lexpr": {
+                                                  "A_Expr": {
+                                                    "kind": "AEXPR_OP",
+                                                    "name": [
+                                                      {
+                                                        "String": {
+                                                          "str": "||"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "lexpr": {
+                                                      "A_Expr": {
+                                                        "kind": "AEXPR_OP",
+                                                        "name": [
+                                                          {
+                                                            "String": {
+                                                              "str": "||"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "lexpr": {
+                                                          "A_Const": {
+                                                            "val": {
+                                                              "String": {
+                                                                "str": "#"
+                                                              }
+                                                            },
+                                                            "location": 1324
+                                                          }
+                                                        },
+                                                        "rexpr": {
+                                                          "FuncCall": {
+                                                            "funcname": [
+                                                              {
+                                                                "String": {
+                                                                  "str": "lpad"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "args": [
+                                                              {
+                                                                "FuncCall": {
+                                                                  "funcname": [
+                                                                    {
+                                                                      "String": {
+                                                                        "str": "to_hex"
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "args": [
+                                                                    {
+                                                                      "A_Const": {
+                                                                        "val": {
+                                                                          "Integer": {
+                                                                            "ival": 255
+                                                                          }
+                                                                        },
+                                                                        "location": 1344
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "location": 1337
+                                                                }
+                                                              },
+                                                              {
+                                                                "A_Const": {
+                                                                  "val": {
+                                                                    "Integer": {
+                                                                      "ival": 2
+                                                                    }
+                                                                  },
+                                                                  "location": 1350
+                                                                }
+                                                              },
+                                                              {
+                                                                "A_Const": {
+                                                                  "val": {
+                                                                    "String": {
+                                                                      "str": "0"
+                                                                    }
+                                                                  },
+                                                                  "location": 1353
+                                                                }
+                                                              }
+                                                            ],
+                                                            "location": 1332
+                                                          }
+                                                        },
+                                                        "location": 1329
+                                                      }
+                                                    },
+                                                    "rexpr": {
+                                                      "FuncCall": {
+                                                        "funcname": [
+                                                          {
+                                                            "String": {
+                                                              "str": "lpad"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "args": [
+                                                          {
+                                                            "FuncCall": {
+                                                              "funcname": [
+                                                                {
+                                                                  "String": {
+                                                                    "str": "to_hex"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "args": [
+                                                                {
+                                                                  "TypeCast": {
+                                                                    "arg": {
+                                                                      "A_Expr": {
+                                                                        "kind": "AEXPR_OP",
+                                                                        "name": [
+                                                                          {
+                                                                            "String": {
+                                                                              "str": "-"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "lexpr": {
+                                                                          "A_Const": {
+                                                                            "val": {
+                                                                              "Integer": {
+                                                                                "ival": 255
+                                                                              }
+                                                                            },
+                                                                            "location": 1375
+                                                                          }
+                                                                        },
+                                                                        "rexpr": {
+                                                                          "A_Expr": {
+                                                                            "kind": "AEXPR_OP",
+                                                                            "name": [
+                                                                              {
+                                                                                "String": {
+                                                                                  "str": "*"
+                                                                                }
+                                                                              }
+                                                                            ],
+                                                                            "lexpr": {
+                                                                              "ColumnRef": {
+                                                                                "fields": [
+                                                                                  {
+                                                                                    "String": {
+                                                                                      "str": "pcent"
+                                                                                    }
+                                                                                  }
+                                                                                ],
+                                                                                "location": 1382
+                                                                              }
+                                                                            },
+                                                                            "rexpr": {
+                                                                              "A_Const": {
+                                                                                "val": {
+                                                                                  "Integer": {
+                                                                                    "ival": 5
+                                                                                  }
+                                                                                },
+                                                                                "location": 1390
+                                                                              }
+                                                                            },
+                                                                            "location": 1388
+                                                                          }
+                                                                        },
+                                                                        "location": 1379
+                                                                      }
+                                                                    },
+                                                                    "typeName": {
+                                                                      "names": [
+                                                                        {
+                                                                          "String": {
+                                                                            "str": "pg_catalog"
+                                                                          }
+                                                                        },
+                                                                        {
+                                                                          "String": {
+                                                                            "str": "int4"
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "typemod": -1,
+                                                                      "location": 1395
+                                                                    },
+                                                                    "location": 1393
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "location": 1367
+                                                            }
+                                                          },
+                                                          {
+                                                            "A_Const": {
+                                                              "val": {
+                                                                "Integer": {
+                                                                  "ival": 2
+                                                                }
+                                                              },
+                                                              "location": 1401
+                                                            }
+                                                          },
+                                                          {
+                                                            "A_Const": {
+                                                              "val": {
+                                                                "String": {
+                                                                  "str": "0"
+                                                                }
+                                                              },
+                                                              "location": 1404
+                                                            }
+                                                          }
+                                                        ],
+                                                        "location": 1362
+                                                      }
+                                                    },
+                                                    "location": 1359
+                                                  }
+                                                },
+                                                "rexpr": {
+                                                  "FuncCall": {
+                                                    "funcname": [
+                                                      {
+                                                        "String": {
+                                                          "str": "lpad"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "args": [
+                                                      {
+                                                        "FuncCall": {
+                                                          "funcname": [
+                                                            {
+                                                              "String": {
+                                                                "str": "to_hex"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "args": [
+                                                            {
+                                                              "TypeCast": {
+                                                                "arg": {
+                                                                  "A_Expr": {
+                                                                    "kind": "AEXPR_OP",
+                                                                    "name": [
+                                                                      {
+                                                                        "String": {
+                                                                          "str": "-"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "lexpr": {
+                                                                      "A_Const": {
+                                                                        "val": {
+                                                                          "Integer": {
+                                                                            "ival": 255
+                                                                          }
+                                                                        },
+                                                                        "location": 1425
+                                                                      }
+                                                                    },
+                                                                    "rexpr": {
+                                                                      "A_Expr": {
+                                                                        "kind": "AEXPR_OP",
+                                                                        "name": [
+                                                                          {
+                                                                            "String": {
+                                                                              "str": "*"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "lexpr": {
+                                                                          "ColumnRef": {
+                                                                            "fields": [
+                                                                              {
+                                                                                "String": {
+                                                                                  "str": "pcent"
+                                                                                }
+                                                                              }
+                                                                            ],
+                                                                            "location": 1432
+                                                                          }
+                                                                        },
+                                                                        "rexpr": {
+                                                                          "A_Const": {
+                                                                            "val": {
+                                                                              "Integer": {
+                                                                                "ival": 5
+                                                                              }
+                                                                            },
+                                                                            "location": 1440
+                                                                          }
+                                                                        },
+                                                                        "location": 1438
+                                                                      }
+                                                                    },
+                                                                    "location": 1429
+                                                                  }
+                                                                },
+                                                                "typeName": {
+                                                                  "names": [
+                                                                    {
+                                                                      "String": {
+                                                                        "str": "pg_catalog"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "String": {
+                                                                        "str": "int4"
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "typemod": -1,
+                                                                  "location": 1445
+                                                                },
+                                                                "location": 1443
+                                                              }
+                                                            }
+                                                          ],
+                                                          "location": 1417
+                                                        }
+                                                      },
+                                                      {
+                                                        "A_Const": {
+                                                          "val": {
+                                                            "Integer": {
+                                                              "ival": 2
+                                                            }
+                                                          },
+                                                          "location": 1451
+                                                        }
+                                                      },
+                                                      {
+                                                        "A_Const": {
+                                                          "val": {
+                                                            "String": {
+                                                              "str": "0"
+                                                            }
+                                                          },
+                                                          "location": 1454
+                                                        }
+                                                      }
+                                                    ],
+                                                    "location": 1412
+                                                  }
+                                                },
+                                                "location": 1409
+                                              }
+                                            },
+                                            "location": 1234
+                                          }
+                                        }
+                                      ],
+                                      "location": 1150
+                                    }
+                                  }
+                                ],
+                                "location": 840
+                              }
+                            }
+                          ],
+                          "location": 818
+                        }
+                      }
+                    ],
+                    "location": 742
+                  }
+                },
+                "location": 742
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "geojson_data",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 1553
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "withClause": {
+            "ctes": [
+              {
+                "CommonTableExpr": {
+                  "ctename": "base",
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "Inscrits"
+                                    }
+                                  }
+                                ],
+                                "location": 24
+                              }
+                            },
+                            "location": 24
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "Votants"
+                                    }
+                                  }
+                                ],
+                                "location": 36
+                              }
+                            },
+                            "location": 36
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "Voix_4"
+                                    }
+                                  }
+                                ],
+                                "location": 47
+                              }
+                            },
+                            "location": 47
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "name": "pcent",
+                            "val": {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "*"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "/"
+                                        }
+                                      }
+                                    ],
+                                    "lexpr": {
+                                      "A_Const": {
+                                        "val": {
+                                          "Float": {
+                                            "str": "100.0"
+                                          }
+                                        },
+                                        "location": 58
+                                      }
+                                    },
+                                    "rexpr": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "str": "Votants"
+                                            }
+                                          }
+                                        ],
+                                        "location": 64
+                                      }
+                                    },
+                                    "location": 63
+                                  }
+                                },
+                                "rexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "Voix_4"
+                                        }
+                                      }
+                                    ],
+                                    "location": 75
+                                  }
+                                },
+                                "location": 74
+                              }
+                            },
+                            "location": 57
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "geom"
+                                    }
+                                  }
+                                ],
+                                "location": 94
+                              }
+                            },
+                            "location": 94
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "JoinExpr": {
+                            "jointype": "JOIN_INNER",
+                            "larg": {
+                              "RangeVar": {
+                                "relname": "eur2024_bv_csv",
+                                "inh": true,
+                                "relpersistence": "p",
+                                "alias": {
+                                  "aliasname": "ebc"
+                                },
+                                "location": 105
+                              }
+                            },
+                            "rarg": {
+                              "RangeVar": {
+                                "relname": "bureau_total",
+                                "inh": true,
+                                "relpersistence": "p",
+                                "alias": {
+                                  "aliasname": "bt"
+                                },
+                                "location": 135
+                              }
+                            },
+                            "quals": {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "="
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "bt"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "bureau"
+                                        }
+                                      }
+                                    ],
+                                    "location": 154
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "||"
+                                        }
+                                      }
+                                    ],
+                                    "lexpr": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "||"
+                                            }
+                                          }
+                                        ],
+                                        "lexpr": {
+                                          "FuncCall": {
+                                            "funcname": [
+                                              {
+                                                "String": {
+                                                  "str": "to_char"
+                                                }
+                                              }
+                                            ],
+                                            "args": [
+                                              {
+                                                "TypeCast": {
+                                                  "arg": {
+                                                    "ColumnRef": {
+                                                      "fields": [
+                                                        {
+                                                          "String": {
+                                                            "str": "ebc"
+                                                          }
+                                                        },
+                                                        {
+                                                          "String": {
+                                                            "str": "Code_commune"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "location": 175
+                                                    }
+                                                  },
+                                                  "typeName": {
+                                                    "names": [
+                                                      {
+                                                        "String": {
+                                                          "str": "pg_catalog"
+                                                        }
+                                                      },
+                                                      {
+                                                        "String": {
+                                                          "str": "int4"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "typemod": -1,
+                                                    "location": 195
+                                                  },
+                                                  "location": 193
+                                                }
+                                              },
+                                              {
+                                                "A_Const": {
+                                                  "val": {
+                                                    "String": {
+                                                      "str": "fm00000"
+                                                    }
+                                                  },
+                                                  "location": 201
+                                                }
+                                              }
+                                            ],
+                                            "location": 167
+                                          }
+                                        },
+                                        "rexpr": {
+                                          "A_Const": {
+                                            "val": {
+                                              "String": {
+                                                "str": "_"
+                                              }
+                                            },
+                                            "location": 215
+                                          }
+                                        },
+                                        "location": 212
+                                      }
+                                    },
+                                    "rexpr": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "str": "ebc"
+                                            }
+                                          },
+                                          {
+                                            "String": {
+                                              "str": "Code_BV"
+                                            }
+                                          }
+                                        ],
+                                        "location": 222
+                                      }
+                                    },
+                                    "location": 219
+                                  }
+                                },
+                                "location": 164
+                              }
+                            }
+                          }
+                        }
+                      ],
+                      "whereClause": {
+                        "BoolExpr": {
+                          "boolop": "AND_EXPR",
+                          "args": [
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_LIKE",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "!~~"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "ebc"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "Code_commune"
+                                        }
+                                      }
+                                    ],
+                                    "location": 245
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Const": {
+                                    "val": {
+                                      "String": {
+                                        "str": "2A%"
+                                      }
+                                    },
+                                    "location": 273
+                                  }
+                                },
+                                "location": 264
+                              }
+                            },
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_LIKE",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "!~~"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "ebc"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "Code_commune"
+                                        }
+                                      }
+                                    ],
+                                    "location": 283
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Const": {
+                                    "val": {
+                                      "String": {
+                                        "str": "2B%"
+                                      }
+                                    },
+                                    "location": 311
+                                  }
+                                },
+                                "location": 302
+                              }
+                            },
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_LIKE",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "!~~"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "ebc"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "Code_commune"
+                                        }
+                                      }
+                                    ],
+                                    "location": 321
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Const": {
+                                    "val": {
+                                      "String": {
+                                        "str": "Z%"
+                                      }
+                                    },
+                                    "location": 349
+                                  }
+                                },
+                                "location": 340
+                              }
+                            },
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "="
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "ebc"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "Code_departement"
+                                        }
+                                      }
+                                    ],
+                                    "location": 399
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Const": {
+                                    "val": {
+                                      "String": {
+                                        "str": "44"
+                                      }
+                                    },
+                                    "location": 424
+                                  }
+                                },
+                                "location": 422
+                              }
+                            }
+                          ],
+                          "location": 279
+                        }
+                      },
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 5
+                }
+              },
+              {
+                "CommonTableExpr": {
+                  "ctename": "geojson_data",
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "pcent"
+                                    }
+                                  }
+                                ],
+                                "location": 469
+                              }
+                            },
+                            "location": 469
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "name": "geometry",
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "st_asgeojson"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "FuncCall": {
+                                      "funcname": [
+                                        {
+                                          "String": {
+                                            "str": "st_simplifypreservetopology"
+                                          }
+                                        }
+                                      ],
+                                      "args": [
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "geom"
+                                                }
+                                              }
+                                            ],
+                                            "location": 525
+                                          }
+                                        },
+                                        {
+                                          "A_Const": {
+                                            "val": {
+                                              "Float": {
+                                                "str": "0.00005"
+                                              }
+                                            },
+                                            "location": 530
+                                          }
+                                        }
+                                      ],
+                                      "location": 497
+                                    }
+                                  }
+                                ],
+                                "location": 484
+                              }
+                            },
+                            "location": 484
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "RangeVar": {
+                            "relname": "base",
+                            "inh": true,
+                            "relpersistence": "p",
+                            "location": 569
+                          }
+                        }
+                      ],
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 432
+                }
+              }
+            ]
+          },
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 1565
+    }
+  ]
+}

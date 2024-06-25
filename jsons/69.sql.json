@@ -1,0 +1,209 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "timestampw"
+                        }
+                      }
+                    ],
+                    "location": 29
+                  }
+                },
+                "location": 29
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "bid"
+                        }
+                      }
+                    ],
+                    "location": 41
+                  }
+                },
+                "location": 41
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "ask"
+                        }
+                      }
+                    ],
+                    "location": 46
+                  }
+                },
+                "location": 46
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "lastv"
+                        }
+                      }
+                    ],
+                    "location": 51
+                  }
+                },
+                "location": 51
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "realtimecoinsdata",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 62
+              }
+            }
+          ],
+          "whereClause": {
+            "BoolExpr": {
+              "boolop": "AND_EXPR",
+              "args": [
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_BETWEEN",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "BETWEEN"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "timestampw"
+                            }
+                          }
+                        ],
+                        "location": 86
+                      }
+                    },
+                    "rexpr": {
+                      "List": {
+                        "items": [
+                          {
+                            "A_Const": {
+                              "val": {
+                                "String": {
+                                  "str": "2018-01-29 1:19:00"
+                                }
+                              },
+                              "location": 105
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "String": {
+                                  "str": "2018-01-29 3:14:00"
+                                }
+                              },
+                              "location": 130
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "location": 97
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "market"
+                            }
+                          }
+                        ],
+                        "location": 155
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 110
+                          }
+                        },
+                        "location": 164
+                      }
+                    },
+                    "location": 162
+                  }
+                }
+              ],
+              "location": 151
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "timestampw"
+                        }
+                      }
+                    ],
+                    "location": 177
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 187
+    }
+  ]
+}

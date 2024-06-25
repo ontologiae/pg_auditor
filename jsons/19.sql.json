@@ -1,0 +1,55 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "create_hypertable"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Const": {
+                          "val": {
+                            "String": {
+                              "str": "hausseDetails"
+                            }
+                          },
+                          "location": 25
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "String": {
+                              "str": "timestampw"
+                            }
+                          },
+                          "location": 42
+                        }
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 55
+    }
+  ]
+}

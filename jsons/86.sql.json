@@ -1,0 +1,80 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeFunction": {
+                "functions": [
+                  {
+                    "List": {
+                      "items": [
+                        {
+                          "FuncCall": {
+                            "funcname": [
+                              {
+                                "String": {
+                                  "str": "getcurvefromtimenewwithlimitforscan"
+                                }
+                              }
+                            ],
+                            "args": [
+                              {
+                                "A_Const": {
+                                  "val": {
+                                    "String": {
+                                      "str": "2018-02-18 3:25:0"
+                                    }
+                                  },
+                                  "location": 51
+                                }
+                              },
+                              {
+                                "A_Const": {
+                                  "val": {
+                                    "Integer": {
+                                      "ival": 9000000
+                                    }
+                                  },
+                                  "location": 71
+                                }
+                              }
+                            ],
+                            "location": 15
+                          }
+                        },
+                        {}
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 79
+    }
+  ]
+}

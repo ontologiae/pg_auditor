@@ -122,6 +122,7 @@ let string_to_op op =  (*TODO Uppercase*)
     | "ALL" -> All
     | "LIKE" -> Like
     | "ILIKE" -> Ilike
+    | "~~" -> Like
     | "BETWEEN" -> Between
     | "IN" -> In
     | _ -> failwith ("Unsupported operator : "^op);;
@@ -235,8 +236,15 @@ let rec parse_whereClause json =
       let arg1_parsed = parse_whereClause arg1 in 
       let arg2_parsed = parse_whereClause arg2 in
       AndBoolExpre (arg1_parsed, arg2_parsed)
+  | Object [("BoolExpr", Object [("boolop", String "OR_EXPR"); ("args", Array [arg1; arg2]); ("location", _)])] ->
+      let arg1_parsed = parse_whereClause arg1 in 
+      let arg2_parsed = parse_whereClause arg2 in
+      OrBoolExpre (arg1_parsed, arg2_parsed)
+      
   | Object   [("BoolExpr",      Object      (("boolop", String "AND_EXPR")::("args",Array (arg1::q) )::_))] ->
                   L.fold_left ( fun a -> fun b -> AndBoolExpre(  a, parse_whereClause b) ) (parse_whereClause arg1) q
+  | Object   [("BoolExpr",      Object      (("boolop", String "OR_EXPR")::("args",Array (arg1::q) )::_))] ->
+                  L.fold_left ( fun a -> fun b -> OrBoolExpre(  a, parse_whereClause b) ) (parse_whereClause arg1) q
 
   | Object [("A_Expr", Object [("kind", String "AEXPR_OP"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
       let lexpr_parsed = parse_expreCondTerm lexpr in
@@ -250,6 +258,11 @@ let rec parse_whereClause json =
       let lexpr_parsed = parse_expreCondTerm lexpr in
       let rexpr_parsed = parse_expreCondTerm rexpr in
         WhereCondExpre(OpCond(In,lexpr_parsed, rexpr_parsed ))
+ | Object [("A_Expr", Object [("kind", String "AEXPR_LIKE"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
+      let lexpr_parsed = parse_expreCondTerm lexpr in
+      let rexpr_parsed = parse_expreCondTerm rexpr in
+        WhereCondExpre(OpCond(Like,lexpr_parsed, rexpr_parsed ))
+        
   | Object  (("NullTest",  Object (("arg", arg)::_))::_) -> IsNullExpre( parse_expreCondTerm arg)
 
   | Object (("ColumnRef", colref)::_) -> IsTrueOrNot(true, parse_expreCondTerm json)
@@ -263,25 +276,39 @@ let rec parse_whereClause json =
 
   
 
-(*  - : t -> condJoin   *)
-let rec json_to_condJoin = function
+(*  - : t -> condJoin   
+
+ TODO faut mettre des try catch pour lancer json_to_condJoin au cas où on a des subexpre*)
+let rec json_to_condJoin json : condJoin =
+        let trySubCondJoin json =
+                try json_to_condJoin json with e -> CondExpre(parse_expreCondTerm json) in
+   match json with 
     | Object [("A_Expr", Object (("kind", String "AEXPR_OP")::
                                            ("name", Array [Object [("String", Object [("str", String op)])]])::
                                            ("lexpr", lexpr)::
                                            ("rexpr", rexpr)::_
                                 ))] ->
         let op = string_to_op op in
-        let lexpr = parse_expreCondTerm lexpr in
-        let rexpr = parse_expreCondTerm rexpr in
+        let lexpr = trySubCondJoin lexpr in
+        let rexpr = trySubCondJoin rexpr in
          (* Placeholder for pattern matching, replace with actual condition parsing *)
-        Cond(op,CondExpre lexpr, CondExpre rexpr)
+        Cond(op, lexpr,  rexpr)
     | Object   [("BoolExpr",      Object      (("boolop", String "AND_EXPR")::("args",Array (arg1::arg2::[]) )::_))] ->
-                   let lexpr = parse_expreCondTerm arg1 in
-                   let rexpr = parse_expreCondTerm arg2 in
-                    Cond(And, CondExpre lexpr, CondExpre rexpr)
+                   let lexpr = trySubCondJoin arg1 in
+                   let rexpr = trySubCondJoin arg2 in
+                    Cond(And,  lexpr,  rexpr)
+                    
+    | Object   [("BoolExpr",      Object      (("boolop", String "OR_EXPR")::("args",Array (arg1::arg2::[]) )::_))] ->
+                   let lexpr = trySubCondJoin arg1 in
+                   let rexpr = trySubCondJoin arg2 in
+                    Cond(Or,  lexpr,  rexpr)
                     
     | Object   [("BoolExpr",      Object      (("boolop", String "AND_EXPR")::("args",Array (arg1::q) )::_))] ->
                     L.fold_left ( fun a -> fun b -> Cond(And,  a, json_to_condJoin b) ) (json_to_condJoin arg1) q
+
+    | Object   [("BoolExpr",      Object      (("boolop", String "Or_EXPR")::("args",Array (arg1::q) )::_))] ->
+                    L.fold_left ( fun a -> fun b -> Cond(Or,  a, json_to_condJoin b) ) (json_to_condJoin arg1) q
+                    
 
     | json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json);;
 
@@ -325,7 +352,7 @@ let json_to_indexElem idxname schemaname tblname typ elem =
 
 (*- : t -> fromClause*)
 let rec json_to_fromClause clause =
-        (*TODO range subselect f70 f68 et f75 et f72*)
+        (*TODO  f108 f110 f111 f113*)
         let rec array_to_JoinExpreCross l =
                 match l with
                 | t::t2::[]     -> JoinExpre(Cross,json_to_fromClause t,json_to_fromClause t2, NA)                

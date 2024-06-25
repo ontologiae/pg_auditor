@@ -1,0 +1,711 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "rnum"
+                        }
+                      }
+                    ],
+                    "location": 539
+                  }
+                },
+                "location": 539
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "% hausse cours/min"
+                        }
+                      }
+                    ],
+                    "location": 545
+                  }
+                },
+                "location": 545
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "regr",
+                "val": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "*"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "regrv"
+                            }
+                          }
+                        ],
+                        "location": 567
+                      }
+                    },
+                    "rexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "rnum"
+                            }
+                          }
+                        ],
+                        "location": 573
+                      }
+                    },
+                    "location": 572
+                  }
+                },
+                "location": 567
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "st1",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 591
+              }
+            },
+            {
+              "RangeVar": {
+                "relname": "regr",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 596
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "withClause": {
+            "ctes": [
+              {
+                "CommonTableExpr": {
+                  "ctename": "testmarket16",
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "cinqmn"
+                                    }
+                                  }
+                                ],
+                                "location": 53
+                              }
+                            },
+                            "location": 53
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "timestampw"
+                                    }
+                                  }
+                                ],
+                                "location": 61
+                              }
+                            },
+                            "location": 61
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "name": "% hausse cours/min",
+                            "val": {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "-"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "*"
+                                        }
+                                      }
+                                    ],
+                                    "lexpr": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "/"
+                                            }
+                                          }
+                                        ],
+                                        "lexpr": {
+                                          "A_Const": {
+                                            "val": {
+                                              "Integer": {
+                                                "ival": 100
+                                              }
+                                            },
+                                            "location": 74
+                                          }
+                                        },
+                                        "rexpr": {
+                                          "FuncCall": {
+                                            "funcname": [
+                                              {
+                                                "String": {
+                                                  "str": "min"
+                                                }
+                                              }
+                                            ],
+                                            "args": [
+                                              {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "lastv"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 83
+                                                }
+                                              }
+                                            ],
+                                            "over": {
+                                              "partitionClause": [
+                                                {
+                                                  "ColumnRef": {
+                                                    "fields": [
+                                                      {
+                                                        "String": {
+                                                          "str": "cinqmn"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "location": 109
+                                                  }
+                                                },
+                                                {
+                                                  "ColumnRef": {
+                                                    "fields": [
+                                                      {
+                                                        "String": {
+                                                          "str": "market"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "location": 117
+                                                  }
+                                                }
+                                              ],
+                                              "orderClause": [
+                                                {
+                                                  "SortBy": {
+                                                    "node": {
+                                                      "ColumnRef": {
+                                                        "fields": [
+                                                          {
+                                                            "String": {
+                                                              "str": "market"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "location": 134
+                                                      }
+                                                    },
+                                                    "sortby_dir": "SORTBY_DEFAULT",
+                                                    "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                                    "location": -1
+                                                  }
+                                                },
+                                                {
+                                                  "SortBy": {
+                                                    "node": {
+                                                      "ColumnRef": {
+                                                        "fields": [
+                                                          {
+                                                            "String": {
+                                                              "str": "timestampw"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "location": 142
+                                                      }
+                                                    },
+                                                    "sortby_dir": "SORTBY_DEFAULT",
+                                                    "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                                    "location": -1
+                                                  }
+                                                }
+                                              ],
+                                              "frameOptions": 1058,
+                                              "location": 95
+                                            },
+                                            "location": 79
+                                          }
+                                        },
+                                        "location": 77
+                                      }
+                                    },
+                                    "rexpr": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "str": "lastv"
+                                            }
+                                          }
+                                        ],
+                                        "location": 156
+                                      }
+                                    },
+                                    "location": 155
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Const": {
+                                    "val": {
+                                      "Integer": {
+                                        "ival": 100
+                                      }
+                                    },
+                                    "location": 163
+                                  }
+                                },
+                                "location": 162
+                              }
+                            },
+                            "location": 73
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "lastv"
+                                    }
+                                  }
+                                ],
+                                "location": 192
+                              }
+                            },
+                            "location": 192
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "rnum"
+                                    }
+                                  }
+                                ],
+                                "location": 199
+                              }
+                            },
+                            "location": 199
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "market"
+                                    }
+                                  }
+                                ],
+                                "location": 205
+                              }
+                            },
+                            "location": 205
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "RangeVar": {
+                            "relname": "haussedetails",
+                            "inh": true,
+                            "relpersistence": "p",
+                            "location": 218
+                          }
+                        }
+                      ],
+                      "whereClause": {
+                        "BoolExpr": {
+                          "boolop": "AND_EXPR",
+                          "args": [
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "="
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "market"
+                                        }
+                                      }
+                                    ],
+                                    "location": 238
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Const": {
+                                    "val": {
+                                      "Integer": {
+                                        "ival": 155
+                                      }
+                                    },
+                                    "location": 247
+                                  }
+                                },
+                                "location": 245
+                              }
+                            },
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_BETWEEN",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "BETWEEN"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "timestampw"
+                                        }
+                                      }
+                                    ],
+                                    "location": 255
+                                  }
+                                },
+                                "rexpr": {
+                                  "List": {
+                                    "items": [
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "String": {
+                                              "str": "2017-11-02 05:45:00"
+                                            }
+                                          },
+                                          "location": 275
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "String": {
+                                              "str": "2017-11-2 6:00:01"
+                                            }
+                                          },
+                                          "location": 301
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "location": 266
+                              }
+                            }
+                          ],
+                          "location": 251
+                        }
+                      },
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 28
+                }
+              },
+              {
+                "CommonTableExpr": {
+                  "ctename": "st1",
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "name": "icirn",
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "row_number"
+                                    }
+                                  }
+                                ],
+                                "over": {
+                                  "frameOptions": 1058,
+                                  "location": 358
+                                },
+                                "location": 340
+                              }
+                            },
+                            "location": 340
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "cinqmn"
+                                    }
+                                  }
+                                ],
+                                "location": 371
+                              }
+                            },
+                            "location": 371
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "timestampw"
+                                    }
+                                  }
+                                ],
+                                "location": 379
+                              }
+                            },
+                            "location": 379
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "% hausse cours/min"
+                                    }
+                                  }
+                                ],
+                                "location": 391
+                              }
+                            },
+                            "location": 391
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "lastv"
+                                    }
+                                  }
+                                ],
+                                "location": 413
+                              }
+                            },
+                            "location": 413
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "rnum"
+                                    }
+                                  }
+                                ],
+                                "location": 420
+                              }
+                            },
+                            "location": 420
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "market"
+                                    }
+                                  }
+                                ],
+                                "location": 426
+                              }
+                            },
+                            "location": 426
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "RangeVar": {
+                            "relname": "testmarket16",
+                            "inh": true,
+                            "relpersistence": "p",
+                            "location": 438
+                          }
+                        }
+                      ],
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 324
+                }
+              },
+              {
+                "CommonTableExpr": {
+                  "ctename": "regr",
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "name": "regrv",
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "regr_slope"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "% hausse cours/min"
+                                          }
+                                        }
+                                      ],
+                                      "location": 483
+                                    }
+                                  },
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "rnum"
+                                          }
+                                        }
+                                      ],
+                                      "location": 505
+                                    }
+                                  }
+                                ],
+                                "location": 472
+                              }
+                            },
+                            "location": 472
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "RangeVar": {
+                            "relname": "st1",
+                            "inh": true,
+                            "relpersistence": "p",
+                            "location": 525
+                          }
+                        }
+                      ],
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 454
+                }
+              }
+            ],
+            "location": 23
+          },
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 600
+    }
+  ]
+}

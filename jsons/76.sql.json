@@ -1,0 +1,123 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "hausseinteressantemethode3aveccoefrnnpourtestrnndataoctnov",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 14
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_BETWEEN",
+              "name": [
+                {
+                  "String": {
+                    "str": "BETWEEN"
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "ecartmax"
+                      }
+                    }
+                  ],
+                  "location": 79
+                }
+              },
+              "rexpr": {
+                "List": {
+                  "items": [
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 4
+                          }
+                        },
+                        "location": 96
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Float": {
+                            "str": "4.5"
+                          }
+                        },
+                        "location": 102
+                      }
+                    }
+                  ]
+                }
+              },
+              "location": 88
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "ecartmax"
+                        }
+                      }
+                    ],
+                    "location": 115
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitCount": {
+            "A_Const": {
+              "val": {
+                "Integer": {
+                  "ival": 1000
+                }
+              },
+              "location": 130
+            }
+          },
+          "limitOption": "LIMIT_OPTION_COUNT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 134
+    }
+  ]
+}

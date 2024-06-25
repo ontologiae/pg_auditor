@@ -1,0 +1,92 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "count"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "market"
+                              }
+                            }
+                          ],
+                          "location": 13
+                        }
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "coinsdata",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 26
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "name": [
+                {
+                  "String": {
+                    "str": "u003e"
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "market"
+                      }
+                    }
+                  ],
+                  "location": 42
+                }
+              },
+              "rexpr": {
+                "A_Const": {
+                  "val": {
+                    "Integer": {
+                      "ival": 10000
+                    }
+                  },
+                  "location": 51
+                }
+              },
+              "location": 49
+            }
+          },
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 56
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "rnum"
+                        }
+                      }
+                    ],
+                    "location": 52
+                  }
+                },
+                "location": 52
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "pcentval"
+                        }
+                      }
+                    ],
+                    "location": 58
+                  }
+                },
+                "location": 58
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "sum"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "pcentval"
+                              }
+                            }
+                          ],
+                          "location": 72
+                        }
+                      }
+                    ],
+                    "over": {
+                      "orderClause": [
+                        {
+                          "SortBy": {
+                            "node": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "rnum"
+                                    }
+                                  }
+                                ],
+                                "location": 98
+                              }
+                            },
+                            "sortby_dir": "SORTBY_DEFAULT",
+                            "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                            "location": -1
+                          }
+                        }
+                      ],
+                      "frameOptions": 1058,
+                      "location": 87
+                    },
+                    "location": 68
+                  }
+                },
+                "location": 68
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "pcentvol"
+                        }
+                      }
+                    ],
+                    "location": 105
+                  }
+                },
+                "location": 105
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "regrdrt"
+                        }
+                      }
+                    ],
+                    "location": 115
+                  }
+                },
+                "location": 115
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "analysehaussedetails",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 128
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "name": [
+                {
+                  "String": {
+                    "str": "="
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "id"
+                      }
+                    }
+                  ],
+                  "location": 155
+                }
+              },
+              "rexpr": {
+                "A_Const": {
+                  "val": {
+                    "Integer": {
+                      "ival": 5242
+                    }
+                  },
+                  "location": 160
+                }
+              },
+              "location": 158
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "rnum"
+                        }
+                      }
+                    ],
+                    "location": 174
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 178
+    }
+  ]
+}

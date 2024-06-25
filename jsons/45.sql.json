@@ -1,0 +1,86 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "analysehaussedetails",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 14
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "name": [
+                {
+                  "String": {
+                    "str": "="
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "id"
+                      }
+                    }
+                  ],
+                  "location": 41
+                }
+              },
+              "rexpr": {
+                "A_Const": {
+                  "val": {
+                    "Integer": {
+                      "ival": 2572
+                    }
+                  },
+                  "location": 46
+                }
+              },
+              "location": 44
+            }
+          },
+          "limitCount": {
+            "A_Const": {
+              "val": {
+                "Integer": {
+                  "ival": 1
+                }
+              },
+              "location": 57
+            }
+          },
+          "limitOption": "LIMIT_OPTION_COUNT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 58
+    }
+  ]
+}

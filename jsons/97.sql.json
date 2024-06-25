@@ -1,0 +1,288 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "distinctClause": [
+            {}
+          ],
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "market"
+                        }
+                      }
+                    ],
+                    "location": 16
+                  }
+                },
+                "location": 16
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "timestampw"
+                        }
+                      }
+                    ],
+                    "location": 24
+                  }
+                },
+                "location": 24
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "bid"
+                        }
+                      }
+                    ],
+                    "location": 36
+                  }
+                },
+                "location": 36
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "ask"
+                        }
+                      }
+                    ],
+                    "location": 41
+                  }
+                },
+                "location": 41
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "last",
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "lastv"
+                        }
+                      }
+                    ],
+                    "location": 46
+                  }
+                },
+                "location": 46
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "abs"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "-"
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "A_Const": {
+                              "val": {
+                                "String": {
+                                  "str": "2018-04-07 22:30"
+                                }
+                              },
+                              "location": 65
+                            }
+                          },
+                          "rexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "timestampw"
+                                  }
+                                }
+                              ],
+                              "location": 86
+                            }
+                          },
+                          "location": 83
+                        }
+                      }
+                    ],
+                    "location": 61
+                  }
+                },
+                "location": 61
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "realtimecoinsdata",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 103
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_BETWEEN",
+              "name": [
+                {
+                  "String": {
+                    "str": "BETWEEN"
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "timestampw"
+                      }
+                    }
+                  ],
+                  "location": 127
+                }
+              },
+              "rexpr": {
+                "List": {
+                  "items": [
+                    {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": "2018-04-07 22:30"
+                          }
+                        },
+                        "location": 146
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": "2018-04-07 22:30:50"
+                          }
+                        },
+                        "location": 169
+                      }
+                    }
+                  ]
+                }
+              },
+              "location": 138
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "abs"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "-"
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "A_Const": {
+                              "val": {
+                                "String": {
+                                  "str": "2018-04-07 22:30"
+                                }
+                              },
+                              "location": 204
+                            }
+                          },
+                          "rexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "timestampw"
+                                  }
+                                }
+                              ],
+                              "location": 225
+                            }
+                          },
+                          "location": 222
+                        }
+                      }
+                    ],
+                    "location": 200
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitCount": {
+            "A_Const": {
+              "val": {
+                "Integer": {
+                  "ival": 10
+                }
+              },
+              "location": 243
+            }
+          },
+          "limitOption": "LIMIT_OPTION_COUNT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 245
+    }
+  ]
+}

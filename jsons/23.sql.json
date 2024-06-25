@@ -1,0 +1,221 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "a"
+                        }
+                      }
+                    ],
+                    "location": 70
+                  }
+                },
+                "location": 70
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "CaseExpr": {
+                    "args": [
+                      {
+                        "CaseWhen": {
+                          "expr": {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "u003c"
+                                  }
+                                }
+                              ],
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "a"
+                                      }
+                                    }
+                                  ],
+                                  "location": 83
+                                }
+                              },
+                              "rexpr": {
+                                "A_Const": {
+                                  "val": {
+                                    "Integer": {
+                                      "ival": 8
+                                    }
+                                  },
+                                  "location": 87
+                                }
+                              },
+                              "location": 85
+                            }
+                          },
+                          "result": {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 0
+                                }
+                              },
+                              "location": 94
+                            }
+                          },
+                          "location": 78
+                        }
+                      }
+                    ],
+                    "defresult": {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 3
+                          }
+                        },
+                        "location": 101
+                      }
+                    },
+                    "location": 73
+                  }
+                },
+                "location": 73
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "*"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "A_Const": {
+                        "val": {
+                          "Float": {
+                            "str": "0.27"
+                          }
+                        },
+                        "location": 108
+                      }
+                    },
+                    "rexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "a"
+                            }
+                          }
+                        ],
+                        "location": 113
+                      }
+                    },
+                    "location": 112
+                  }
+                },
+                "location": 108
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "gn",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 120
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "withClause": {
+            "ctes": [
+              {
+                "CommonTableExpr": {
+                  "ctename": "gn",
+                  "aliascolnames": [
+                    {
+                      "String": {
+                        "str": "a"
+                      }
+                    }
+                  ],
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "generate_series"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "Integer": {
+                                          "ival": 1
+                                        }
+                                      },
+                                      "location": 54
+                                    }
+                                  },
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "Integer": {
+                                          "ival": 16
+                                        }
+                                      },
+                                      "location": 56
+                                    }
+                                  }
+                                ],
+                                "location": 38
+                              }
+                            },
+                            "location": 38
+                          }
+                        }
+                      ],
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 20
+                }
+              }
+            ],
+            "location": 15
+          },
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 122
+    }
+  ]
+}

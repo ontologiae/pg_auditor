@@ -1,0 +1,771 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "distinctClause": [
+            {}
+          ],
+          "targetList": [
+            {
+              "ResTarget": {
+                "name": "value",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "avg"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "t"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "ask"
+                              }
+                            }
+                          ],
+                          "location": 20
+                        }
+                      }
+                    ],
+                    "location": 16
+                  }
+                },
+                "location": 16
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "date",
+                "val": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "||"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "||"
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "A_Const": {
+                            "val": {
+                              "String": {
+                                "str": "new Date (2017, 11, 9, "
+                              }
+                            },
+                            "location": 37
+                          }
+                        },
+                        "rexpr": {
+                          "FuncCall": {
+                            "funcname": [
+                              {
+                                "String": {
+                                  "str": "to_char"
+                                }
+                              }
+                            ],
+                            "args": [
+                              {
+                                "FuncCall": {
+                                  "funcname": [
+                                    {
+                                      "String": {
+                                        "str": "date_trunc"
+                                      }
+                                    }
+                                  ],
+                                  "args": [
+                                    {
+                                      "A_Const": {
+                                        "val": {
+                                          "String": {
+                                            "str": "minute"
+                                          }
+                                        },
+                                        "location": 85
+                                      }
+                                    },
+                                    {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "str": "t"
+                                            }
+                                          },
+                                          {
+                                            "String": {
+                                              "str": "timestampw"
+                                            }
+                                          }
+                                        ],
+                                        "location": 95
+                                      }
+                                    }
+                                  ],
+                                  "location": 74
+                                }
+                              },
+                              {
+                                "A_Const": {
+                                  "val": {
+                                    "String": {
+                                      "str": "HH24,MI,SS"
+                                    }
+                                  },
+                                  "location": 110
+                                }
+                              }
+                            ],
+                            "location": 66
+                          }
+                        },
+                        "location": 63
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": ")"
+                          }
+                        },
+                        "location": 127
+                      }
+                    },
+                    "location": 124
+                  }
+                },
+                "location": 37
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "volume",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "avg"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "volume"
+                              }
+                            }
+                          ],
+                          "location": 144
+                        }
+                      }
+                    ],
+                    "location": 140
+                  }
+                },
+                "location": 140
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "m"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "monnaie"
+                        }
+                      }
+                    ],
+                    "location": 163
+                  }
+                },
+                "location": 163
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "date_trunc"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Const": {
+                          "val": {
+                            "String": {
+                              "str": "minute"
+                            }
+                          },
+                          "location": 185
+                        }
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "t"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "timestampw"
+                              }
+                            }
+                          ],
+                          "location": 195
+                        }
+                      }
+                    ],
+                    "location": 174
+                  }
+                },
+                "location": 174
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "JoinExpr": {
+                "jointype": "JOIN_INNER",
+                "larg": {
+                  "RangeVar": {
+                    "relname": "marketname",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "alias": {
+                      "aliasname": "m"
+                    },
+                    "location": 214
+                  }
+                },
+                "rarg": {
+                  "RangeVar": {
+                    "relname": "tickercoin2",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "alias": {
+                      "aliasname": "t"
+                    },
+                    "location": 238
+                  }
+                },
+                "quals": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "m"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "id"
+                            }
+                          }
+                        ],
+                        "location": 256
+                      }
+                    },
+                    "rexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "t"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "market"
+                            }
+                          }
+                        ],
+                        "location": 263
+                      }
+                    },
+                    "location": 261
+                  }
+                }
+              }
+            }
+          ],
+          "whereClause": {
+            "BoolExpr": {
+              "boolop": "AND_EXPR",
+              "args": [
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "u003e"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "t"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "timestampw"
+                            }
+                          }
+                        ],
+                        "location": 280
+                      }
+                    },
+                    "rexpr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "-"
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "2017-11-9 22:23"
+                                  }
+                                },
+                                "location": 296
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "date"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 315
+                            },
+                            "location": 313
+                          }
+                        },
+                        "rexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "1 hour"
+                                  }
+                                },
+                                "location": 332
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "interval"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 322
+                            },
+                            "location": -1
+                          }
+                        },
+                        "location": 320
+                      }
+                    },
+                    "location": 293
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "u003c"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "t"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "timestampw"
+                            }
+                          }
+                        ],
+                        "location": 346
+                      }
+                    },
+                    "rexpr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "+"
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "2017-11-9 23:17"
+                                  }
+                                },
+                                "location": 362
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "date"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 381
+                            },
+                            "location": 379
+                          }
+                        },
+                        "rexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "1 hour"
+                                  }
+                                },
+                                "location": 398
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "interval"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 388
+                            },
+                            "location": -1
+                          }
+                        },
+                        "location": 386
+                      }
+                    },
+                    "location": 359
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "m"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "monnaie"
+                            }
+                          }
+                        ],
+                        "location": 413
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": "BCC"
+                          }
+                        },
+                        "location": 425
+                      }
+                    },
+                    "location": 423
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "m"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "base"
+                            }
+                          }
+                        ],
+                        "location": 435
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": "BTC"
+                          }
+                        },
+                        "location": 444
+                      }
+                    },
+                    "location": 442
+                  }
+                }
+              ],
+              "location": 342
+            }
+          },
+          "groupClause": [
+            {
+              "FuncCall": {
+                "funcname": [
+                  {
+                    "String": {
+                      "str": "date_trunc"
+                    }
+                  }
+                ],
+                "args": [
+                  {
+                    "A_Const": {
+                      "val": {
+                        "String": {
+                          "str": "minute"
+                        }
+                      },
+                      "location": 470
+                    }
+                  },
+                  {
+                    "ColumnRef": {
+                      "fields": [
+                        {
+                          "String": {
+                            "str": "t"
+                          }
+                        },
+                        {
+                          "String": {
+                            "str": "timestampw"
+                          }
+                        }
+                      ],
+                      "location": 480
+                    }
+                  }
+                ],
+                "location": 459
+              }
+            },
+            {
+              "ColumnRef": {
+                "fields": [
+                  {
+                    "String": {
+                      "str": "m"
+                    }
+                  },
+                  {
+                    "String": {
+                      "str": "monnaie"
+                    }
+                  }
+                ],
+                "location": 495
+              }
+            }
+          ],
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "m"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "monnaie"
+                        }
+                      }
+                    ],
+                    "location": 514
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            },
+            {
+              "SortBy": {
+                "node": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "date_trunc"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Const": {
+                          "val": {
+                            "String": {
+                              "str": "minute"
+                            }
+                          },
+                          "location": 536
+                        }
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "t"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "timestampw"
+                              }
+                            }
+                          ],
+                          "location": 546
+                        }
+                      }
+                    ],
+                    "location": 525
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 559
+    }
+  ]
+}

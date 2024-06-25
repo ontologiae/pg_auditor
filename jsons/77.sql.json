@@ -1,0 +1,168 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "trunc"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "coefrnn"
+                              }
+                            }
+                          ],
+                          "location": 54
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "Integer": {
+                              "ival": 1
+                            }
+                          },
+                          "location": 62
+                        }
+                      }
+                    ],
+                    "location": 48
+                  }
+                },
+                "location": 48
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "count"
+                        }
+                      }
+                    ],
+                    "agg_star": true,
+                    "location": 66
+                  }
+                },
+                "location": 66
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "hausseinteressantemethode3aveccoefrnnpourtestrnndataoctnovfenet",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 80
+              }
+            }
+          ],
+          "groupClause": [
+            {
+              "FuncCall": {
+                "funcname": [
+                  {
+                    "String": {
+                      "str": "trunc"
+                    }
+                  }
+                ],
+                "args": [
+                  {
+                    "ColumnRef": {
+                      "fields": [
+                        {
+                          "String": {
+                            "str": "coefrnn"
+                          }
+                        }
+                      ],
+                      "location": 159
+                    }
+                  },
+                  {
+                    "A_Const": {
+                      "val": {
+                        "Integer": {
+                          "ival": 1
+                        }
+                      },
+                      "location": 167
+                    }
+                  }
+                ],
+                "location": 153
+              }
+            }
+          ],
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "trunc"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "coefrnn"
+                              }
+                            }
+                          ],
+                          "location": 185
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "Integer": {
+                              "ival": 1
+                            }
+                          },
+                          "location": 193
+                        }
+                      }
+                    ],
+                    "location": 179
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 195
+    }
+  ]
+}

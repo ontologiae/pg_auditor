@@ -1,0 +1,79 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "count"
+                        }
+                      }
+                    ],
+                    "agg_star": true,
+                    "location": 100
+                  }
+                },
+                "location": 100
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "haussedetails",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 114
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "name": [
+                {
+                  "String": {
+                    "str": "="
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "opensellorders"
+                      }
+                    }
+                  ],
+                  "location": 134
+                }
+              },
+              "rexpr": {
+                "A_Const": {
+                  "val": {
+                    "Integer": {
+                      "ival": 0
+                    }
+                  },
+                  "location": 151
+                }
+              },
+              "location": 149
+            }
+          },
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 152
+    }
+  ]
+}

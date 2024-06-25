@@ -1,0 +1,105 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeFunction": {
+                "functions": [
+                  {
+                    "List": {
+                      "items": [
+                        {
+                          "FuncCall": {
+                            "funcname": [
+                              {
+                                "String": {
+                                  "str": "getcurvefrom"
+                                }
+                              }
+                            ],
+                            "args": [
+                              {
+                                "A_Const": {
+                                  "val": {
+                                    "String": {
+                                      "str": "2018-01-25 00:16:30"
+                                    }
+                                  },
+                                  "location": 27
+                                }
+                              }
+                            ],
+                            "location": 14
+                          }
+                        },
+                        {}
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "name": [
+                {
+                  "String": {
+                    "str": "="
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "market"
+                      }
+                    }
+                  ],
+                  "location": 56
+                }
+              },
+              "rexpr": {
+                "A_Const": {
+                  "val": {
+                    "Integer": {
+                      "ival": 83
+                    }
+                  },
+                  "location": 65
+                }
+              },
+              "location": 63
+            }
+          },
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 67
+    }
+  ]
+}

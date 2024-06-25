@@ -1,0 +1,123 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "chunk_table"
+                        }
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "table_size"
+                        }
+                      }
+                    ],
+                    "location": 20
+                  }
+                },
+                "location": 20
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "index_size"
+                        }
+                      }
+                    ],
+                    "location": 32
+                  }
+                },
+                "location": 32
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "total_size"
+                        }
+                      }
+                    ],
+                    "location": 44
+                  }
+                },
+                "location": 44
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeFunction": {
+                "functions": [
+                  {
+                    "List": {
+                      "items": [
+                        {
+                          "FuncCall": {
+                            "funcname": [
+                              {
+                                "String": {
+                                  "str": "chunk_relation_size_pretty"
+                                }
+                              }
+                            ],
+                            "args": [
+                              {
+                                "A_Const": {
+                                  "val": {
+                                    "String": {
+                                      "str": "coinsdata"
+                                    }
+                                  },
+                                  "location": 87
+                                }
+                              }
+                            ],
+                            "location": 60
+                          }
+                        },
+                        {}
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 99
+    }
+  ]
+}

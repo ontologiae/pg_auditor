@@ -1,0 +1,757 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "similarity"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "FuncCall": {
+                          "funcname": [
+                            {
+                              "String": {
+                                "str": "unaccent"
+                              }
+                            }
+                          ],
+                          "args": [
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "lower"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "ALLÉE VICTOR STÉFANI"
+                                        }
+                                      },
+                                      "location": 36
+                                    }
+                                  }
+                                ],
+                                "location": 30
+                              }
+                            }
+                          ],
+                          "location": 21
+                        }
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "baf"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "nom_voie"
+                              }
+                            }
+                          ],
+                          "location": 63
+                        }
+                      }
+                    ],
+                    "location": 10
+                  }
+                },
+                "location": 10
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "word_similarity"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "FuncCall": {
+                          "funcname": [
+                            {
+                              "String": {
+                                "str": "unaccent"
+                              }
+                            }
+                          ],
+                          "args": [
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "lower"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "ALLÉE VICTOR STÉFANI"
+                                        }
+                                      },
+                                      "location": 110
+                                    }
+                                  }
+                                ],
+                                "location": 104
+                              }
+                            }
+                          ],
+                          "location": 95
+                        }
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "baf"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "nom_voie"
+                              }
+                            }
+                          ],
+                          "location": 137
+                        }
+                      }
+                    ],
+                    "location": 79
+                  }
+                },
+                "location": 79
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "strict_word_similarity"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "FuncCall": {
+                          "funcname": [
+                            {
+                              "String": {
+                                "str": "unaccent"
+                              }
+                            }
+                          ],
+                          "args": [
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "lower"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "ALLÉE VICTOR STÉFANI"
+                                        }
+                                      },
+                                      "location": 192
+                                    }
+                                  }
+                                ],
+                                "location": 186
+                              }
+                            }
+                          ],
+                          "location": 177
+                        }
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "baf"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "nom_voie"
+                              }
+                            }
+                          ],
+                          "location": 219
+                        }
+                      }
+                    ],
+                    "location": 154
+                  }
+                },
+                "location": 154
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "to_tsvector"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Const": {
+                          "val": {
+                            "String": {
+                              "str": "french"
+                            }
+                          },
+                          "location": 249
+                        }
+                      },
+                      {
+                        "FuncCall": {
+                          "funcname": [
+                            {
+                              "String": {
+                                "str": "unaccent"
+                              }
+                            }
+                          ],
+                          "args": [
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "lower"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "ALLÉE VICTOR STÉFANI"
+                                        }
+                                      },
+                                      "location": 273
+                                    }
+                                  }
+                                ],
+                                "location": 267
+                              }
+                            }
+                          ],
+                          "location": 258
+                        }
+                      }
+                    ],
+                    "location": 237
+                  }
+                },
+                "location": 237
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "to_tsvector"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Const": {
+                          "val": {
+                            "String": {
+                              "str": "french"
+                            }
+                          },
+                          "location": 317
+                        }
+                      },
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "baf"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "nom_voie"
+                              }
+                            }
+                          ],
+                          "location": 326
+                        }
+                      }
+                    ],
+                    "location": 305
+                  }
+                },
+                "location": 305
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "tsvector_to_array"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "FuncCall": {
+                          "funcname": [
+                            {
+                              "String": {
+                                "str": "to_tsvector"
+                              }
+                            }
+                          ],
+                          "args": [
+                            {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "french"
+                                  }
+                                },
+                                "location": 375
+                              }
+                            },
+                            {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "baf"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "str": "nom_voie"
+                                    }
+                                  }
+                                ],
+                                "location": 384
+                              }
+                            }
+                          ],
+                          "location": 363
+                        }
+                      }
+                    ],
+                    "location": 345
+                  }
+                },
+                "location": 345
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "tsvector_to_array"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "FuncCall": {
+                          "funcname": [
+                            {
+                              "String": {
+                                "str": "to_tsvector"
+                              }
+                            }
+                          ],
+                          "args": [
+                            {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "french"
+                                  }
+                                },
+                                "location": 435
+                              }
+                            },
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "unaccent"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "FuncCall": {
+                                      "funcname": [
+                                        {
+                                          "String": {
+                                            "str": "lower"
+                                          }
+                                        }
+                                      ],
+                                      "args": [
+                                        {
+                                          "A_Const": {
+                                            "val": {
+                                              "String": {
+                                                "str": "ALLÉE VICTOR STÉFANI"
+                                              }
+                                            },
+                                            "location": 459
+                                          }
+                                        }
+                                      ],
+                                      "location": 453
+                                    }
+                                  }
+                                ],
+                                "location": 444
+                              }
+                            }
+                          ],
+                          "location": 423
+                        }
+                      }
+                    ],
+                    "location": 405
+                  }
+                },
+                "location": 405
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "show_trgm"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "FuncCall": {
+                          "funcname": [
+                            {
+                              "String": {
+                                "str": "unaccent"
+                              }
+                            }
+                          ],
+                          "args": [
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "lower"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "ALLÉE VICTOR STÉFANI"
+                                        }
+                                      },
+                                      "location": 515
+                                    }
+                                  }
+                                ],
+                                "location": 509
+                              }
+                            }
+                          ],
+                          "location": 500
+                        }
+                      }
+                    ],
+                    "location": 490
+                  }
+                },
+                "location": 490
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "show_trgm"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "baf"
+                              }
+                            },
+                            {
+                              "String": {
+                                "str": "nom_voie"
+                              }
+                            }
+                          ],
+                          "location": 555
+                        }
+                      }
+                    ],
+                    "location": 545
+                  }
+                },
+                "location": 545
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 572
+                  }
+                },
+                "location": 572
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "base_adresse_france",
+                "inh": true,
+                "relpersistence": "p",
+                "alias": {
+                  "aliasname": "baf"
+                },
+                "location": 579
+              }
+            }
+          ],
+          "whereClause": {
+            "BoolExpr": {
+              "boolop": "AND_EXPR",
+              "args": [
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "baf"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "numero"
+                            }
+                          }
+                        ],
+                        "location": 613
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 14
+                          }
+                        },
+                        "location": 626
+                      }
+                    },
+                    "location": 624
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "baf"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "code_postal"
+                            }
+                          }
+                        ],
+                        "location": 633
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 44250
+                          }
+                        },
+                        "location": 651
+                      }
+                    },
+                    "location": 649
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_LIKE",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "~~"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "nom_voie"
+                            }
+                          }
+                        ],
+                        "location": 662
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": "%fani%"
+                          }
+                        },
+                        "location": 676
+                      }
+                    },
+                    "location": 671
+                  }
+                }
+              ],
+              "location": 629
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "nom_voie"
+                        }
+                      }
+                    ],
+                    "location": 694
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 702
+    }
+  ]
+}

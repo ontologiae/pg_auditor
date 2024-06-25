@@ -1,0 +1,198 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "coinsdata",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 14
+              }
+            }
+          ],
+          "whereClause": {
+            "BoolExpr": {
+              "boolop": "AND_EXPR",
+              "args": [
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "market"
+                            }
+                          }
+                        ],
+                        "location": 31
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 41
+                          }
+                        },
+                        "location": 40
+                      }
+                    },
+                    "location": 38
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_BETWEEN",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "BETWEEN"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "timestampw"
+                            }
+                          }
+                        ],
+                        "location": 47
+                      }
+                    },
+                    "rexpr": {
+                      "List": {
+                        "items": [
+                          {
+                            "TypeCast": {
+                              "arg": {
+                                "A_Const": {
+                                  "val": {
+                                    "String": {
+                                      "str": "2017-11-2 3:50"
+                                    }
+                                  },
+                                  "location": 67
+                                }
+                              },
+                              "typeName": {
+                                "names": [
+                                  {
+                                    "String": {
+                                      "str": "pg_catalog"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "str": "timestamp"
+                                    }
+                                  }
+                                ],
+                                "typemod": -1,
+                                "location": 85
+                              },
+                              "location": 83
+                            }
+                          },
+                          {
+                            "TypeCast": {
+                              "arg": {
+                                "A_Const": {
+                                  "val": {
+                                    "String": {
+                                      "str": "2017-11-2 4:13"
+                                    }
+                                  },
+                                  "location": 103
+                                }
+                              },
+                              "typeName": {
+                                "names": [
+                                  {
+                                    "String": {
+                                      "str": "pg_catalog"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "str": "timestamp"
+                                    }
+                                  }
+                                ],
+                                "typemod": -1,
+                                "location": 121
+                              },
+                              "location": 119
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "location": 58
+                  }
+                }
+              ],
+              "location": 43
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "timestampw"
+                        }
+                      }
+                    ],
+                    "location": 143
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 153
+    }
+  ]
+}

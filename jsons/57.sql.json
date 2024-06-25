@@ -1,0 +1,1992 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "market"
+                        }
+                      }
+                    ],
+                    "location": 145
+                  }
+                },
+                "location": 145
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "rnum",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "row_number"
+                        }
+                      }
+                    ],
+                    "over": {
+                      "partitionClause": [
+                        {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "str": "market"
+                                }
+                              }
+                            ],
+                            "location": 185
+                          }
+                        }
+                      ],
+                      "orderClause": [
+                        {
+                          "SortBy": {
+                            "node": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "market"
+                                    }
+                                  }
+                                ],
+                                "location": 202
+                              }
+                            },
+                            "sortby_dir": "SORTBY_DEFAULT",
+                            "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                            "location": -1
+                          }
+                        },
+                        {
+                          "SortBy": {
+                            "node": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "timestampw"
+                                    }
+                                  }
+                                ],
+                                "location": 210
+                              }
+                            },
+                            "sortby_dir": "SORTBY_DEFAULT",
+                            "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                            "location": -1
+                          }
+                        }
+                      ],
+                      "frameOptions": 1058,
+                      "location": 171
+                    },
+                    "location": 153
+                  }
+                },
+                "location": 153
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "timestampw"
+                        }
+                      }
+                    ],
+                    "location": 231
+                  }
+                },
+                "location": 231
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "pcentval",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "trunc"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "-"
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "*"
+                                  }
+                                }
+                              ],
+                              "lexpr": {
+                                "A_Expr": {
+                                  "kind": "AEXPR_OP",
+                                  "name": [
+                                    {
+                                      "String": {
+                                        "str": "/"
+                                      }
+                                    }
+                                  ],
+                                  "lexpr": {
+                                    "A_Const": {
+                                      "val": {
+                                        "Float": {
+                                          "str": "100.0"
+                                        }
+                                      },
+                                      "location": 250
+                                    }
+                                  },
+                                  "rexpr": {
+                                    "FuncCall": {
+                                      "funcname": [
+                                        {
+                                          "String": {
+                                            "str": "first_value"
+                                          }
+                                        }
+                                      ],
+                                      "args": [
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "lastv"
+                                                }
+                                              }
+                                            ],
+                                            "location": 269
+                                          }
+                                        }
+                                      ],
+                                      "over": {
+                                        "partitionClause": [
+                                          {
+                                            "ColumnRef": {
+                                              "fields": [
+                                                {
+                                                  "String": {
+                                                    "str": "market"
+                                                  }
+                                                }
+                                              ],
+                                              "location": 295
+                                            }
+                                          }
+                                        ],
+                                        "orderClause": [
+                                          {
+                                            "SortBy": {
+                                              "node": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "market"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 312
+                                                }
+                                              },
+                                              "sortby_dir": "SORTBY_DEFAULT",
+                                              "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                              "location": -1
+                                            }
+                                          },
+                                          {
+                                            "SortBy": {
+                                              "node": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "timestampw"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 320
+                                                }
+                                              },
+                                              "sortby_dir": "SORTBY_DEFAULT",
+                                              "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                              "location": -1
+                                            }
+                                          }
+                                        ],
+                                        "frameOptions": 1058,
+                                        "location": 281
+                                      },
+                                      "location": 257
+                                    }
+                                  },
+                                  "location": 255
+                                }
+                              },
+                              "rexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "lastv"
+                                      }
+                                    }
+                                  ],
+                                  "location": 334
+                                }
+                              },
+                              "location": 333
+                            }
+                          },
+                          "rexpr": {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 100
+                                }
+                              },
+                              "location": 342
+                            }
+                          },
+                          "location": 340
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "Integer": {
+                              "ival": 4
+                            }
+                          },
+                          "location": 346
+                        }
+                      }
+                    ],
+                    "location": 243
+                  }
+                },
+                "location": 243
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "pcentvol",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "trunc"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "-"
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "*"
+                                  }
+                                }
+                              ],
+                              "lexpr": {
+                                "A_Expr": {
+                                  "kind": "AEXPR_OP",
+                                  "name": [
+                                    {
+                                      "String": {
+                                        "str": "/"
+                                      }
+                                    }
+                                  ],
+                                  "lexpr": {
+                                    "A_Const": {
+                                      "val": {
+                                        "Integer": {
+                                          "ival": 100
+                                        }
+                                      },
+                                      "location": 369
+                                    }
+                                  },
+                                  "rexpr": {
+                                    "FuncCall": {
+                                      "funcname": [
+                                        {
+                                          "String": {
+                                            "str": "first_value"
+                                          }
+                                        }
+                                      ],
+                                      "args": [
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "volume"
+                                                }
+                                              }
+                                            ],
+                                            "location": 386
+                                          }
+                                        }
+                                      ],
+                                      "over": {
+                                        "partitionClause": [
+                                          {
+                                            "ColumnRef": {
+                                              "fields": [
+                                                {
+                                                  "String": {
+                                                    "str": "market"
+                                                  }
+                                                }
+                                              ],
+                                              "location": 414
+                                            }
+                                          }
+                                        ],
+                                        "orderClause": [
+                                          {
+                                            "SortBy": {
+                                              "node": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "market"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 431
+                                                }
+                                              },
+                                              "sortby_dir": "SORTBY_DEFAULT",
+                                              "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                              "location": -1
+                                            }
+                                          },
+                                          {
+                                            "SortBy": {
+                                              "node": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "timestampw"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 439
+                                                }
+                                              },
+                                              "sortby_dir": "SORTBY_DEFAULT",
+                                              "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                              "location": -1
+                                            }
+                                          }
+                                        ],
+                                        "frameOptions": 1058,
+                                        "location": 399
+                                      },
+                                      "location": 374
+                                    }
+                                  },
+                                  "location": 372
+                                }
+                              },
+                              "rexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "volume"
+                                      }
+                                    }
+                                  ],
+                                  "location": 453
+                                }
+                              },
+                              "location": 452
+                            }
+                          },
+                          "rexpr": {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 100
+                                }
+                              },
+                              "location": 462
+                            }
+                          },
+                          "location": 460
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "Integer": {
+                              "ival": 4
+                            }
+                          },
+                          "location": 466
+                        }
+                      }
+                    ],
+                    "location": 362
+                  }
+                },
+                "location": 362
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "pcenthausseob",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "trunc"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "-"
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "*"
+                                  }
+                                }
+                              ],
+                              "lexpr": {
+                                "A_Expr": {
+                                  "kind": "AEXPR_OP",
+                                  "name": [
+                                    {
+                                      "String": {
+                                        "str": "/"
+                                      }
+                                    }
+                                  ],
+                                  "lexpr": {
+                                    "A_Const": {
+                                      "val": {
+                                        "Integer": {
+                                          "ival": 100
+                                        }
+                                      },
+                                      "location": 489
+                                    }
+                                  },
+                                  "rexpr": {
+                                    "FuncCall": {
+                                      "funcname": [
+                                        {
+                                          "String": {
+                                            "str": "first_value"
+                                          }
+                                        }
+                                      ],
+                                      "args": [
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "openbuyorders"
+                                                }
+                                              }
+                                            ],
+                                            "location": 506
+                                          }
+                                        }
+                                      ],
+                                      "over": {
+                                        "partitionClause": [
+                                          {
+                                            "ColumnRef": {
+                                              "fields": [
+                                                {
+                                                  "String": {
+                                                    "str": "market"
+                                                  }
+                                                }
+                                              ],
+                                              "location": 541
+                                            }
+                                          }
+                                        ],
+                                        "orderClause": [
+                                          {
+                                            "SortBy": {
+                                              "node": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "market"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 558
+                                                }
+                                              },
+                                              "sortby_dir": "SORTBY_DEFAULT",
+                                              "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                              "location": -1
+                                            }
+                                          },
+                                          {
+                                            "SortBy": {
+                                              "node": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "timestampw"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 566
+                                                }
+                                              },
+                                              "sortby_dir": "SORTBY_DEFAULT",
+                                              "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                              "location": -1
+                                            }
+                                          }
+                                        ],
+                                        "frameOptions": 1058,
+                                        "location": 526
+                                      },
+                                      "location": 494
+                                    }
+                                  },
+                                  "location": 492
+                                }
+                              },
+                              "rexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "openbuyorders"
+                                      }
+                                    }
+                                  ],
+                                  "location": 580
+                                }
+                              },
+                              "location": 579
+                            }
+                          },
+                          "rexpr": {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 100
+                                }
+                              },
+                              "location": 596
+                            }
+                          },
+                          "location": 594
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "Integer": {
+                              "ival": 4
+                            }
+                          },
+                          "location": 600
+                        }
+                      }
+                    ],
+                    "location": 482
+                  }
+                },
+                "location": 482
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "pcenthausseos",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "trunc"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "-"
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "*"
+                                  }
+                                }
+                              ],
+                              "lexpr": {
+                                "A_Expr": {
+                                  "kind": "AEXPR_OP",
+                                  "name": [
+                                    {
+                                      "String": {
+                                        "str": "/"
+                                      }
+                                    }
+                                  ],
+                                  "lexpr": {
+                                    "A_Const": {
+                                      "val": {
+                                        "Integer": {
+                                          "ival": 100
+                                        }
+                                      },
+                                      "location": 628
+                                    }
+                                  },
+                                  "rexpr": {
+                                    "FuncCall": {
+                                      "funcname": [
+                                        {
+                                          "String": {
+                                            "str": "first_value"
+                                          }
+                                        }
+                                      ],
+                                      "args": [
+                                        {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "opensellorders"
+                                                }
+                                              }
+                                            ],
+                                            "location": 645
+                                          }
+                                        }
+                                      ],
+                                      "over": {
+                                        "partitionClause": [
+                                          {
+                                            "ColumnRef": {
+                                              "fields": [
+                                                {
+                                                  "String": {
+                                                    "str": "market"
+                                                  }
+                                                }
+                                              ],
+                                              "location": 680
+                                            }
+                                          }
+                                        ],
+                                        "orderClause": [
+                                          {
+                                            "SortBy": {
+                                              "node": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "market"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 697
+                                                }
+                                              },
+                                              "sortby_dir": "SORTBY_DEFAULT",
+                                              "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                              "location": -1
+                                            }
+                                          },
+                                          {
+                                            "SortBy": {
+                                              "node": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "timestampw"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 705
+                                                }
+                                              },
+                                              "sortby_dir": "SORTBY_DEFAULT",
+                                              "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                              "location": -1
+                                            }
+                                          }
+                                        ],
+                                        "frameOptions": 1058,
+                                        "location": 666
+                                      },
+                                      "location": 633
+                                    }
+                                  },
+                                  "location": 631
+                                }
+                              },
+                              "rexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "opensellorders"
+                                      }
+                                    }
+                                  ],
+                                  "location": 719
+                                }
+                              },
+                              "location": 718
+                            }
+                          },
+                          "rexpr": {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 100
+                                }
+                              },
+                              "location": 736
+                            }
+                          },
+                          "location": 734
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "Integer": {
+                              "ival": 4
+                            }
+                          },
+                          "location": 740
+                        }
+                      }
+                    ],
+                    "location": 621
+                  }
+                },
+                "location": 621
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "realtimecoinsdata",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 765
+              }
+            }
+          ],
+          "whereClause": {
+            "BoolExpr": {
+              "boolop": "AND_EXPR",
+              "args": [
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_BETWEEN",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "BETWEEN"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "timestampw"
+                            }
+                          }
+                        ],
+                        "location": 789
+                      }
+                    },
+                    "rexpr": {
+                      "List": {
+                        "items": [
+                          {
+                            "TypeCast": {
+                              "arg": {
+                                "A_Const": {
+                                  "val": {
+                                    "String": {
+                                      "str": "2018-01-25 14:10"
+                                    }
+                                  },
+                                  "location": 808
+                                }
+                              },
+                              "typeName": {
+                                "names": [
+                                  {
+                                    "String": {
+                                      "str": "pg_catalog"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "str": "timestamp"
+                                    }
+                                  }
+                                ],
+                                "typemod": -1,
+                                "location": 828
+                              },
+                              "location": 826
+                            }
+                          },
+                          {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "+"
+                                  }
+                                }
+                              ],
+                              "lexpr": {
+                                "TypeCast": {
+                                  "arg": {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "2018-01-25 14:10"
+                                        }
+                                      },
+                                      "location": 843
+                                    }
+                                  },
+                                  "typeName": {
+                                    "names": [
+                                      {
+                                        "String": {
+                                          "str": "pg_catalog"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "timestamp"
+                                        }
+                                      }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 863
+                                  },
+                                  "location": 861
+                                }
+                              },
+                              "rexpr": {
+                                "TypeCast": {
+                                  "arg": {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "15 minute"
+                                        }
+                                      },
+                                      "location": 884
+                                    }
+                                  },
+                                  "typeName": {
+                                    "names": [
+                                      {
+                                        "String": {
+                                          "str": "pg_catalog"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "interval"
+                                        }
+                                      }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 875
+                                  },
+                                  "location": -1
+                                }
+                              },
+                              "location": 873
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "location": 800
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_IN",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "market"
+                            }
+                          }
+                        ],
+                        "location": 902
+                      }
+                    },
+                    "rexpr": {
+                      "List": {
+                        "items": [
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 251
+                                }
+                              },
+                              "location": 914
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 80
+                                }
+                              },
+                              "location": 919
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 190
+                                }
+                              },
+                              "location": 923
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 16
+                                }
+                              },
+                              "location": 928
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 209
+                                }
+                              },
+                              "location": 932
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 236
+                                }
+                              },
+                              "location": 937
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 46
+                                }
+                              },
+                              "location": 942
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 481169
+                                }
+                              },
+                              "location": 946
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 83
+                                }
+                              },
+                              "location": 954
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 204
+                                }
+                              },
+                              "location": 958
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 174
+                                }
+                              },
+                              "location": 963
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 253
+                                }
+                              },
+                              "location": 968
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 119
+                                }
+                              },
+                              "location": 973
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 257
+                                }
+                              },
+                              "location": 978
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 122
+                                }
+                              },
+                              "location": 983
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 40
+                                }
+                              },
+                              "location": 988
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 62
+                                }
+                              },
+                              "location": 992
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 261
+                                }
+                              },
+                              "location": 996
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 92
+                                }
+                              },
+                              "location": 1001
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 127
+                                }
+                              },
+                              "location": 1005
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 38854
+                                }
+                              },
+                              "location": 1010
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 101
+                                }
+                              },
+                              "location": 1017
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 213
+                                }
+                              },
+                              "location": 1022
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 185
+                                }
+                              },
+                              "location": 1027
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 111
+                                }
+                              },
+                              "location": 1032
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 237
+                                }
+                              },
+                              "location": 1037
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 226
+                                }
+                              },
+                              "location": 1042
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 70
+                                }
+                              },
+                              "location": 1047
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 238
+                                }
+                              },
+                              "location": 1051
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 155
+                                }
+                              },
+                              "location": 1056
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 165
+                                }
+                              },
+                              "location": 1061
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 105
+                                }
+                              },
+                              "location": 1066
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 97
+                                }
+                              },
+                              "location": 1071
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 205
+                                }
+                              },
+                              "location": 1075
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 5
+                                }
+                              },
+                              "location": 1080
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 197
+                                }
+                              },
+                              "location": 1083
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 229
+                                }
+                              },
+                              "location": 1088
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 245
+                                }
+                              },
+                              "location": 1093
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 43
+                                }
+                              },
+                              "location": 1098
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 156
+                                }
+                              },
+                              "location": 1103
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 259
+                                }
+                              },
+                              "location": 1108
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 249
+                                }
+                              },
+                              "location": 1113
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 228
+                                }
+                              },
+                              "location": 1118
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 252
+                                }
+                              },
+                              "location": 1123
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 481168
+                                }
+                              },
+                              "location": 1128
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 132
+                                }
+                              },
+                              "location": 1136
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 469426
+                                }
+                              },
+                              "location": 1141
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 254
+                                }
+                              },
+                              "location": 1149
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 201
+                                }
+                              },
+                              "location": 1154
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 176
+                                }
+                              },
+                              "location": 1159
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 67
+                                }
+                              },
+                              "location": 1164
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 178
+                                }
+                              },
+                              "location": 1168
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 14
+                                }
+                              },
+                              "location": 1173
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 255
+                                }
+                              },
+                              "location": 1177
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 38855
+                                }
+                              },
+                              "location": 1182
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 142
+                                }
+                              },
+                              "location": 1189
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 224
+                                }
+                              },
+                              "location": 1194
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 221
+                                }
+                              },
+                              "location": 1199
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 160
+                                }
+                              },
+                              "location": 1204
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 210
+                                }
+                              },
+                              "location": 1209
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 258
+                                }
+                              },
+                              "location": 1214
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 239
+                                }
+                              },
+                              "location": 1219
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 469427
+                                }
+                              },
+                              "location": 1224
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 35
+                                }
+                              },
+                              "location": 1232
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 203
+                                }
+                              },
+                              "location": 1236
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 188
+                                }
+                              },
+                              "location": 1241
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 12
+                                }
+                              },
+                              "location": 1246
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 192
+                                }
+                              },
+                              "location": 1250
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 98
+                                }
+                              },
+                              "location": 1255
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 193
+                                }
+                              },
+                              "location": 1259
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 150
+                                }
+                              },
+                              "location": 1264
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 243
+                                }
+                              },
+                              "location": 1269
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 232
+                                }
+                              },
+                              "location": 1274
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 250
+                                }
+                              },
+                              "location": 1279
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 172
+                                }
+                              },
+                              "location": 1284
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 63
+                                }
+                              },
+                              "location": 1289
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 260
+                                }
+                              },
+                              "location": 1293
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 235
+                                }
+                              },
+                              "location": 1298
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 248
+                                }
+                              },
+                              "location": 1303
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 118
+                                }
+                              },
+                              "location": 1309
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 223
+                                }
+                              },
+                              "location": 1314
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 198
+                                }
+                              },
+                              "location": 1319
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 217
+                                }
+                              },
+                              "location": 1324
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 246
+                                }
+                              },
+                              "location": 1329
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 256
+                                }
+                              },
+                              "location": 1334
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 41
+                                }
+                              },
+                              "location": 1339
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 186
+                                }
+                              },
+                              "location": 1343
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 202
+                                }
+                              },
+                              "location": 1348
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 247
+                                }
+                              },
+                              "location": 1353
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 138
+                                }
+                              },
+                              "location": 1358
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "location": 909
+                  }
+                }
+              ],
+              "location": 898
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "market"
+                        }
+                      }
+                    ],
+                    "location": 1373
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            },
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "timestampw"
+                        }
+                      }
+                    ],
+                    "location": 1381
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 1391
+    }
+  ]
+}

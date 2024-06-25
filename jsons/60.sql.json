@@ -1,0 +1,110 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "array_agg"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "n"
+                              }
+                            }
+                          ],
+                          "location": 71
+                        }
+                      }
+                    ],
+                    "location": 61
+                  }
+                },
+                "location": 61
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeSubselect": {
+                "subquery": {
+                  "SelectStmt": {
+                    "targetList": [
+                      {
+                        "ResTarget": {
+                          "val": {
+                            "FuncCall": {
+                              "funcname": [
+                                {
+                                  "String": {
+                                    "str": "generate_series"
+                                  }
+                                }
+                              ],
+                              "args": [
+                                {
+                                  "A_Const": {
+                                    "val": {
+                                      "Integer": {
+                                        "ival": 1
+                                      }
+                                    },
+                                    "location": 103
+                                  }
+                                },
+                                {
+                                  "A_Const": {
+                                    "val": {
+                                      "Integer": {
+                                        "ival": 90
+                                      }
+                                    },
+                                    "location": 105
+                                  }
+                                }
+                              ],
+                              "location": 87
+                            }
+                          },
+                          "location": 87
+                        }
+                      }
+                    ],
+                    "limitOption": "LIMIT_OPTION_DEFAULT",
+                    "op": "SETOP_NONE"
+                  }
+                },
+                "alias": {
+                  "aliasname": "t",
+                  "colnames": [
+                    {
+                      "String": {
+                        "str": "n"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 113
+    }
+  ]
+}

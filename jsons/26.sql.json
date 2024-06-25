@@ -1,0 +1,2359 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "cinqmn"
+                        }
+                      }
+                    ],
+                    "location": 1160
+                  }
+                },
+                "location": 1160
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "timestampw"
+                        }
+                      }
+                    ],
+                    "location": 1168
+                  }
+                },
+                "location": 1168
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "c"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "lastv"
+                        }
+                      }
+                    ],
+                    "location": 1180
+                  }
+                },
+                "location": 1180
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "c"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "volume"
+                        }
+                      }
+                    ],
+                    "location": 1189
+                  }
+                },
+                "location": 1189
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "c"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "openbuyorders"
+                        }
+                      }
+                    ],
+                    "location": 1200
+                  }
+                },
+                "location": 1200
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "c"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "opensellorders"
+                        }
+                      }
+                    ],
+                    "location": 1217
+                  }
+                },
+                "location": 1217
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "c"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "market"
+                        }
+                      }
+                    ],
+                    "location": 1235
+                  }
+                },
+                "location": 1235
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "rnum",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "row_number"
+                        }
+                      }
+                    ],
+                    "over": {
+                      "partitionClause": [
+                        {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "str": "cinqmn"
+                                }
+                              }
+                            ],
+                            "location": 1277
+                          }
+                        },
+                        {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "str": "c"
+                                }
+                              },
+                              {
+                                "String": {
+                                  "str": "market"
+                                }
+                              }
+                            ],
+                            "location": 1285
+                          }
+                        }
+                      ],
+                      "orderClause": [
+                        {
+                          "SortBy": {
+                            "node": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "c"
+                                    }
+                                  },
+                                  {
+                                    "String": {
+                                      "str": "market"
+                                    }
+                                  }
+                                ],
+                                "location": 1304
+                              }
+                            },
+                            "sortby_dir": "SORTBY_DEFAULT",
+                            "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                            "location": -1
+                          }
+                        },
+                        {
+                          "SortBy": {
+                            "node": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "timestampw"
+                                    }
+                                  }
+                                ],
+                                "location": 1314
+                              }
+                            },
+                            "sortby_dir": "SORTBY_DEFAULT",
+                            "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                            "location": -1
+                          }
+                        }
+                      ],
+                      "frameOptions": 1058,
+                      "location": 1263
+                    },
+                    "location": 1245
+                  }
+                },
+                "location": 1245
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "progression"
+                        }
+                      }
+                    ],
+                    "location": 1338
+                  }
+                },
+                "location": 1338
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "idcourbe"
+                        }
+                      }
+                    ],
+                    "location": 1351
+                  }
+                },
+                "location": 1351
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "hausses",
+                "inh": true,
+                "relpersistence": "p",
+                "alias": {
+                  "aliasname": "h"
+                },
+                "location": 1367
+              }
+            },
+            {
+              "RangeVar": {
+                "relname": "coinsdata",
+                "inh": true,
+                "relpersistence": "p",
+                "alias": {
+                  "aliasname": "c"
+                },
+                "location": 1378
+              }
+            }
+          ],
+          "whereClause": {
+            "BoolExpr": {
+              "boolop": "AND_EXPR",
+              "args": [
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_BETWEEN",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "BETWEEN"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "timestampw"
+                            }
+                          }
+                        ],
+                        "location": 1398
+                      }
+                    },
+                    "rexpr": {
+                      "List": {
+                        "items": [
+                          {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "-"
+                                  }
+                                }
+                              ],
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "cinqmn"
+                                      }
+                                    }
+                                  ],
+                                  "location": 1417
+                                }
+                              },
+                              "rexpr": {
+                                "TypeCast": {
+                                  "arg": {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "10 minute"
+                                        }
+                                      },
+                                      "location": 1436
+                                    }
+                                  },
+                                  "typeName": {
+                                    "names": [
+                                      {
+                                        "String": {
+                                          "str": "pg_catalog"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "interval"
+                                        }
+                                      }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1427
+                                  },
+                                  "location": -1
+                                }
+                              },
+                              "location": 1425
+                            }
+                          },
+                          {
+                            "A_Expr": {
+                              "kind": "AEXPR_OP",
+                              "name": [
+                                {
+                                  "String": {
+                                    "str": "+"
+                                  }
+                                }
+                              ],
+                              "lexpr": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "cinqmn"
+                                      }
+                                    }
+                                  ],
+                                  "location": 1452
+                                }
+                              },
+                              "rexpr": {
+                                "TypeCast": {
+                                  "arg": {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "14 minute"
+                                        }
+                                      },
+                                      "location": 1470
+                                    }
+                                  },
+                                  "typeName": {
+                                    "names": [
+                                      {
+                                        "String": {
+                                          "str": "pg_catalog"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "interval"
+                                        }
+                                      }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1461
+                                  },
+                                  "location": -1
+                                }
+                              },
+                              "location": 1459
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "location": 1409
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "c"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "market"
+                            }
+                          }
+                        ],
+                        "location": 1486
+                      }
+                    },
+                    "rexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "h"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "market"
+                            }
+                          }
+                        ],
+                        "location": 1497
+                      }
+                    },
+                    "location": 1495
+                  }
+                }
+              ],
+              "location": 1482
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "idcourbe"
+                        }
+                      }
+                    ],
+                    "location": 1515
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            },
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "rnum"
+                        }
+                      }
+                    ],
+                    "location": 1525
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "withClause": {
+            "ctes": [
+              {
+                "CommonTableExpr": {
+                  "ctename": "test15",
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "name": "cinqmn",
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "time_bucket"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "String": {
+                                          "str": "15 minute"
+                                        }
+                                      },
+                                      "location": 36
+                                    }
+                                  },
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "timestampw"
+                                          }
+                                        }
+                                      ],
+                                      "location": 48
+                                    }
+                                  }
+                                ],
+                                "location": 24
+                              }
+                            },
+                            "location": 24
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "name": "avgval",
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "avg"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "lastv"
+                                          }
+                                        }
+                                      ],
+                                      "location": 72
+                                    }
+                                  }
+                                ],
+                                "location": 68
+                              }
+                            },
+                            "location": 68
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "market"
+                                    }
+                                  }
+                                ],
+                                "location": 87
+                              }
+                            },
+                            "location": 87
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "RangeVar": {
+                            "relname": "coinsdata",
+                            "inh": true,
+                            "relpersistence": "p",
+                            "location": 99
+                          }
+                        }
+                      ],
+                      "whereClause": {
+                        "BoolExpr": {
+                          "boolop": "AND_EXPR",
+                          "args": [
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_BETWEEN",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "BETWEEN"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "timestampw"
+                                        }
+                                      }
+                                    ],
+                                    "location": 135
+                                  }
+                                },
+                                "rexpr": {
+                                  "List": {
+                                    "items": [
+                                      {
+                                        "A_Expr": {
+                                          "kind": "AEXPR_OP",
+                                          "name": [
+                                            {
+                                              "String": {
+                                                "str": "-"
+                                              }
+                                            }
+                                          ],
+                                          "lexpr": {
+                                            "TypeCast": {
+                                              "arg": {
+                                                "A_Const": {
+                                                  "val": {
+                                                    "String": {
+                                                      "str": "2017-10-1 0:0"
+                                                    }
+                                                  },
+                                                  "location": 155
+                                                }
+                                              },
+                                              "typeName": {
+                                                "names": [
+                                                  {
+                                                    "String": {
+                                                      "str": "pg_catalog"
+                                                    }
+                                                  },
+                                                  {
+                                                    "String": {
+                                                      "str": "timestamp"
+                                                    }
+                                                  }
+                                                ],
+                                                "typemod": -1,
+                                                "location": 172
+                                              },
+                                              "location": 170
+                                            }
+                                          },
+                                          "rexpr": {
+                                            "TypeCast": {
+                                              "arg": {
+                                                "A_Const": {
+                                                  "val": {
+                                                    "String": {
+                                                      "str": "1 hour"
+                                                    }
+                                                  },
+                                                  "location": 194
+                                                }
+                                              },
+                                              "typeName": {
+                                                "names": [
+                                                  {
+                                                    "String": {
+                                                      "str": "pg_catalog"
+                                                    }
+                                                  },
+                                                  {
+                                                    "String": {
+                                                      "str": "interval"
+                                                    }
+                                                  }
+                                                ],
+                                                "typemod": -1,
+                                                "location": 184
+                                              },
+                                              "location": -1
+                                            }
+                                          },
+                                          "location": 182
+                                        }
+                                      },
+                                      {
+                                        "A_Expr": {
+                                          "kind": "AEXPR_OP",
+                                          "name": [
+                                            {
+                                              "String": {
+                                                "str": "+"
+                                              }
+                                            }
+                                          ],
+                                          "lexpr": {
+                                            "TypeCast": {
+                                              "arg": {
+                                                "A_Const": {
+                                                  "val": {
+                                                    "String": {
+                                                      "str": "2017-11-16 5:2"
+                                                    }
+                                                  },
+                                                  "location": 210
+                                                }
+                                              },
+                                              "typeName": {
+                                                "names": [
+                                                  {
+                                                    "String": {
+                                                      "str": "pg_catalog"
+                                                    }
+                                                  },
+                                                  {
+                                                    "String": {
+                                                      "str": "timestamp"
+                                                    }
+                                                  }
+                                                ],
+                                                "typemod": -1,
+                                                "location": 228
+                                              },
+                                              "location": 226
+                                            }
+                                          },
+                                          "rexpr": {
+                                            "TypeCast": {
+                                              "arg": {
+                                                "A_Const": {
+                                                  "val": {
+                                                    "String": {
+                                                      "str": "1 hour"
+                                                    }
+                                                  },
+                                                  "location": 250
+                                                }
+                                              },
+                                              "typeName": {
+                                                "names": [
+                                                  {
+                                                    "String": {
+                                                      "str": "pg_catalog"
+                                                    }
+                                                  },
+                                                  {
+                                                    "String": {
+                                                      "str": "interval"
+                                                    }
+                                                  }
+                                                ],
+                                                "typemod": -1,
+                                                "location": 240
+                                              },
+                                              "location": -1
+                                            }
+                                          },
+                                          "location": 238
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "location": 146
+                              }
+                            },
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_IN",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "="
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "market"
+                                        }
+                                      }
+                                    ],
+                                    "location": 265
+                                  }
+                                },
+                                "rexpr": {
+                                  "List": {
+                                    "items": [
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 251
+                                            }
+                                          },
+                                          "location": 277
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 80
+                                            }
+                                          },
+                                          "location": 282
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 190
+                                            }
+                                          },
+                                          "location": 286
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 16
+                                            }
+                                          },
+                                          "location": 291
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 209
+                                            }
+                                          },
+                                          "location": 295
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 236
+                                            }
+                                          },
+                                          "location": 300
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 46
+                                            }
+                                          },
+                                          "location": 305
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 481169
+                                            }
+                                          },
+                                          "location": 309
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 83
+                                            }
+                                          },
+                                          "location": 317
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 204
+                                            }
+                                          },
+                                          "location": 321
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 174
+                                            }
+                                          },
+                                          "location": 326
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 253
+                                            }
+                                          },
+                                          "location": 331
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 119
+                                            }
+                                          },
+                                          "location": 336
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 257
+                                            }
+                                          },
+                                          "location": 341
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 122
+                                            }
+                                          },
+                                          "location": 346
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 40
+                                            }
+                                          },
+                                          "location": 351
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 62
+                                            }
+                                          },
+                                          "location": 355
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 261
+                                            }
+                                          },
+                                          "location": 359
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 92
+                                            }
+                                          },
+                                          "location": 364
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 127
+                                            }
+                                          },
+                                          "location": 368
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 38854
+                                            }
+                                          },
+                                          "location": 373
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 101
+                                            }
+                                          },
+                                          "location": 380
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 213
+                                            }
+                                          },
+                                          "location": 385
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 185
+                                            }
+                                          },
+                                          "location": 390
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 111
+                                            }
+                                          },
+                                          "location": 395
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 237
+                                            }
+                                          },
+                                          "location": 400
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 226
+                                            }
+                                          },
+                                          "location": 405
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 70
+                                            }
+                                          },
+                                          "location": 410
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 238
+                                            }
+                                          },
+                                          "location": 414
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 155
+                                            }
+                                          },
+                                          "location": 419
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 165
+                                            }
+                                          },
+                                          "location": 424
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 105
+                                            }
+                                          },
+                                          "location": 429
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 97
+                                            }
+                                          },
+                                          "location": 434
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 205
+                                            }
+                                          },
+                                          "location": 438
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 5
+                                            }
+                                          },
+                                          "location": 443
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 197
+                                            }
+                                          },
+                                          "location": 446
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 229
+                                            }
+                                          },
+                                          "location": 451
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 245
+                                            }
+                                          },
+                                          "location": 456
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 43
+                                            }
+                                          },
+                                          "location": 461
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 156
+                                            }
+                                          },
+                                          "location": 466
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 259
+                                            }
+                                          },
+                                          "location": 471
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 249
+                                            }
+                                          },
+                                          "location": 476
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 228
+                                            }
+                                          },
+                                          "location": 481
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 252
+                                            }
+                                          },
+                                          "location": 486
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 481168
+                                            }
+                                          },
+                                          "location": 491
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 132
+                                            }
+                                          },
+                                          "location": 499
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 469426
+                                            }
+                                          },
+                                          "location": 504
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 254
+                                            }
+                                          },
+                                          "location": 512
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 201
+                                            }
+                                          },
+                                          "location": 517
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 176
+                                            }
+                                          },
+                                          "location": 522
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 67
+                                            }
+                                          },
+                                          "location": 527
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 178
+                                            }
+                                          },
+                                          "location": 531
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 14
+                                            }
+                                          },
+                                          "location": 536
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 255
+                                            }
+                                          },
+                                          "location": 540
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 38855
+                                            }
+                                          },
+                                          "location": 545
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 142
+                                            }
+                                          },
+                                          "location": 552
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 224
+                                            }
+                                          },
+                                          "location": 557
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 221
+                                            }
+                                          },
+                                          "location": 562
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 160
+                                            }
+                                          },
+                                          "location": 567
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 210
+                                            }
+                                          },
+                                          "location": 572
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 258
+                                            }
+                                          },
+                                          "location": 577
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 239
+                                            }
+                                          },
+                                          "location": 582
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 469427
+                                            }
+                                          },
+                                          "location": 587
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 35
+                                            }
+                                          },
+                                          "location": 595
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 203
+                                            }
+                                          },
+                                          "location": 599
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 188
+                                            }
+                                          },
+                                          "location": 604
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 12
+                                            }
+                                          },
+                                          "location": 609
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 192
+                                            }
+                                          },
+                                          "location": 613
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 98
+                                            }
+                                          },
+                                          "location": 618
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 193
+                                            }
+                                          },
+                                          "location": 622
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 150
+                                            }
+                                          },
+                                          "location": 627
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 243
+                                            }
+                                          },
+                                          "location": 632
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 232
+                                            }
+                                          },
+                                          "location": 637
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 250
+                                            }
+                                          },
+                                          "location": 642
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 172
+                                            }
+                                          },
+                                          "location": 647
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 63
+                                            }
+                                          },
+                                          "location": 652
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 260
+                                            }
+                                          },
+                                          "location": 656
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 235
+                                            }
+                                          },
+                                          "location": 661
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 248
+                                            }
+                                          },
+                                          "location": 666
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 118
+                                            }
+                                          },
+                                          "location": 672
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 223
+                                            }
+                                          },
+                                          "location": 677
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 198
+                                            }
+                                          },
+                                          "location": 682
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 217
+                                            }
+                                          },
+                                          "location": 687
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 246
+                                            }
+                                          },
+                                          "location": 692
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 256
+                                            }
+                                          },
+                                          "location": 697
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 41
+                                            }
+                                          },
+                                          "location": 702
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 186
+                                            }
+                                          },
+                                          "location": 706
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 202
+                                            }
+                                          },
+                                          "location": 711
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 247
+                                            }
+                                          },
+                                          "location": 716
+                                        }
+                                      },
+                                      {
+                                        "A_Const": {
+                                          "val": {
+                                            "Integer": {
+                                              "ival": 138
+                                            }
+                                          },
+                                          "location": 721
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "location": 272
+                              }
+                            }
+                          ],
+                          "location": 261
+                        }
+                      },
+                      "groupClause": [
+                        {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "str": "cinqmn"
+                                }
+                              }
+                            ],
+                            "location": 737
+                          }
+                        },
+                        {
+                          "ColumnRef": {
+                            "fields": [
+                              {
+                                "String": {
+                                  "str": "market"
+                                }
+                              }
+                            ],
+                            "location": 745
+                          }
+                        }
+                      ],
+                      "sortClause": [
+                        {
+                          "SortBy": {
+                            "node": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "market"
+                                    }
+                                  }
+                                ],
+                                "location": 761
+                              }
+                            },
+                            "sortby_dir": "SORTBY_DEFAULT",
+                            "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                            "location": -1
+                          }
+                        },
+                        {
+                          "SortBy": {
+                            "node": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "cinqmn"
+                                    }
+                                  }
+                                ],
+                                "location": 769
+                              }
+                            },
+                            "sortby_dir": "SORTBY_DEFAULT",
+                            "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                            "location": -1
+                          }
+                        }
+                      ],
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 5
+                }
+              },
+              {
+                "CommonTableExpr": {
+                  "ctename": "progress",
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "market"
+                                    }
+                                  }
+                                ],
+                                "location": 803
+                              }
+                            },
+                            "location": 803
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "cinqmn"
+                                    }
+                                  }
+                                ],
+                                "location": 811
+                              }
+                            },
+                            "location": 811
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "name": "progression",
+                            "val": {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "-"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "*"
+                                        }
+                                      }
+                                    ],
+                                    "lexpr": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "/"
+                                            }
+                                          }
+                                        ],
+                                        "lexpr": {
+                                          "A_Const": {
+                                            "val": {
+                                              "Integer": {
+                                                "ival": 100
+                                              }
+                                            },
+                                            "location": 821
+                                          }
+                                        },
+                                        "rexpr": {
+                                          "FuncCall": {
+                                            "funcname": [
+                                              {
+                                                "String": {
+                                                  "str": "lag"
+                                                }
+                                              }
+                                            ],
+                                            "args": [
+                                              {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "avgval"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 830
+                                                }
+                                              }
+                                            ],
+                                            "over": {
+                                              "orderClause": [
+                                                {
+                                                  "SortBy": {
+                                                    "node": {
+                                                      "ColumnRef": {
+                                                        "fields": [
+                                                          {
+                                                            "String": {
+                                                              "str": "market"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "location": 854
+                                                      }
+                                                    },
+                                                    "sortby_dir": "SORTBY_DEFAULT",
+                                                    "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                                    "location": -1
+                                                  }
+                                                },
+                                                {
+                                                  "SortBy": {
+                                                    "node": {
+                                                      "ColumnRef": {
+                                                        "fields": [
+                                                          {
+                                                            "String": {
+                                                              "str": "cinqmn"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "location": 862
+                                                      }
+                                                    },
+                                                    "sortby_dir": "SORTBY_DEFAULT",
+                                                    "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                                    "location": -1
+                                                  }
+                                                }
+                                              ],
+                                              "frameOptions": 1058,
+                                              "location": 844
+                                            },
+                                            "location": 826
+                                          }
+                                        },
+                                        "location": 824
+                                      }
+                                    },
+                                    "rexpr": {
+                                      "ColumnRef": {
+                                        "fields": [
+                                          {
+                                            "String": {
+                                              "str": "avgval"
+                                            }
+                                          }
+                                        ],
+                                        "location": 873
+                                      }
+                                    },
+                                    "location": 872
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Const": {
+                                    "val": {
+                                      "Integer": {
+                                        "ival": 100
+                                      }
+                                    },
+                                    "location": 882
+                                  }
+                                },
+                                "location": 880
+                              }
+                            },
+                            "location": 820
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "avgval"
+                                    }
+                                  }
+                                ],
+                                "location": 902
+                              }
+                            },
+                            "location": 902
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "name": "lastval",
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "lag"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "avgval"
+                                          }
+                                        }
+                                      ],
+                                      "location": 915
+                                    }
+                                  }
+                                ],
+                                "over": {
+                                  "orderClause": [
+                                    {
+                                      "SortBy": {
+                                        "node": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "market"
+                                                }
+                                              }
+                                            ],
+                                            "location": 939
+                                          }
+                                        },
+                                        "sortby_dir": "SORTBY_DEFAULT",
+                                        "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                        "location": -1
+                                      }
+                                    },
+                                    {
+                                      "SortBy": {
+                                        "node": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "cinqmn"
+                                                }
+                                              }
+                                            ],
+                                            "location": 947
+                                          }
+                                        },
+                                        "sortby_dir": "SORTBY_DEFAULT",
+                                        "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                                        "location": -1
+                                      }
+                                    }
+                                  ],
+                                  "frameOptions": 1058,
+                                  "location": 929
+                                },
+                                "location": 911
+                              }
+                            },
+                            "location": 911
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "RangeVar": {
+                            "relname": "test15",
+                            "inh": true,
+                            "relpersistence": "p",
+                            "location": 968
+                          }
+                        }
+                      ],
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 781
+                }
+              },
+              {
+                "CommonTableExpr": {
+                  "ctename": "hausses",
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "A_Star": {}
+                                  }
+                                ],
+                                "location": 1001
+                              }
+                            },
+                            "location": 1001
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "name": "val",
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "avgval"
+                                    }
+                                  }
+                                ],
+                                "location": 1004
+                              }
+                            },
+                            "location": 1004
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "name": "prevval",
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "lastval"
+                                    }
+                                  }
+                                ],
+                                "location": 1019
+                              }
+                            },
+                            "location": 1019
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "name": "idcourbe",
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "nextval"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "TypeCast": {
+                                      "arg": {
+                                        "A_Const": {
+                                          "val": {
+                                            "String": {
+                                              "str": "seq_haussedetails"
+                                            }
+                                          },
+                                          "location": 1047
+                                        }
+                                      },
+                                      "typeName": {
+                                        "names": [
+                                          {
+                                            "String": {
+                                              "str": "regclass"
+                                            }
+                                          }
+                                        ],
+                                        "typemod": -1,
+                                        "location": 1068
+                                      },
+                                      "location": 1066
+                                    }
+                                  }
+                                ],
+                                "location": 1039
+                              }
+                            },
+                            "location": 1039
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "RangeVar": {
+                            "relname": "progress",
+                            "inh": true,
+                            "relpersistence": "p",
+                            "location": 1095
+                          }
+                        }
+                      ],
+                      "whereClause": {
+                        "BoolExpr": {
+                          "boolop": "AND_EXPR",
+                          "args": [
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "u003e"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "progression"
+                                        }
+                                      }
+                                    ],
+                                    "location": 1110
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Const": {
+                                    "val": {
+                                      "Float": {
+                                        "str": "4.5"
+                                      }
+                                    },
+                                    "location": 1124
+                                  }
+                                },
+                                "location": 1122
+                              }
+                            },
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "u003c"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "progression"
+                                        }
+                                      }
+                                    ],
+                                    "location": 1132
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Const": {
+                                    "val": {
+                                      "Integer": {
+                                        "ival": 66
+                                      }
+                                    },
+                                    "location": 1146
+                                  }
+                                },
+                                "location": 1144
+                              }
+                            }
+                          ],
+                          "location": 1128
+                        }
+                      },
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 979
+                }
+              }
+            ]
+          },
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 1529
+    }
+  ]
+}

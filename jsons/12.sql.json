@@ -1,0 +1,318 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "avg"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "basevolume"
+                              }
+                            }
+                          ],
+                          "location": 11
+                        }
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "market"
+                        }
+                      }
+                    ],
+                    "location": 24
+                  }
+                },
+                "location": 24
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "coinsdata",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 36
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_BETWEEN",
+              "name": [
+                {
+                  "String": {
+                    "str": "BETWEEN"
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "timestampw"
+                      }
+                    }
+                  ],
+                  "location": 53
+                }
+              },
+              "rexpr": {
+                "List": {
+                  "items": [
+                    {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "-"
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "2017-11-2 5:12"
+                                  }
+                                },
+                                "location": 73
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "timestamp"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 91
+                            },
+                            "location": 89
+                          }
+                        },
+                        "rexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "1 hour"
+                                  }
+                                },
+                                "location": 113
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "interval"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 103
+                            },
+                            "location": -1
+                          }
+                        },
+                        "location": 101
+                      }
+                    },
+                    {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "+"
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "2017-11-16 5:2"
+                                  }
+                                },
+                                "location": 129
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "timestamp"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 147
+                            },
+                            "location": 145
+                          }
+                        },
+                        "rexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "A_Const": {
+                                "val": {
+                                  "String": {
+                                    "str": "1 hour"
+                                  }
+                                },
+                                "location": 169
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "interval"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 159
+                            },
+                            "location": -1
+                          }
+                        },
+                        "location": 157
+                      }
+                    }
+                  ]
+                }
+              },
+              "location": 64
+            }
+          },
+          "groupClause": [
+            {
+              "ColumnRef": {
+                "fields": [
+                  {
+                    "String": {
+                      "str": "market"
+                    }
+                  }
+                ],
+                "location": 189
+              }
+            }
+          ],
+          "havingClause": {
+            "A_Expr": {
+              "kind": "AEXPR_OP",
+              "name": [
+                {
+                  "String": {
+                    "str": "u003e"
+                  }
+                }
+              ],
+              "lexpr": {
+                "FuncCall": {
+                  "funcname": [
+                    {
+                      "String": {
+                        "str": "avg"
+                      }
+                    }
+                  ],
+                  "args": [
+                    {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "basevolume"
+                            }
+                          }
+                        ],
+                        "location": 207
+                      }
+                    }
+                  ],
+                  "location": 203
+                }
+              },
+              "rexpr": {
+                "A_Const": {
+                  "val": {
+                    "Integer": {
+                      "ival": 200
+                    }
+                  },
+                  "location": 221
+                }
+              },
+              "location": 219
+            }
+          },
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 224
+    }
+  ]
+}

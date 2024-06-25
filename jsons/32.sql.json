@@ -1,0 +1,61 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 57
+                  }
+                },
+                "location": 57
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "haussedetails",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 64
+              }
+            }
+          ],
+          "limitOffset": {
+            "A_Const": {
+              "val": {
+                "Integer": {
+                  "ival": 20000
+                }
+              },
+              "location": 96
+            }
+          },
+          "limitCount": {
+            "A_Const": {
+              "val": {
+                "Integer": {
+                  "ival": 1000
+                }
+              },
+              "location": 84
+            }
+          },
+          "limitOption": "LIMIT_OPTION_COUNT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 101
+    }
+  ]
+}

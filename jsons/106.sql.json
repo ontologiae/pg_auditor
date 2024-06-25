@@ -1,0 +1,335 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 147
+                  }
+                },
+                "location": 147
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "JoinExpr": {
+                "jointype": "JOIN_INNER",
+                "larg": {
+                  "RangeVar": {
+                    "relname": "t",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "location": 154
+                  }
+                },
+                "rarg": {
+                  "RangeFunction": {
+                    "lateral": true,
+                    "functions": [
+                      {
+                        "List": {
+                          "items": [
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "getcurvefromtimenewwithlimitforscan"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "TypeCast": {
+                                      "arg": {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "t"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "i"
+                                              }
+                                            }
+                                          ],
+                                          "location": 211
+                                        }
+                                      },
+                                      "typeName": {
+                                        "names": [
+                                          {
+                                            "String": {
+                                              "str": "pg_catalog"
+                                            }
+                                          },
+                                          {
+                                            "String": {
+                                              "str": "timestamp"
+                                            }
+                                          }
+                                        ],
+                                        "typemod": -1,
+                                        "location": 216
+                                      },
+                                      "location": 214
+                                    }
+                                  },
+                                  {
+                                    "A_Const": {
+                                      "val": {
+                                        "Integer": {
+                                          "ival": 2000000
+                                        }
+                                      },
+                                      "location": 226
+                                    }
+                                  }
+                                ],
+                                "location": 175
+                              }
+                            },
+                            {}
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "withClause": {
+            "ctes": [
+              {
+                "CommonTableExpr": {
+                  "ctename": "t",
+                  "aliascolnames": [
+                    {
+                      "String": {
+                        "str": "i"
+                      }
+                    }
+                  ],
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "name": "i",
+                            "val": {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "+"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "TypeCast": {
+                                    "arg": {
+                                      "A_Const": {
+                                        "val": {
+                                          "String": {
+                                            "str": "2018-01-22 14:0"
+                                          }
+                                        },
+                                        "location": 22
+                                      }
+                                    },
+                                    "typeName": {
+                                      "names": [
+                                        {
+                                          "String": {
+                                            "str": "timestamptz"
+                                          }
+                                        }
+                                      ],
+                                      "typemod": -1,
+                                      "location": 41
+                                    },
+                                    "location": 39
+                                  }
+                                },
+                                "rexpr": {
+                                  "TypeCast": {
+                                    "arg": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "||"
+                                            }
+                                          }
+                                        ],
+                                        "lexpr": {
+                                          "A_Expr": {
+                                            "kind": "AEXPR_OP",
+                                            "name": [
+                                              {
+                                                "String": {
+                                                  "str": "*"
+                                                }
+                                              }
+                                            ],
+                                            "lexpr": {
+                                              "A_Const": {
+                                                "val": {
+                                                  "Integer": {
+                                                    "ival": 20
+                                                  }
+                                                },
+                                                "location": 57
+                                              }
+                                            },
+                                            "rexpr": {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
+                                                      "str": "n"
+                                                    }
+                                                  }
+                                                ],
+                                                "location": 61
+                                              }
+                                            },
+                                            "location": 60
+                                          }
+                                        },
+                                        "rexpr": {
+                                          "A_Const": {
+                                            "val": {
+                                              "String": {
+                                                "str": " second"
+                                              }
+                                            },
+                                            "location": 66
+                                          }
+                                        },
+                                        "location": 63
+                                      }
+                                    },
+                                    "typeName": {
+                                      "names": [
+                                        {
+                                          "String": {
+                                            "str": "pg_catalog"
+                                          }
+                                        },
+                                        {
+                                          "String": {
+                                            "str": "interval"
+                                          }
+                                        }
+                                      ],
+                                      "typemod": -1,
+                                      "location": 78
+                                    },
+                                    "location": 76
+                                  }
+                                },
+                                "location": 53
+                              }
+                            },
+                            "location": 22
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "RangeSubselect": {
+                            "subquery": {
+                              "SelectStmt": {
+                                "targetList": [
+                                  {
+                                    "ResTarget": {
+                                      "val": {
+                                        "FuncCall": {
+                                          "funcname": [
+                                            {
+                                              "String": {
+                                                "str": "generate_series"
+                                              }
+                                            }
+                                          ],
+                                          "args": [
+                                            {
+                                              "A_Const": {
+                                                "val": {
+                                                  "Integer": {
+                                                    "ival": 1
+                                                  }
+                                                },
+                                                "location": 122
+                                              }
+                                            },
+                                            {
+                                              "A_Const": {
+                                                "val": {
+                                                  "Integer": {
+                                                    "ival": 410000
+                                                  }
+                                                },
+                                                "location": 124
+                                              }
+                                            }
+                                          ],
+                                          "location": 106
+                                        }
+                                      },
+                                      "location": 106
+                                    }
+                                  }
+                                ],
+                                "limitOption": "LIMIT_OPTION_DEFAULT",
+                                "op": "SETOP_NONE"
+                              }
+                            },
+                            "alias": {
+                              "aliasname": "y",
+                              "colnames": [
+                                {
+                                  "String": {
+                                    "str": "n"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "limitOption": "LIMIT_OPTION_DEFAULT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 5
+                }
+              }
+            ]
+          },
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 234
+    }
+  ]
+}

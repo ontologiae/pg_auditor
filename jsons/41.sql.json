@@ -1,0 +1,582 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "haussedetails",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 14
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_IN",
+              "name": [
+                {
+                  "String": {
+                    "str": "u003cu003e"
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "idCourbe"
+                      }
+                    }
+                  ],
+                  "location": 34
+                }
+              },
+              "rexpr": {
+                "List": {
+                  "items": [
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 23
+                          }
+                        },
+                        "location": 53
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 24
+                          }
+                        },
+                        "location": 57
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 26
+                          }
+                        },
+                        "location": 61
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 29
+                          }
+                        },
+                        "location": 65
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 33
+                          }
+                        },
+                        "location": 69
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 52
+                          }
+                        },
+                        "location": 73
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 53
+                          }
+                        },
+                        "location": 77
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 54
+                          }
+                        },
+                        "location": 81
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 58
+                          }
+                        },
+                        "location": 85
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 59
+                          }
+                        },
+                        "location": 89
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 71
+                          }
+                        },
+                        "location": 93
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 74
+                          }
+                        },
+                        "location": 97
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 76
+                          }
+                        },
+                        "location": 101
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 81
+                          }
+                        },
+                        "location": 105
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 85
+                          }
+                        },
+                        "location": 109
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 95
+                          }
+                        },
+                        "location": 113
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 96
+                          }
+                        },
+                        "location": 117
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 102
+                          }
+                        },
+                        "location": 121
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 111
+                          }
+                        },
+                        "location": 126
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 116
+                          }
+                        },
+                        "location": 131
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 124
+                          }
+                        },
+                        "location": 136
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 128
+                          }
+                        },
+                        "location": 141
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 129
+                          }
+                        },
+                        "location": 146
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 130
+                          }
+                        },
+                        "location": 151
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 133
+                          }
+                        },
+                        "location": 156
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 137
+                          }
+                        },
+                        "location": 161
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 139
+                          }
+                        },
+                        "location": 166
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 142
+                          }
+                        },
+                        "location": 171
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 144
+                          }
+                        },
+                        "location": 176
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 145
+                          }
+                        },
+                        "location": 181
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 147
+                          }
+                        },
+                        "location": 186
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 153
+                          }
+                        },
+                        "location": 191
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 156
+                          }
+                        },
+                        "location": 196
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 157
+                          }
+                        },
+                        "location": 201
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 161
+                          }
+                        },
+                        "location": 206
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 163
+                          }
+                        },
+                        "location": 211
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 167
+                          }
+                        },
+                        "location": 216
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 173
+                          }
+                        },
+                        "location": 221
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 175
+                          }
+                        },
+                        "location": 226
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 178
+                          }
+                        },
+                        "location": 231
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 184
+                          }
+                        },
+                        "location": 236
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 192
+                          }
+                        },
+                        "location": 241
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 195
+                          }
+                        },
+                        "location": 246
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 202
+                          }
+                        },
+                        "location": 251
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 203
+                          }
+                        },
+                        "location": 256
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 204
+                          }
+                        },
+                        "location": 261
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 211
+                          }
+                        },
+                        "location": 266
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 222
+                          }
+                        },
+                        "location": 271
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 223
+                          }
+                        },
+                        "location": 276
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 225
+                          }
+                        },
+                        "location": 281
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 226
+                          }
+                        },
+                        "location": 286
+                      }
+                    }
+                  ]
+                }
+              },
+              "location": 45
+            }
+          },
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 290
+    }
+  ]
+}

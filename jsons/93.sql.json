@@ -1,0 +1,196 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "name"
+                        }
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "setting"
+                        }
+                      }
+                    ],
+                    "location": 13
+                  }
+                },
+                "location": 13
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "setting_in_mb",
+                "val": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "||"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "A_Expr": {
+                        "kind": "AEXPR_OP",
+                        "name": [
+                          {
+                            "String": {
+                              "str": "*"
+                            }
+                          }
+                        ],
+                        "lexpr": {
+                          "TypeCast": {
+                            "arg": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "setting"
+                                    }
+                                  }
+                                ],
+                                "location": 22
+                              }
+                            },
+                            "typeName": {
+                              "names": [
+                                {
+                                  "String": {
+                                    "str": "pg_catalog"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "int4"
+                                  }
+                                }
+                              ],
+                              "typemod": -1,
+                              "location": 31
+                            },
+                            "location": 29
+                          }
+                        },
+                        "rexpr": {
+                          "A_Const": {
+                            "val": {
+                              "Integer": {
+                                "ival": 16
+                              }
+                            },
+                            "location": 37
+                          }
+                        },
+                        "location": 35
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": "MB"
+                          }
+                        },
+                        "location": 43
+                      }
+                    },
+                    "location": 40
+                  }
+                },
+                "location": 22
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "pg_settings",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 70
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_IN",
+              "name": [
+                {
+                  "String": {
+                    "str": "="
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "name"
+                      }
+                    }
+                  ],
+                  "location": 89
+                }
+              },
+              "rexpr": {
+                "List": {
+                  "items": [
+                    {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": "min_wal_size"
+                          }
+                        },
+                        "location": 98
+                      }
+                    },
+                    {
+                      "A_Const": {
+                        "val": {
+                          "String": {
+                            "str": "max_wal_size"
+                          }
+                        },
+                        "location": 114
+                      }
+                    }
+                  ]
+                }
+              },
+              "location": 94
+            }
+          },
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 129
+    }
+  ]
+}

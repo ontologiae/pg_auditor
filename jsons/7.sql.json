@@ -1,0 +1,76 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "A_Star": {}
+                      }
+                    ],
+                    "location": 7
+                  }
+                },
+                "location": 7
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "RangeVar": {
+                "relname": "marketname",
+                "inh": true,
+                "relpersistence": "p",
+                "location": 14
+              }
+            }
+          ],
+          "whereClause": {
+            "A_Expr": {
+              "kind": "AEXPR_LIKE",
+              "name": [
+                {
+                  "String": {
+                    "str": "~~"
+                  }
+                }
+              ],
+              "lexpr": {
+                "ColumnRef": {
+                  "fields": [
+                    {
+                      "String": {
+                        "str": "monnaie"
+                      }
+                    }
+                  ],
+                  "location": 31
+                }
+              },
+              "rexpr": {
+                "A_Const": {
+                  "val": {
+                    "String": {
+                      "str": "NEO"
+                    }
+                  },
+                  "location": 44
+                }
+              },
+              "location": 39
+            }
+          },
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 49
+    }
+  ]
+}

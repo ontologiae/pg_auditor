@@ -1,0 +1,1599 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "lc1"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "code_commune"
+                        }
+                      }
+                    ],
+                    "location": 9
+                  }
+                },
+                "location": 9
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "monsieur",
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "lc1"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "nom_naissance"
+                        }
+                      }
+                    ],
+                    "location": 27
+                  }
+                },
+                "location": 27
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "monsieur_u",
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "lc1"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "nom_usage"
+                        }
+                      }
+                    ],
+                    "location": 58
+                  }
+                },
+                "location": 58
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "madame",
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "lc2"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "nom_naissance"
+                        }
+                      }
+                    ],
+                    "location": 88
+                  }
+                },
+                "location": 88
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "madame_u",
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "lc2"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "nom_usage"
+                        }
+                      }
+                    ],
+                    "location": 117
+                  }
+                },
+                "location": 117
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "date_naissance_monsieur",
+                "val": {
+                  "TypeCast": {
+                    "arg": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "lc1"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "date_naissance"
+                            }
+                          }
+                        ],
+                        "location": 144
+                      }
+                    },
+                    "typeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "date"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 164
+                    },
+                    "location": 162
+                  }
+                },
+                "location": 144
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "date_naissance_madame",
+                "val": {
+                  "TypeCast": {
+                    "arg": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "lc2"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "date_naissance"
+                            }
+                          }
+                        ],
+                        "location": 197
+                      }
+                    },
+                    "typeName": {
+                      "names": [
+                        {
+                          "String": {
+                            "str": "date"
+                          }
+                        }
+                      ],
+                      "typemod": -1,
+                      "location": 217
+                    },
+                    "location": 215
+                  }
+                },
+                "location": 197
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "meme_nom",
+                "val": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "FuncCall": {
+                        "funcname": [
+                          {
+                            "String": {
+                              "str": "lower"
+                            }
+                          }
+                        ],
+                        "args": [
+                          {
+                            "FuncCall": {
+                              "funcname": [
+                                {
+                                  "String": {
+                                    "str": "unaccent"
+                                  }
+                                }
+                              ],
+                              "args": [
+                                {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "lc2"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "nom_usage"
+                                        }
+                                      }
+                                    ],
+                                    "location": 264
+                                  }
+                                }
+                              ],
+                              "location": 255
+                            }
+                          }
+                        ],
+                        "location": 249
+                      }
+                    },
+                    "rexpr": {
+                      "FuncCall": {
+                        "funcname": [
+                          {
+                            "String": {
+                              "str": "lower"
+                            }
+                          }
+                        ],
+                        "args": [
+                          {
+                            "FuncCall": {
+                              "funcname": [
+                                {
+                                  "String": {
+                                    "str": "unaccent"
+                                  }
+                                }
+                              ],
+                              "args": [
+                                {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "lc1"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "nom_naissance"
+                                        }
+                                      }
+                                    ],
+                                    "location": 298
+                                  }
+                                }
+                              ],
+                              "location": 289
+                            }
+                          }
+                        ],
+                        "location": 283
+                      }
+                    },
+                    "location": 281
+                  }
+                },
+                "location": 249
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "nb_ds_le_foyer",
+                "val": {
+                  "SubLink": {
+                    "subLinkType": "EXPR_SUBLINK",
+                    "subselect": {
+                      "SelectStmt": {
+                        "targetList": [
+                          {
+                            "ResTarget": {
+                              "val": {
+                                "FuncCall": {
+                                  "funcname": [
+                                    {
+                                      "String": {
+                                        "str": "count"
+                                      }
+                                    }
+                                  ],
+                                  "agg_star": true,
+                                  "location": 340
+                                }
+                              },
+                              "location": 340
+                            }
+                          }
+                        ],
+                        "fromClause": [
+                          {
+                            "RangeVar": {
+                              "relname": "listeelect44_propre",
+                              "inh": true,
+                              "relpersistence": "p",
+                              "alias": {
+                                "aliasname": "lp"
+                              },
+                              "location": 354
+                            }
+                          }
+                        ],
+                        "whereClause": {
+                          "BoolExpr": {
+                            "boolop": "AND_EXPR",
+                            "args": [
+                              {
+                                "A_Expr": {
+                                  "kind": "AEXPR_OP",
+                                  "name": [
+                                    {
+                                      "String": {
+                                        "str": "="
+                                      }
+                                    }
+                                  ],
+                                  "lexpr": {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "nom_naissance"
+                                          }
+                                        }
+                                      ],
+                                      "location": 383
+                                    }
+                                  },
+                                  "rexpr": {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "lc1"
+                                          }
+                                        },
+                                        {
+                                          "String": {
+                                            "str": "nom_naissance"
+                                          }
+                                        }
+                                      ],
+                                      "location": 399
+                                    }
+                                  },
+                                  "location": 397
+                                }
+                              },
+                              {
+                                "A_Expr": {
+                                  "kind": "AEXPR_OP",
+                                  "name": [
+                                    {
+                                      "String": {
+                                        "str": "="
+                                      }
+                                    }
+                                  ],
+                                  "lexpr": {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "code_commune"
+                                          }
+                                        }
+                                      ],
+                                      "location": 421
+                                    }
+                                  },
+                                  "rexpr": {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "lc1"
+                                          }
+                                        },
+                                        {
+                                          "String": {
+                                            "str": "code_commune"
+                                          }
+                                        }
+                                      ],
+                                      "location": 436
+                                    }
+                                  },
+                                  "location": 434
+                                }
+                              },
+                              {
+                                "A_Expr": {
+                                  "kind": "AEXPR_OP",
+                                  "name": [
+                                    {
+                                      "String": {
+                                        "str": "="
+                                      }
+                                    }
+                                  ],
+                                  "lexpr": {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "adresse_numero_ok"
+                                          }
+                                        }
+                                      ],
+                                      "location": 464
+                                    }
+                                  },
+                                  "rexpr": {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "lc1"
+                                          }
+                                        },
+                                        {
+                                          "String": {
+                                            "str": "adresse_numero_ok"
+                                          }
+                                        }
+                                      ],
+                                      "location": 484
+                                    }
+                                  },
+                                  "location": 482
+                                }
+                              },
+                              {
+                                "BoolExpr": {
+                                  "boolop": "OR_EXPR",
+                                  "args": [
+                                    {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "="
+                                            }
+                                          }
+                                        ],
+                                        "lexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "rep"
+                                                }
+                                              }
+                                            ],
+                                            "location": 511
+                                          }
+                                        },
+                                        "rexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "lc1"
+                                                }
+                                              },
+                                              {
+                                                "String": {
+                                                  "str": "rep"
+                                                }
+                                              }
+                                            ],
+                                            "location": 517
+                                          }
+                                        },
+                                        "location": 515
+                                      }
+                                    },
+                                    {
+                                      "BoolExpr": {
+                                        "boolop": "AND_EXPR",
+                                        "args": [
+                                          {
+                                            "NullTest": {
+                                              "arg": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "rep"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 529
+                                                }
+                                              },
+                                              "nulltesttype": "IS_NULL",
+                                              "location": 533
+                                            }
+                                          },
+                                          {
+                                            "NullTest": {
+                                              "arg": {
+                                                "ColumnRef": {
+                                                  "fields": [
+                                                    {
+                                                      "String": {
+                                                        "str": "lc1"
+                                                      }
+                                                    },
+                                                    {
+                                                      "String": {
+                                                        "str": "rep"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "location": 546
+                                                }
+                                              },
+                                              "nulltesttype": "IS_NULL",
+                                              "location": 554
+                                            }
+                                          }
+                                        ],
+                                        "location": 542
+                                      }
+                                    }
+                                  ],
+                                  "location": 525
+                                }
+                              }
+                            ],
+                            "location": 417
+                          }
+                        },
+                        "limitOption": "LIMIT_OPTION_DEFAULT",
+                        "op": "SETOP_NONE"
+                      }
+                    },
+                    "location": 332
+                  }
+                },
+                "location": 332
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "JoinExpr": {
+                "jointype": "JOIN_INNER",
+                "larg": {
+                  "RangeVar": {
+                    "relname": "listeelect44_propre",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "alias": {
+                      "aliasname": "lc1"
+                    },
+                    "location": 610
+                  }
+                },
+                "rarg": {
+                  "RangeVar": {
+                    "relname": "listeelect44_propre",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "alias": {
+                      "aliasname": "lc2"
+                    },
+                    "location": 645
+                  }
+                },
+                "quals": {
+                  "BoolExpr": {
+                    "boolop": "AND_EXPR",
+                    "args": [
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "="
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "lc1"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "code_commune"
+                                  }
+                                }
+                              ],
+                              "location": 676
+                            }
+                          },
+                          "rexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "lc2"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "code_commune"
+                                  }
+                                }
+                              ],
+                              "location": 695
+                            }
+                          },
+                          "location": 693
+                        }
+                      },
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "="
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "lc1"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "adresse_numero_ok"
+                                  }
+                                }
+                              ],
+                              "location": 716
+                            }
+                          },
+                          "rexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "lc2"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "adresse_numero_ok"
+                                  }
+                                }
+                              ],
+                              "location": 740
+                            }
+                          },
+                          "location": 738
+                        }
+                      },
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "="
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "lc1"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "adresse_libelle"
+                                  }
+                                }
+                              ],
+                              "location": 771
+                            }
+                          },
+                          "rexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "lc2"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "adresse_libelle"
+                                  }
+                                }
+                              ],
+                              "location": 793
+                            }
+                          },
+                          "location": 791
+                        }
+                      },
+                      {
+                        "BoolExpr": {
+                          "boolop": "OR_EXPR",
+                          "args": [
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "="
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "lc1"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "rep"
+                                        }
+                                      }
+                                    ],
+                                    "location": 822
+                                  }
+                                },
+                                "rexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "lc2"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "rep"
+                                        }
+                                      }
+                                    ],
+                                    "location": 832
+                                  }
+                                },
+                                "location": 830
+                              }
+                            },
+                            {
+                              "BoolExpr": {
+                                "boolop": "AND_EXPR",
+                                "args": [
+                                  {
+                                    "NullTest": {
+                                      "arg": {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "lc1"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "rep"
+                                              }
+                                            }
+                                          ],
+                                          "location": 844
+                                        }
+                                      },
+                                      "nulltesttype": "IS_NULL",
+                                      "location": 852
+                                    }
+                                  },
+                                  {
+                                    "NullTest": {
+                                      "arg": {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "lc2"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "rep"
+                                              }
+                                            }
+                                          ],
+                                          "location": 865
+                                        }
+                                      },
+                                      "nulltesttype": "IS_NULL",
+                                      "location": 873
+                                    }
+                                  }
+                                ],
+                                "location": 861
+                              }
+                            }
+                          ],
+                          "location": 840
+                        }
+                      },
+                      {
+                        "BoolExpr": {
+                          "boolop": "OR_EXPR",
+                          "args": [
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_OP",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "="
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "lc1"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "adresse_complement1"
+                                        }
+                                      }
+                                    ],
+                                    "location": 892
+                                  }
+                                },
+                                "rexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "lc2"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "adresse_complement1"
+                                        }
+                                      }
+                                    ],
+                                    "location": 919
+                                  }
+                                },
+                                "location": 917
+                              }
+                            },
+                            {
+                              "BoolExpr": {
+                                "boolop": "AND_EXPR",
+                                "args": [
+                                  {
+                                    "NullTest": {
+                                      "arg": {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "lc1"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "adresse_complement1"
+                                              }
+                                            }
+                                          ],
+                                          "location": 948
+                                        }
+                                      },
+                                      "nulltesttype": "IS_NULL",
+                                      "location": 972
+                                    }
+                                  },
+                                  {
+                                    "NullTest": {
+                                      "arg": {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "lc2"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "adresse_complement1"
+                                              }
+                                            }
+                                          ],
+                                          "location": 985
+                                        }
+                                      },
+                                      "nulltesttype": "IS_NULL",
+                                      "location": 1009
+                                    }
+                                  }
+                                ],
+                                "location": 981
+                              }
+                            }
+                          ],
+                          "location": 944
+                        }
+                      },
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "u003c"
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "FuncCall": {
+                              "funcname": [
+                                {
+                                  "String": {
+                                    "str": "similarity"
+                                  }
+                                }
+                              ],
+                              "args": [
+                                {
+                                  "FuncCall": {
+                                    "funcname": [
+                                      {
+                                        "String": {
+                                          "str": "lower"
+                                        }
+                                      }
+                                    ],
+                                    "args": [
+                                      {
+                                        "FuncCall": {
+                                          "funcname": [
+                                            {
+                                              "String": {
+                                                "str": "unaccent"
+                                              }
+                                            }
+                                          ],
+                                          "args": [
+                                            {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
+                                                      "str": "lc2"
+                                                    }
+                                                  },
+                                                  {
+                                                    "String": {
+                                                      "str": "nom_naissance"
+                                                    }
+                                                  }
+                                                ],
+                                                "location": 1053
+                                              }
+                                            }
+                                          ],
+                                          "location": 1044
+                                        }
+                                      }
+                                    ],
+                                    "location": 1038
+                                  }
+                                },
+                                {
+                                  "FuncCall": {
+                                    "funcname": [
+                                      {
+                                        "String": {
+                                          "str": "lower"
+                                        }
+                                      }
+                                    ],
+                                    "args": [
+                                      {
+                                        "FuncCall": {
+                                          "funcname": [
+                                            {
+                                              "String": {
+                                                "str": "unaccent"
+                                              }
+                                            }
+                                          ],
+                                          "args": [
+                                            {
+                                              "ColumnRef": {
+                                                "fields": [
+                                                  {
+                                                    "String": {
+                                                      "str": "lc1"
+                                                    }
+                                                  },
+                                                  {
+                                                    "String": {
+                                                      "str": "nom_naissance"
+                                                    }
+                                                  }
+                                                ],
+                                                "location": 1089
+                                              }
+                                            }
+                                          ],
+                                          "location": 1080
+                                        }
+                                      }
+                                    ],
+                                    "location": 1074
+                                  }
+                                }
+                              ],
+                              "location": 1027
+                            }
+                          },
+                          "rexpr": {
+                            "A_Const": {
+                              "val": {
+                                "Float": {
+                                  "str": "0.6"
+                                }
+                              },
+                              "location": 1112
+                            }
+                          },
+                          "location": 1110
+                        }
+                      },
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "u003cu003e"
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "TypeCast": {
+                              "arg": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "lc1"
+                                      }
+                                    },
+                                    {
+                                      "String": {
+                                        "str": "date_naissance"
+                                      }
+                                    }
+                                  ],
+                                  "location": 1157
+                                }
+                              },
+                              "typeName": {
+                                "names": [
+                                  {
+                                    "String": {
+                                      "str": "date"
+                                    }
+                                  }
+                                ],
+                                "typemod": -1,
+                                "location": 1177
+                              },
+                              "location": 1175
+                            }
+                          },
+                          "rexpr": {
+                            "TypeCast": {
+                              "arg": {
+                                "ColumnRef": {
+                                  "fields": [
+                                    {
+                                      "String": {
+                                        "str": "lc2"
+                                      }
+                                    },
+                                    {
+                                      "String": {
+                                        "str": "date_naissance"
+                                      }
+                                    }
+                                  ],
+                                  "location": 1185
+                                }
+                              },
+                              "typeName": {
+                                "names": [
+                                  {
+                                    "String": {
+                                      "str": "date"
+                                    }
+                                  }
+                                ],
+                                "typemod": -1,
+                                "location": 1205
+                              },
+                              "location": 1203
+                            }
+                          },
+                          "location": 1182
+                        }
+                      },
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "="
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "FuncCall": {
+                              "funcname": [
+                                {
+                                  "String": {
+                                    "str": "lower"
+                                  }
+                                }
+                              ],
+                              "args": [
+                                {
+                                  "FuncCall": {
+                                    "funcname": [
+                                      {
+                                        "String": {
+                                          "str": "unaccent"
+                                        }
+                                      }
+                                    ],
+                                    "args": [
+                                      {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "lc2"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "nom_usage"
+                                              }
+                                            }
+                                          ],
+                                          "location": 1233
+                                        }
+                                      }
+                                    ],
+                                    "location": 1224
+                                  }
+                                }
+                              ],
+                              "location": 1218
+                            }
+                          },
+                          "rexpr": {
+                            "FuncCall": {
+                              "funcname": [
+                                {
+                                  "String": {
+                                    "str": "lower"
+                                  }
+                                }
+                              ],
+                              "args": [
+                                {
+                                  "FuncCall": {
+                                    "funcname": [
+                                      {
+                                        "String": {
+                                          "str": "unaccent"
+                                        }
+                                      }
+                                    ],
+                                    "args": [
+                                      {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "lc1"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "nom_naissance"
+                                              }
+                                            }
+                                          ],
+                                          "location": 1267
+                                        }
+                                      }
+                                    ],
+                                    "location": 1258
+                                  }
+                                }
+                              ],
+                              "location": 1252
+                            }
+                          },
+                          "location": 1250
+                        }
+                      },
+                      {
+                        "BoolExpr": {
+                          "boolop": "AND_EXPR",
+                          "args": [
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_ILIKE",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "!~~*"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "lc1"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "nom_naissance"
+                                        }
+                                      }
+                                    ],
+                                    "location": 1308
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "||"
+                                        }
+                                      }
+                                    ],
+                                    "lexpr": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "||"
+                                            }
+                                          }
+                                        ],
+                                        "lexpr": {
+                                          "A_Const": {
+                                            "val": {
+                                              "String": {
+                                                "str": "%"
+                                              }
+                                            },
+                                            "location": 1336
+                                          }
+                                        },
+                                        "rexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "lc2"
+                                                }
+                                              },
+                                              {
+                                                "String": {
+                                                  "str": "nom_naissance"
+                                                }
+                                              }
+                                            ],
+                                            "location": 1341
+                                          }
+                                        },
+                                        "location": 1339
+                                      }
+                                    },
+                                    "rexpr": {
+                                      "A_Const": {
+                                        "val": {
+                                          "String": {
+                                            "str": "%"
+                                          }
+                                        },
+                                        "location": 1360
+                                      }
+                                    },
+                                    "location": 1358
+                                  }
+                                },
+                                "location": 1326
+                              }
+                            },
+                            {
+                              "A_Expr": {
+                                "kind": "AEXPR_ILIKE",
+                                "name": [
+                                  {
+                                    "String": {
+                                      "str": "!~~*"
+                                    }
+                                  }
+                                ],
+                                "lexpr": {
+                                  "ColumnRef": {
+                                    "fields": [
+                                      {
+                                        "String": {
+                                          "str": "lc2"
+                                        }
+                                      },
+                                      {
+                                        "String": {
+                                          "str": "nom_naissance"
+                                        }
+                                      }
+                                    ],
+                                    "location": 1368
+                                  }
+                                },
+                                "rexpr": {
+                                  "A_Expr": {
+                                    "kind": "AEXPR_OP",
+                                    "name": [
+                                      {
+                                        "String": {
+                                          "str": "||"
+                                        }
+                                      }
+                                    ],
+                                    "lexpr": {
+                                      "A_Expr": {
+                                        "kind": "AEXPR_OP",
+                                        "name": [
+                                          {
+                                            "String": {
+                                              "str": "||"
+                                            }
+                                          }
+                                        ],
+                                        "lexpr": {
+                                          "A_Const": {
+                                            "val": {
+                                              "String": {
+                                                "str": "%"
+                                              }
+                                            },
+                                            "location": 1396
+                                          }
+                                        },
+                                        "rexpr": {
+                                          "ColumnRef": {
+                                            "fields": [
+                                              {
+                                                "String": {
+                                                  "str": "lc1"
+                                                }
+                                              },
+                                              {
+                                                "String": {
+                                                  "str": "nom_naissance"
+                                                }
+                                              }
+                                            ],
+                                            "location": 1401
+                                          }
+                                        },
+                                        "location": 1399
+                                      }
+                                    },
+                                    "rexpr": {
+                                      "A_Const": {
+                                        "val": {
+                                          "String": {
+                                            "str": "%"
+                                          }
+                                        },
+                                        "location": 1420
+                                      }
+                                    },
+                                    "location": 1418
+                                  }
+                                },
+                                "location": 1386
+                              }
+                            }
+                          ],
+                          "location": 1364
+                        }
+                      },
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "="
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "lc1"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "sexe"
+                                  }
+                                }
+                              ],
+                              "location": 1433
+                            }
+                          },
+                          "rexpr": {
+                            "A_Const": {
+                              "val": {
+                                "String": {
+                                  "str": "M"
+                                }
+                              },
+                              "location": 1445
+                            }
+                          },
+                          "location": 1443
+                        }
+                      },
+                      {
+                        "A_Expr": {
+                          "kind": "AEXPR_OP",
+                          "name": [
+                            {
+                              "String": {
+                                "str": "="
+                              }
+                            }
+                          ],
+                          "lexpr": {
+                            "ColumnRef": {
+                              "fields": [
+                                {
+                                  "String": {
+                                    "str": "lc2"
+                                  }
+                                },
+                                {
+                                  "String": {
+                                    "str": "sexe"
+                                  }
+                                }
+                              ],
+                              "location": 1453
+                            }
+                          },
+                          "rexpr": {
+                            "A_Const": {
+                              "val": {
+                                "String": {
+                                  "str": "F"
+                                }
+                              },
+                              "location": 1464
+                            }
+                          },
+                          "location": 1462
+                        }
+                      }
+                    ],
+                    "location": 712
+                  }
+                }
+              }
+            }
+          ],
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "A_Const": {
+                    "val": {
+                      "Integer": {
+                        "ival": 6
+                      }
+                    },
+                    "location": 1711
+                  }
+                },
+                "sortby_dir": "SORTBY_DESC",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 1718
+    }
+  ]
+}

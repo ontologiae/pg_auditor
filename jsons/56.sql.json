@@ -1,0 +1,877 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "distinctClause": [
+            {}
+          ],
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "ai"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "id"
+                        }
+                      }
+                    ],
+                    "location": 33
+                  }
+                },
+                "location": 33
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "JoinExpr": {
+                "jointype": "JOIN_INNER",
+                "larg": {
+                  "RangeVar": {
+                    "relname": "analysehaussedetailsrecadree",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "alias": {
+                      "aliasname": "ar"
+                    },
+                    "location": 44
+                  }
+                },
+                "rarg": {
+                  "RangeVar": {
+                    "relname": "analyseinteretcourbe",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "alias": {
+                      "aliasname": "ai"
+                    },
+                    "location": 87
+                  }
+                },
+                "quals": {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "="
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "ar"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "id"
+                            }
+                          }
+                        ],
+                        "location": 115
+                      }
+                    },
+                    "rexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "ai"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "id"
+                            }
+                          }
+                        ],
+                        "location": 123
+                      }
+                    },
+                    "location": 121
+                  }
+                }
+              }
+            }
+          ],
+          "whereClause": {
+            "BoolExpr": {
+              "boolop": "AND_EXPR",
+              "args": [
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "u003e"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "ar"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "coefdrt"
+                            }
+                          }
+                        ],
+                        "location": 136
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "Float": {
+                            "str": "0.2"
+                          }
+                        },
+                        "location": 149
+                      }
+                    },
+                    "location": 147
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "u003e"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "ar"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "size"
+                            }
+                          }
+                        ],
+                        "location": 157
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 32
+                          }
+                        },
+                        "location": 167
+                      }
+                    },
+                    "location": 165
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_IN",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "u003cu003e"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "ai"
+                            }
+                          },
+                          {
+                            "String": {
+                              "str": "id"
+                            }
+                          }
+                        ],
+                        "location": 174
+                      }
+                    },
+                    "rexpr": {
+                      "List": {
+                        "items": [
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 16
+                                }
+                              },
+                              "location": 189
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 70
+                                }
+                              },
+                              "location": 193
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 72
+                                }
+                              },
+                              "location": 197
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 86
+                                }
+                              },
+                              "location": 201
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 87
+                                }
+                              },
+                              "location": 205
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 78
+                                }
+                              },
+                              "location": 209
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 99
+                                }
+                              },
+                              "location": 213
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 104
+                                }
+                              },
+                              "location": 217
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 127
+                                }
+                              },
+                              "location": 222
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 128
+                                }
+                              },
+                              "location": 227
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 130
+                                }
+                              },
+                              "location": 233
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 134
+                                }
+                              },
+                              "location": 238
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 213
+                                }
+                              },
+                              "location": 242
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 263
+                                }
+                              },
+                              "location": 247
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 312
+                                }
+                              },
+                              "location": 252
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 330
+                                }
+                              },
+                              "location": 257
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 506
+                                }
+                              },
+                              "location": 262
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 768
+                                }
+                              },
+                              "location": 267
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 1060
+                                }
+                              },
+                              "location": 272
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 1292
+                                }
+                              },
+                              "location": 278
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 1319
+                                }
+                              },
+                              "location": 284
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 1346
+                                }
+                              },
+                              "location": 290
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 1444
+                                }
+                              },
+                              "location": 296
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 1569
+                                }
+                              },
+                              "location": 303
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 1898
+                                }
+                              },
+                              "location": 309
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 1992
+                                }
+                              },
+                              "location": 315
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 2190
+                                }
+                              },
+                              "location": 321
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 2337
+                                }
+                              },
+                              "location": 327
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 2446
+                                }
+                              },
+                              "location": 333
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 2490
+                                }
+                              },
+                              "location": 339
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 2558
+                                }
+                              },
+                              "location": 345
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 2564
+                                }
+                              },
+                              "location": 351
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 2868
+                                }
+                              },
+                              "location": 357
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 2892
+                                }
+                              },
+                              "location": 363
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 2967
+                                }
+                              },
+                              "location": 369
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 3283
+                                }
+                              },
+                              "location": 375
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 3453
+                                }
+                              },
+                              "location": 381
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 3526
+                                }
+                              },
+                              "location": 387
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 3552
+                                }
+                              },
+                              "location": 393
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 3560
+                                }
+                              },
+                              "location": 399
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 3575
+                                }
+                              },
+                              "location": 405
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 3667
+                                }
+                              },
+                              "location": 411
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 3890
+                                }
+                              },
+                              "location": 417
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 4030
+                                }
+                              },
+                              "location": 423
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 4098
+                                }
+                              },
+                              "location": 429
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 4479
+                                }
+                              },
+                              "location": 435
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 4625
+                                }
+                              },
+                              "location": 441
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 4657
+                                }
+                              },
+                              "location": 447
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 5431
+                                }
+                              },
+                              "location": 453
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 5460
+                                }
+                              },
+                              "location": 459
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 6052
+                                }
+                              },
+                              "location": 465
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 6033
+                                }
+                              },
+                              "location": 471
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 6023
+                                }
+                              },
+                              "location": 478
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 5936
+                                }
+                              },
+                              "location": 484
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 5912
+                                }
+                              },
+                              "location": 490
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 5911
+                                }
+                              },
+                              "location": 496
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 5896
+                                }
+                              },
+                              "location": 502
+                            }
+                          },
+                          {
+                            "A_Const": {
+                              "val": {
+                                "Integer": {
+                                  "ival": 5859
+                                }
+                              },
+                              "location": 508
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "location": 180
+                  }
+                },
+                {
+                  "A_Expr": {
+                    "kind": "AEXPR_OP",
+                    "name": [
+                      {
+                        "String": {
+                          "str": "u003c"
+                        }
+                      }
+                    ],
+                    "lexpr": {
+                      "ColumnRef": {
+                        "fields": [
+                          {
+                            "String": {
+                              "str": "rnum"
+                            }
+                          }
+                        ],
+                        "location": 519
+                      }
+                    },
+                    "rexpr": {
+                      "A_Const": {
+                        "val": {
+                          "Integer": {
+                            "ival": 21
+                          }
+                        },
+                        "location": 526
+                      }
+                    },
+                    "location": 524
+                  }
+                }
+              ],
+              "location": 153
+            }
+          },
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "id"
+                        }
+                      }
+                    ],
+                    "location": 538
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 540
+    }
+  ]
+}

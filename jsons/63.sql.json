@@ -1,0 +1,474 @@
+{
+  "version": 130002,
+  "stmts": [
+    {
+      "stmt": {
+        "SelectStmt": {
+          "targetList": [
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "g"
+                        }
+                      },
+                      {
+                        "String": {
+                          "str": "market"
+                        }
+                      }
+                    ],
+                    "location": 198
+                  }
+                },
+                "location": 198
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "rnum"
+                        }
+                      }
+                    ],
+                    "location": 208
+                  }
+                },
+                "location": 208
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "pcentval"
+                        }
+                      }
+                    ],
+                    "location": 214
+                  }
+                },
+                "location": 214
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "pcentvol"
+                        }
+                      }
+                    ],
+                    "location": 224
+                  }
+                },
+                "location": 224
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "pcenthausseob"
+                        }
+                      }
+                    ],
+                    "location": 234
+                  }
+                },
+                "location": 234
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "pcenthausseos"
+                        }
+                      }
+                    ],
+                    "location": 249
+                  }
+                },
+                "location": 249
+              }
+            },
+            {
+              "ResTarget": {
+                "name": "coefrnn",
+                "val": {
+                  "FuncCall": {
+                    "funcname": [
+                      {
+                        "String": {
+                          "str": "trunc"
+                        }
+                      }
+                    ],
+                    "args": [
+                      {
+                        "ColumnRef": {
+                          "fields": [
+                            {
+                              "String": {
+                                "str": "coefrnn"
+                              }
+                            }
+                          ],
+                          "location": 270
+                        }
+                      },
+                      {
+                        "A_Const": {
+                          "val": {
+                            "Integer": {
+                              "ival": 5
+                            }
+                          },
+                          "location": 278
+                        }
+                      }
+                    ],
+                    "location": 264
+                  }
+                },
+                "location": 264
+              }
+            },
+            {
+              "ResTarget": {
+                "val": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "id"
+                        }
+                      }
+                    ],
+                    "location": 293
+                  }
+                },
+                "location": 293
+              }
+            }
+          ],
+          "fromClause": [
+            {
+              "JoinExpr": {
+                "jointype": "JOIN_INNER",
+                "larg": {
+                  "RangeVar": {
+                    "relname": "src",
+                    "inh": true,
+                    "relpersistence": "p",
+                    "alias": {
+                      "aliasname": "s"
+                    },
+                    "location": 302
+                  }
+                },
+                "rarg": {
+                  "RangeFunction": {
+                    "lateral": true,
+                    "functions": [
+                      {
+                        "List": {
+                          "items": [
+                            {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "getcurvefrom2"
+                                    }
+                                  }
+                                ],
+                                "args": [
+                                  {
+                                    "TypeCast": {
+                                      "arg": {
+                                        "ColumnRef": {
+                                          "fields": [
+                                            {
+                                              "String": {
+                                                "str": "s"
+                                              }
+                                            },
+                                            {
+                                              "String": {
+                                                "str": "tmstart"
+                                              }
+                                            }
+                                          ],
+                                          "location": 341
+                                        }
+                                      },
+                                      "typeName": {
+                                        "names": [
+                                          {
+                                            "String": {
+                                              "str": "text"
+                                            }
+                                          }
+                                        ],
+                                        "typemod": -1,
+                                        "location": 352
+                                      },
+                                      "location": 350
+                                    }
+                                  },
+                                  {
+                                    "ColumnRef": {
+                                      "fields": [
+                                        {
+                                          "String": {
+                                            "str": "s"
+                                          }
+                                        },
+                                        {
+                                          "String": {
+                                            "str": "market"
+                                          }
+                                        }
+                                      ],
+                                      "location": 357
+                                    }
+                                  }
+                                ],
+                                "location": 327
+                              }
+                            },
+                            {}
+                          ]
+                        }
+                      }
+                    ],
+                    "alias": {
+                      "aliasname": "g"
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "sortClause": [
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "id"
+                        }
+                      }
+                    ],
+                    "location": 378
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            },
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "market"
+                        }
+                      }
+                    ],
+                    "location": 382
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            },
+            {
+              "SortBy": {
+                "node": {
+                  "ColumnRef": {
+                    "fields": [
+                      {
+                        "String": {
+                          "str": "rnum"
+                        }
+                      }
+                    ],
+                    "location": 390
+                  }
+                },
+                "sortby_dir": "SORTBY_DEFAULT",
+                "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                "location": -1
+              }
+            }
+          ],
+          "limitOption": "LIMIT_OPTION_DEFAULT",
+          "withClause": {
+            "ctes": [
+              {
+                "CommonTableExpr": {
+                  "ctename": "src",
+                  "ctematerialized": "CTEMaterializeDefault",
+                  "ctequery": {
+                    "SelectStmt": {
+                      "targetList": [
+                        {
+                          "ResTarget": {
+                            "name": "id",
+                            "val": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "row_number"
+                                    }
+                                  }
+                                ],
+                                "over": {
+                                  "frameOptions": 1058,
+                                  "location": 91
+                                },
+                                "location": 73
+                              }
+                            },
+                            "location": 73
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "market"
+                                    }
+                                  }
+                                ],
+                                "location": 101
+                              }
+                            },
+                            "location": 101
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "tmstart"
+                                    }
+                                  }
+                                ],
+                                "location": 109
+                              }
+                            },
+                            "location": 109
+                          }
+                        },
+                        {
+                          "ResTarget": {
+                            "val": {
+                              "ColumnRef": {
+                                "fields": [
+                                  {
+                                    "String": {
+                                      "str": "coefrnn"
+                                    }
+                                  }
+                                ],
+                                "location": 118
+                              }
+                            },
+                            "location": 118
+                          }
+                        }
+                      ],
+                      "fromClause": [
+                        {
+                          "RangeVar": {
+                            "relname": "tmpselectionapprentissagernn",
+                            "inh": true,
+                            "relpersistence": "p",
+                            "location": 131
+                          }
+                        }
+                      ],
+                      "sortClause": [
+                        {
+                          "SortBy": {
+                            "node": {
+                              "FuncCall": {
+                                "funcname": [
+                                  {
+                                    "String": {
+                                      "str": "random"
+                                    }
+                                  }
+                                ],
+                                "location": 169
+                              }
+                            },
+                            "sortby_dir": "SORTBY_DEFAULT",
+                            "sortby_nulls": "SORTBY_NULLS_DEFAULT",
+                            "location": -1
+                          }
+                        }
+                      ],
+                      "limitCount": {
+                        "A_Const": {
+                          "val": {
+                            "Integer": {
+                              "ival": 2000
+                            }
+                          },
+                          "location": 184
+                        }
+                      },
+                      "limitOption": "LIMIT_OPTION_COUNT",
+                      "op": "SETOP_NONE"
+                    }
+                  },
+                  "location": 55
+                }
+              }
+            ],
+            "location": 50
+          },
+          "op": "SETOP_NONE"
+        }
+      },
+      "stmt_len": 394
+    }
+  ]
+}
