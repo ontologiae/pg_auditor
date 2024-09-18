@@ -1,4 +1,7 @@
-#require "jsonm";;
+#require "jsonm, batteries";;
+
+module H = Hashtbl;;
+
 type sample = {
   remote: string option;
   db: string;
@@ -58,208 +61,7 @@ type root = {
 open Jsonm
 
 
-(* Helper function to decode JSON key-value pairs of various types. *)
-let expect_string d =
-  match Jsonm.decode d with
-  | `Lexeme (`String s) -> s
-  | _ -> failwith "Expected string";;
-let expect_float d =
-  match Jsonm.decode d with
-  | `Lexeme (`Float f) -> f
-  | _ -> failwith "Expected float";;
-let expect_int d =
-  match Jsonm.decode d with
-  | `Lexeme (`Float f) -> int_of_float f
-  | _ -> failwith "Expected int";;
-let expect_name d =
-  match Jsonm.decode d with
-  | `Lexeme (`Name n) -> n
-  | _ -> failwith "Expected name";;
 
-
-(*
-- : ((string *
-      ([> `A of 'b list
-        | `Bool of bool
-        | `Float of float
-        | `Null
-        | `O of 'a list
-        | `String of string ]
-       as 'b)
-      as 'a)
-     list -> 'a list) ->
-    'a list ->
-    decoder ->
-    [> `Await | `End | `Error of error | `Lexeme of lexeme ] -> 'a list
-= <fun>
- 
- *)
-let rec subdecode_object aux acc d o = 
-        let _ = match o with `Lexeme l ->   Format.printf "subdecode_object DEBUG init = %a %!\n" Jsonm.pp_lexeme l | _ -> () in
-  match o with
-  | `Lexeme `Oe -> List.rev acc
-  | `Lexeme (`Name name) ->
-    let value = decode_value d in
-    aux ((name, value) :: acc)
-  | `Lexeme `Os -> (* Cas d'objet imbriqué *)
-    let subobj = decode_object d in
-    let remaining = aux acc in
-    subdecode_object aux (("nested_object", `O subobj) :: remaining) d o
-  | `Lexeme `As -> (* Cas de tableau imbriqué *)
-    let subarray = decode_array d in
-    let remaining = aux acc in
-    subdecode_object aux (("nested_array", `A subarray) :: remaining) d o
-  | `Lexeme l -> failwith (Format.asprintf "subdecode_object : Unexpected lexeme: %a" Jsonm.pp_lexeme l)
-  | `Error e -> failwith (Format.asprintf "subdecode_object : Decode error: %a" Jsonm.pp_error e)
-  | _ -> failwith "subdecode_object : Expected object field"
-(* Decode JSON object into (string * 'a) list *)
-and decode_object d =
-        let decoded = Jsonm.decode d in
-        let rec aux acc =  subdecode_object aux acc d decoded in
-       match decoded with
-        | `End  -> failwith "decode_object : FIN !"
-        | `Lexeme l -> Format.printf "decode_object DEBUG = %a %!" Jsonm.pp_lexeme l;aux []
-        | _     ->  aux []
-(* Decode JSON array into 'a list *)
-and decode_array d =
-  let rec aux acc =
-    match Jsonm.decode d with
-    | `Lexeme `Ae -> List.rev acc
-    | _ ->
-      let value = decode_value d in
-      aux (value :: acc)
-  in
-  aux []
-(* Decode any JSON value *)
-and decode_value d =
-  let tok = Jsonm.decode d in
-  match tok with
-  | `Lexeme `Null -> `Null
-  | `Lexeme (`Bool b) -> `Bool b
-  | `Lexeme (`String s) -> `String s
-  | `Lexeme (`Float f) -> `Float f
-  (*| `Lexeme (`Name name) -> `O (decode_object d)*)
-  | `Lexeme `Os -> `O (decode_object d)
-  | `Lexeme `As -> `A (decode_array d)
-  | `Lexeme l -> failwith (Format.asprintf "decode_value : Unexpected lexeme: %a" Jsonm.pp_lexeme l)
-  | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
-  | _ -> failwith "decode_value : C'est autre chose";;
- (* | _ -> failwith "decode_value : C'est autre chose";;*)
-#trace decode_object;;
-#trace decode_value;;
-
-(* Decode "sample" object *)
-let decode_sample d =
-  let obj = decode_object d in
-  let get_opt key =
-    try Some (List.assoc key obj |> function `String s -> s | _ -> failwith "Expected string")
-    with Not_found -> None
-  in
-  let get_str key = List.assoc key obj |> function `String s -> s | _ -> failwith "Expected string" in {
-    remote = get_opt "remote";
-    db = get_str "db";
-    plan = get_opt "plan";
-    bind = get_opt "bind";
-    query = get_str "query";
-    date = get_str "date";
-    user = get_str "user";
-    app = get_str "app";
-  };;
-(* Decode "app_info" object *)
-let decode_app_info d =
-  let obj = decode_object d in
-  let get_int key = List.assoc key obj |> function `Float f -> int_of_float f | _ -> failwith "Expected int" in
-  let get_float key = List.assoc key obj |> function `Float f -> f | _ -> failwith "Expected float" in {
-    count = get_int "count";
-    duration = get_float "duration";
-  };;
-(* Decode "user_info" object *)
-let decode_user_info d =
-  let obj = decode_object d in
-  let get_int key = List.assoc key obj |> function `Float f -> int_of_float f | _ -> failwith "Expected int" in
-  let get_float key = List.assoc key obj |> function `Float f -> f | _ -> failwith "Expected float" in {
-    duration = get_float "duration";
-    count = get_int "count";
-  };;
-(* Decode "chronos_hour_info" object *)
-let decode_chronos_hour_info d =
-  let obj = decode_object d in
-  let get_int key = List.assoc key obj |> function `Float f -> int_of_float f | _ -> failwith "Expected int" in
-  let get_float key = List.assoc key obj |> function `Float f -> f | _ -> failwith "Expected float" in
-  let min_duration_tbl = Hashtbl.create 10 in
-  let min_tbl = Hashtbl.create 10 in
-  (match List.assoc_opt "min_duration" obj with
-  | Some (`O min_duration_obj) ->
-    List.iter (fun (k, v) -> Hashtbl.add min_duration_tbl (float_of_string k) { duration = (match v with `Float f -> f | _ -> failwith "Expected float") }) min_duration_obj
-  | _ -> ());
-  (match List.assoc_opt "min" obj with
-  | Some (`O min_obj) ->
-    List.iter (fun (k, v) -> Hashtbl.add min_tbl (float_of_string k) { count = (match v with `Float f -> int_of_float f | _ -> failwith "Expected float") }) min_obj
-  | _ -> ()); {
-    count = get_int "count";
-    duration = get_float "duration";
-    min_duration = min_duration_tbl;
-    min = min_tbl;
-  };;
-(* Decode "chronos_info" object *)
-let decode_chronos_info d =
-  let obj = decode_object d in
-  let days_tbl = Hashtbl.create 10 in
-  (match List.assoc_opt "20240606" obj with
-  | Some (`O hours_obj) ->
-    List.iter (fun (hour, hour_info) ->
-        Hashtbl.add days_tbl (int_of_string hour) {
-          hours = let hours_tbl = Hashtbl.create 10 in 
-          (match hour_info with 
-          | `O hour_info_list -> 
-            List.iter (fun (k, v) -> 
-              Hashtbl.add hours_tbl (int_of_string k) (decode_chronos_hour_info d)
-            ) hour_info_list;
-            hours_tbl
-          | _ -> failwith "decode_chronos_info : Incorrect json format"
-          ) 
-      }) hours_obj
-  | _ -> ()); {
-    day_info = days_tbl;
-  };;
-(* Decode "query_info" object *)
-let decode_query_info d =
-  let obj = decode_object d in
-  let get_float key =  List.assoc key obj |> function `Float f -> f | _ -> failwith "Expected float" in
-  let get_int key = List.assoc key obj |> function `Float f -> int_of_float f | _ -> failwith "Expected int" in
-  {
-    duration = get_float "duration";
-    samples = (match List.assoc "samples" obj with
-      | `O tbl_obj -> 
-        let samples_tbl = Hashtbl.create 10 in
-        List.iter (fun (k, v) -> Hashtbl.add samples_tbl (float_of_string k) (decode_sample d)) tbl_obj;
-        samples_tbl
-      | _ -> failwith "decode_query_info : Expected samples object");
-    count = get_int "count";
-    apps = (match List.assoc "apps" obj with
-      | `O tbl_obj -> 
-        let apps_tbl = Hashtbl.create 10 in
-        List.iter (fun (k, v) -> Hashtbl.add apps_tbl k (decode_app_info d)) tbl_obj;
-        apps_tbl
-      | _ -> failwith "decode_query_info : Expected apps object");
-    max = get_float "max";
-    users = (match List.assoc "users" obj with
-      | `O tbl_obj -> 
-        let users_tbl = Hashtbl.create 10 in
-        List.iter (fun (k, v) -> Hashtbl.add users_tbl k (decode_user_info d)) tbl_obj;
-        users_tbl
-      | _ -> failwith "decode_query_info : Expected users object");
-    chronos = decode_chronos_info d;
-    min = get_float "min";
-  };;
-(* Decode the root object *)
-let decode_root d =
-  let obj = decode_object d in
-  {
-    queryProto = (match List.assoc "normalyzed_info" obj with
-      | `O queries -> List.map (fun (_, v) -> decode_query_info d) queries
-      | _ -> failwith "decode_root : Expected normalyzed_info object");
-  };;
 let rec print_lexemes d =
   match Jsonm.decode d with
   | `Lexeme l -> 
@@ -280,9 +82,14 @@ let rec print_lexemes d =
   | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
   | `Await -> failwith "Unexpected `Await in decoder";;
 
+
+
+
 let print_decoded_json_string json_str =
   let d = Jsonm.decoder (`String json_str) in
   print_lexemes d;;
+
+
 let expl = "{
 \"normalyzed_info\" : {
       \"postgres\" : {
@@ -356,18 +163,10 @@ let expl = "{
  }
 }";;
 
-let decode_json_string json_str =
-  let d = Jsonm.decoder (`String json_str) in
-  match decode_root d with
-  | exception e -> Printf.printf "Error while decoding: %s\n" (Printexc.to_string e)
-  | root -> 
-    (* Here you can work with your decoded root object *)
-    Printf.printf "Decoded root object: %d\n" (List.length root.queryProto)
-;;
 (*
-Normaliz -> Postgres -> Querysubj -> Sample -> Duration;
-Duration -> Sample;
-Sample -> Querysubj;
+Normaliz -> Postgres -> Querysubj -> Samples -> Sample;
+Sample -> Samples;
+Samples -> Querysubj;
 Querysubj -> Apps -> Appname -> Apps  -> Querysubj;
 Querysubj -> Users -> User   -> Users -> Querysubj;
 User -> Users -> Querysubj;
@@ -377,11 +176,13 @@ Chrono -> Min -> Querysubj;
 Querysubj -> Postgres -> Normaliz;*)
 
 type state =
+  | Root
   | Normaliz
   | Postgres
   | Querysubj
+  | Sampless
+  | Samples
   | Sample
-  | Duration
   | Apps
   | Appname
   | Users
@@ -394,12 +195,13 @@ type state =
 
 let transition state =
   match state with
+  | Root -> Normaliz
   | Normaliz -> Postgres
   | Postgres -> Querysubj
-  | Querysubj -> Sample
-  | Sample -> Duration
-  | Duration -> Sample
-  | Sample -> Querysubj
+  | Querysubj -> Samples
+  | Samples -> Sample
+  | Sample -> Samples
+  | Samples -> Querysubj
   | Querysubj -> Apps
   | Apps -> Appname
   | Appname -> Apps
@@ -422,9 +224,8 @@ let transition state =
 
 
 
-
- Querysubj, "samples" -> Sample
- Sample, is_float -> Duration
+ (*Querysubj, "samples" -> Samples
+ Samples, is_float -> Sample
  Querysubj, "apps" -> Apps
  Apps , ? -> Appname
  Querysubj, "users" -> Users
@@ -433,7 +234,64 @@ let transition state =
  Chrono, is_int -> Day
  Day, is_int  -> Heure
  Heure, "min_duration" -> Min_duration
- Heure, "min" -> Min 
+ Heure, "min" -> Min *)
+
+
+
+let getRoot str = Jsonm.decoder (`String str);;
+
+let subjson = "{
+                     \"count\" : 4,
+                     \"duration\" : 0.826,
+                     \"min_duration\" : {
+                        \"08\" : 0.347,
+                        \"09\" : 0.479
+                     },
+                     \"min\" : {
+                        \"09\" : 2,
+                        \"08\" : 2
+                     }
+                  }";;
+
+let printState new_state = 
+        match new_state with
+         | Root -> "Root"
+         | Normaliz -> "Normaliz"
+         | Postgres -> "Postgres"
+         | Querysubj -> "Querysubj"
+         | Samples -> "Samples"
+         | Sample -> "Sample"
+         | Apps -> "Apps"
+         | Appname -> "Appname"
+         | Users -> "Users"
+         | User -> "User"
+         | Chrono -> "Chrono"
+         | Day -> "Day"
+         | Heure -> "Heure"
+         | Min_duration -> "Min_duration"
+         | Min -> "Min";;
+
+
+
+let previous_state current_state =
+  match current_state with
+  | Postgres -> Normaliz
+  | Querysubj -> Postgres
+  | Samples -> Querysubj
+  | Sample -> Samples
+  | Appname -> Apps
+  | Apps -> Querysubj
+  | User -> Users
+  | Users -> Querysubj
+  | Day -> Chrono
+  | Heure -> Day
+  | Min_duration -> Heure
+  | Min -> Chrono
+  | Chrono -> Querysubj
+  | Normaliz -> Root
+  | Root -> Root
+  | other -> printState other |> failwith;;
+
 
 let is_float s = 
   try ignore (float_of_string s); true
@@ -445,18 +303,18 @@ let is_int s =
 
 let transition state input =
   match state, input with
-  | Normaliz, _ -> Postgres
+  | Root, "normalyzed_info" -> Normaliz
+  | Normaliz, "postgres" -> Postgres
   | Postgres, _ -> Querysubj
-  | Querysubj, "samples" -> Sample
-  | Sample, s when is_float s -> Duration
-  | Duration, _ -> Sample
-  | Sample, _ -> Querysubj
+  | Querysubj, "samples" -> Samples
+  | Samples, s when is_float s -> Sample
+  | Sample, _ -> Samples
+  | Samples, _ -> Querysubj
   | Querysubj, "apps" -> Apps
   | Apps, _ -> Appname
   | Appname, _ -> Apps
-  | Apps, _ -> Querysubj
   | Querysubj, "users" -> Users
-  | Users, _ -> User
+  | Users, "users" -> User
   | User, _ -> Users
   | Users, _ -> Querysubj
   | Querysubj, "chronos" -> Chrono
@@ -472,25 +330,38 @@ let transition state input =
   | Chrono, _ -> Querysubj
   | Querysubj, _ -> Postgres
   | Postgres, _ -> Normaliz
-  | _ -> failwith "Invalid transition"
+  | Root, _ -> Root
+  | _ -> state (* On reste dans le même état, endless loop*);;
 
-let rec execute path state =
-  match path with
-  | [] -> state
-  | input :: rest -> 
-      let next_state = transition state input in
-      execute rest next_state
 
-  let tok = Jsonm.decode d in
-  match tok with
-  | `Lexeme `Null -> `Null
-  | `Lexeme (`Bool b) -> `Bool b
-  | `Lexeme (`String s) -> `String s
-  | `Lexeme (`Float f) -> `Float f
-  (*| `Lexeme (`Name name) -> `O (decode_object d)*)
-  | `Lexeme `Os -> `O (decode_object d)
-  | `Lexeme `As -> `A (decode_array d)
-  | `Lexeme l -> failwith (Format.asprintf "decode_value : Unexpected lexeme: %a" Jsonm.pp_lexeme l)
+let h = Hashtbl.create 786;;
+
+let rec process_json d h lastname state =
+  match Jsonm.decode d with
+  | `Lexeme l ->
+      (match l with
+       | `Null -> Printf.printf "Lexeme: Null\n"
+       | `Bool b -> Printf.printf "Lexeme: Bool - %b\n" b; H.add h lastname (b |> string_of_bool);
+       | `String s -> Printf.printf "Lexeme: String - %s\n" s; H.add h lastname s;
+       | `Float f -> Printf.printf "Lexeme: Float - %f\n" f; H.add h lastname (f |> string_of_float);
+       | `Name n -> Printf.printf "Lexeme: Name - %s\n" n
+       | `Os -> Printf.printf "Lexeme: START of Object\n"; 
+       | `Oe -> Printf.printf "Lexeme: END of Object\n"; 
+       | `As -> Printf.printf "Lexeme: Start of Array\n"
+       | `Ae -> Printf.printf "Lexeme: End of Array\n");
+      let curname, new_state = match l with
+        | `Name n -> n, state 
+        | `Os -> lastname, transition state lastname 
+        | `Oe -> lastname, previous_state state 
+        | _ -> lastname, state in
+      Printf.printf "STATE: %s\n\n"  (printState new_state);
+      process_json d h curname new_state
+  | `End -> Printf.printf "Completed JSON parsing\n"
   | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
-  | _ -> failwith "decode_value : C'est autre chose";;
+  | `Await -> failwith "Unexpected `Await in decoder";;
 
+
+
+let read_and_process_json json_input =
+  let d = Jsonm.decoder (`String json_input) in
+  process_json  d h "root" Root;;     
