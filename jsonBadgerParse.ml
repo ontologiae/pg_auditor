@@ -1,6 +1,6 @@
 #require "jsonm, batteries";;
 
-module H = Hashtbl;;
+module H = BatHashtbl;;
 
 type sample = {
   remote: string option;
@@ -47,6 +47,12 @@ type query_info = {
 type root = {
   queryProto : query_info list;
 }
+
+
+
+
+
+
 (*
 1. **`sample`** : Représente chaque échantillon de la section `samples`.
 2. **user_app_info`** : Représente les informations des applications dans la section `apps`.
@@ -334,7 +340,138 @@ let transition state input =
   | _ -> state (* On reste dans le même état, endless loop*);;
 
 
-let h = Hashtbl.create 786;;
+type acumulateur = {
+  mutable query_info: query_info option;
+  mutable samples: (float, sample) Hashtbl.t;
+  mutable apps: (string, user_app_info) Hashtbl.t;
+  mutable users: (string, user_app_info) Hashtbl.t;
+  mutable chronos: chronos_info option;
+  mutable current_sample: sample option;
+  mutable current_user_app_info: user_app_info option;
+  mutable current_chronos_hour_info: chronos_hour_info option;
+}
+
+let accBase = {
+        query_info = None;
+        samples = Hashtbl.create 786;
+        apps = Hashtbl.create 786;
+        users = Hashtbl.create 787;
+        chronos = None;
+        current_sample = None;
+        current_user_app_info = None;
+        current_chronos_hour_info = None;
+};;
+
+let h = Hashtbl.create 788;;
+
+let printAndStore d h lastname =
+  let lexeme = Jsonm.decode d in
+  Printf.printf "printAndStore:   lastname=%s  \n%!" lastname;
+  match lexeme with
+  | `Lexeme l ->
+      (match l with
+       | `Null -> Printf.printf "Lexeme: Null\n" 
+       | `Bool b -> Printf.printf "Lexeme: Bool - %b\n" b; H.add h lastname (b |> string_of_bool);
+       | `String s -> Printf.printf "Lexeme: String - %s\n" s; H.add h lastname s;
+       | `Float f -> Printf.printf "Lexeme: Float - %f\n" f; H.add h lastname (f |> string_of_float);
+       | `Name n -> Printf.printf "Lexeme: Name - %s\n" n
+       | `Os -> Printf.printf "Lexeme: START of Object\n"; 
+       | `Oe -> Printf.printf "Lexeme: END of Object\n"; 
+       | `As -> Printf.printf "Lexeme: Start of Array\n"
+       | `Ae -> Printf.printf "Lexeme: End of Array\n"); lexeme
+  | `End -> Printf.printf "Completed JSON parsing\n"; lexeme
+  | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
+  | `Await -> failwith "Unexpected `Await in decoder";;
+
+
+(* - : decoder ->
+    (string, string) H.t -> string -> state -> string * state * 'a option *)
+let rec getSample d h lastname state =
+        let lexeme = printAndStore d h lastname in
+        let _ = printState state |> Printf.printf "Sample:   lastname=%s  Etat = %s\n%!" lastname in
+        match lexeme, state with
+        | `Lexeme (`Name n), _ -> printAndStore d h n; getSample d h lastname Sample;
+        | `Lexeme (`Os), _ ->  failwith "Erreur : Un objet Sample ne possède aucun objet"
+        | `Lexeme (`Oe), Sample -> Printf.printf "getSample:Rendu\n%!"; let l, e, res = lastname, Samples,  Some {    
+                                                                        remote = H.find_option h "remote"; 
+                                                                        db = H.find_option h "db" |> BatOption.default "";
+                                                                        plan = H.find_option h "plan";
+                                                                        bind = H.find_option h "bind";
+                                                                        query = H.find_option h "query" |> BatOption.default "";
+                                                                        date = H.find_option h "date" |> BatOption.default "";
+                                                                        user = H.find_option h "user" |> BatOption.default "";
+                                                                        app = H.find_option h "app" |> BatOption.default "";
+                                                                   }
+                                   in H.clear h; l,e,res
+        | `Lexeme l, eta -> printAndStore d h lastname; printState eta |> Printf.printf "Cas général etat=%s  \n%!"; 
+                                printAndStore d h lastname; 
+                                getSample d h lastname Sample
+        | `End, _ -> Printf.printf "Completed JSON parsing\n"; lastname, state, None
+        | `Error e, _ -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
+        | `Await, _ -> failwith "Unexpected `Await in decoder";;
+
+
+let rec getSamples d h lastname state (hres : (float, sample) H.t) =
+        let lexeme = printAndStore d h lastname in
+        let _ = printState state |> Printf.printf "Samples:Etat = %s\n%!" in
+        match lexeme, state with
+        | `Lexeme (`Name n), _ -> printAndStore d h n; getSamples d h n Samples hres
+        | `Lexeme (`Os), _ -> Printf.printf "getSamples Objet début lastname=%s\n%!" lastname;
+                                let ln, sta, samp = getSample d h lastname Samples in
+                                
+                                getSamples d h lastname Samples hres
+        | `Lexeme (`Oe), Sample -> (*H.add hres (lastname |> float_of_string) (samp |> Option.get);*)
+                                        Printf.printf "getSamples:Rendu lastname=%s \n%!" lastname; getSamples d h lastname Samples hres
+        | `Lexeme l, eta ->
+                            printState eta |> Printf.printf "Cas général etat=%s  \n%!"; 
+                            printAndStore d h lastname; 
+                            getSamples d h lastname Samples hres
+        | `End, _ -> Printf.printf "Completed JSON parsing\n"; lastname, state, hres
+        | `Error e, _ -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
+        | `Await, _ -> failwith "Unexpected `Await in decoder";;
+
+
+
+let samples = " {
+               \"0.167\" : {
+                  \"remote\" : null,
+                  \"db\" : \"adep\",
+                  \"plan\" : null,
+                  \"bind\" : null,
+                  \"query\" : \"SELECT From Where\",
+                  \"date\" : \"2024-06-06 23:09:18\",
+                  \"user\" : \"openassur\",
+                  \"app\" : \"[unknown]\"
+               },
+               \"0.184\" : {
+                  \"plan\" : null,
+                  \"db\" : \"adep\",
+                  \"bind\" : null,
+                  \"remote\" : null,
+                  \"app\" : \"[unknown]\",
+                  \"user\" : \"openassur\",
+                  \"date\" : \"2024-06-06 23:08:16\",
+                  \"query\" : \"SELECT From Where\"
+               },
+               \"0.312\" : {
+                  \"remote\" : null,
+                  \"plan\" : null,
+                  \"db\" : \"adep\",
+                  \"bind\" : null,
+                  \"date\" : \"2024-06-06 23:09:18\",
+                  \"query\" : \"SELECT From Where\",
+                  \"app\" : \"[unknown]\",
+                  \"user\" : \"myuser\"
+               }
+            }";;
+
+
+let d = Jsonm.decoder (`String samples);;
+
+
+(*Est-ce que je récup les propriétés via la H ? Mais faut la vider
+ H.clear h
+ Et faut que la fonction rende le bon type, donc process_json doit rendre un acuumulateur*)
 
 let rec process_json d h lastname state =
   match Jsonm.decode d with
@@ -349,10 +486,10 @@ let rec process_json d h lastname state =
        | `Oe -> Printf.printf "Lexeme: END of Object\n"; 
        | `As -> Printf.printf "Lexeme: Start of Array\n"
        | `Ae -> Printf.printf "Lexeme: End of Array\n");
-      let curname, new_state = match l with
-        | `Name n -> n, state 
-        | `Os -> lastname, transition state lastname 
-        | `Oe -> lastname, previous_state state 
+      let curname, new_state = match l, state with
+        | `Name n, _ -> n, state 
+        | `Os, _ -> lastname, transition state lastname 
+        | `Oe, Root -> lastname, previous_state state 
         | _ -> lastname, state in
       Printf.printf "STATE: %s\n\n"  (printState new_state);
       process_json d h curname new_state
@@ -361,7 +498,62 @@ let rec process_json d h lastname state =
   | `Await -> failwith "Unexpected `Await in decoder";;
 
 
-
 let read_and_process_json json_input =
   let d = Jsonm.decoder (`String json_input) in
-  process_json  d h "root" Root;;     
+  process_json  d h "root" Root;; 
+
+(******************************************)
+
+type acumulateur = {
+  mutable query_info: query_info option;
+  mutable samples: (float, sample) Hashtbl.t;
+  mutable apps: (string, user_app_info) Hashtbl.t;
+  mutable users: (string, user_app_info) Hashtbl.t;
+  mutable chronos: chronos_info option;
+  mutable current_sample: sample option;
+  mutable current_user_app_info: user_app_info option;
+  mutable current_chronos_hour_info: chronos_hour_info option;
+}
+
+let create_accumulateur () = {
+  query_info = None;
+  samples = Hashtbl.create 10;
+  apps = Hashtbl.create 10;
+  users = Hashtbl.create 10;
+  chronos = None;
+  current_sample = None;
+  current_user_app_info = None;
+  current_chronos_hour_info = None;
+}
+
+(*
+
+let rec process_json d acc state stack =
+  match Jsonm.decode d with
+  | `Lexeme l ->
+      let new_state, new_stack = match l, state with
+        | `Name n, _ -> state, stack
+        | `Os, _ -> transition state, state :: stack
+        | `Oe, s :: ss -> s, ss
+        | _ -> state, stack in
+      begin
+        match l, state with
+        | `String s, Sample _ -> acc.current_sample <- Some { (Option.get acc.current_sample) with user = s }
+        | `Float f, Sample _ -> acc.current_sample <- Some { (Option.get acc.current_sample) with duration = f }
+        | `String s, User -> acc.current_user_app_info <- Some { (Option.get acc.current_user_app_info) with user = s }
+        | `Float f, User -> acc.current_user_app_info <- Some { (Option.get acc.current_user_app_info) with duration = f }
+        | `String s, Appname -> acc.current_user_app_info <- Some { (Option.get acc.current_user_app_info) with app = s }
+        | _ -> ()
+      end;
+      process_json d acc new_state new_stack
+  | `End -> acc
+  | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
+  | `Await -> failwith "Unexpected `Await in decoder"
+
+(* Example usage *)
+
+let parse json_string =
+  let d = Jsonm.decoder (`String json_string) in
+  let acc = create_accumulator () in
+  process_json d acc Root []
+*)
