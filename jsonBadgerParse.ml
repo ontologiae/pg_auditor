@@ -104,28 +104,28 @@ let expl = "{
             \"samples\" : {
                \"0.167\" : {
                   \"remote\" : null,
-                  \"db\" : \"adep\",
+                  \"db\" : \"sdqsqdsdqs\",
                   \"plan\" : null,
                   \"bind\" : null,
                   \"query\" : \"SELECT From Where\",
                   \"date\" : \"2024-06-06 23:09:18\",
-                  \"user\" : \"openassur\",
+                  \"user\" : \"sdqqdsqdqs\",
                   \"app\" : \"[unknown]\"
                },
                \"0.184\" : {
                   \"plan\" : null,
-                  \"db\" : \"adep\",
+                  \"db\" : \"aped\",
                   \"bind\" : null,
                   \"remote\" : null,
                   \"app\" : \"[unknown]\",
-                  \"user\" : \"openassur\",
+                  \"user\" : \"assuropen\",
                   \"date\" : \"2024-06-06 23:08:16\",
                   \"query\" : \"SELECT From Where\"
                },
                \"0.312\" : {
                   \"remote\" : null,
                   \"plan\" : null,
-                  \"db\" : \"adep\",
+                  \"db\" : \"aped\",
                   \"bind\" : null,
                   \"date\" : \"2024-06-06 23:09:18\",
                   \"query\" : \"SELECT From Where\",
@@ -164,7 +164,76 @@ let expl = "{
                }
             },
             \"min\" : \"0.163\"
+         },
+
+
+\"SELECT From Where 2222222\" : {
+            \"duration\" : 99.826,
+            \"samples\" : {
+               \"90.167\" : {
+                  \"remote\" : null,
+                  \"db\" : \"adqsddqsdsqdep\",
+                  \"plan\" : null,
+                  \"bind\" : null,
+                  \"query\" : \"SELECsdqdqsdsqT From Where\",
+                  \"date\" : \"2024-06-06 23:09:18\",
+                  \"user\" : \"assuropen\",
+                  \"app\" : \"[unknown]\"
+               },
+               \"90.184\" : {
+                  \"plan\" : null,
+                  \"db\" : \"adsqddep\",
+                  \"bind\" : null,
+                  \"remote\" : null,
+                  \"app\" : \"[unknown]\",
+                  \"user\" : \"assuropen\",
+                  \"date\" : \"2024-06-06 23:08:16\",
+                  \"query\" : \"SELECT From Where\"
+               },
+               \"90.312\" : {
+                  \"remote\" : null,
+                  \"plan\" : null,
+                  \"db\" : \"dqsdqsdqsd\",
+                  \"bind\" : null,
+                  \"date\" : \"2024-06-06 23:09:18\",
+                  \"query\" : \"SELECT From Where\",
+                  \"app\" : \"[unknown]\",
+                  \"user\" : \"myuser\"
+               }
+            },
+            \"count\" : 54,
+            \"apps\" : {
+               \"[unknown]\" : {
+                  \"count\" : 44,
+                  \"duration\" : 40.826
+               }
+            },
+            \"max\" : \"440.312\",
+            \"users\" : {
+               \"myuser\" : {
+                  \"duration\" : 40.826,
+                  \"count\" : 94
+               }
+            },
+            \"chronos\" : {
+               \"20240606\" : {
+                  \"23\" : {
+                     \"count\" : 94,
+                     \"duration\" : 90.826,
+                     \"min_duration\" : {
+                        \"08\" : 80.347,
+                        \"09\" : 80.479
+                     },
+                     \"min\" : {
+                        \"09\" : 52,
+                        \"18\" : 52
+                     }
+                  }
+               }
+            },
+            \"min\" : \"50.163\"
          }
+
 }
  }
 }";;
@@ -259,8 +328,10 @@ let subjson = "{
                      }
                   }";;
 
-let printState new_state = 
-        match new_state with
+let rec printState state =
+  Printf.printf "STATE: %s\n\n"  (string_of_state state)
+ and string_of_state   state =     
+        match state with
          | Root -> "Root"
          | Normaliz -> "Normaliz"
          | Postgres -> "Postgres"
@@ -296,7 +367,7 @@ let previous_state current_state =
   | Chrono -> Querysubj
   | Normaliz -> Root
   | Root -> Root
-  | other -> printState other |> failwith;;
+  | other -> string_of_state other |> failwith;;
 
 
 let is_float s = 
@@ -321,8 +392,6 @@ let transition state input =
   | Appname, _ -> Apps
   | Querysubj, "users" -> Users
   | Users, "users" -> User
-  | User, _ -> Users
-  | Users, _ -> Querysubj
   | Querysubj, "chronos" -> Chrono
   | Chrono, s when is_int s -> Day
   | Day, s when is_int s -> Heure
@@ -333,9 +402,6 @@ let transition state input =
   | Heure, _ -> Day
   | Day, _ -> Chrono
   | Chrono, "min" -> Min
-  | Chrono, _ -> Querysubj
-  | Querysubj, _ -> Postgres
-  | Postgres, _ -> Normaliz
   | Root, _ -> Root
   | _ -> state (* On reste dans le même état, endless loop*);;
 
@@ -362,119 +428,102 @@ let accBase = {
         current_chronos_hour_info = None;
 };;
 
-let h = Hashtbl.create 788;;
-
-let printAndStore d h lastname =
-  let lexeme = Jsonm.decode d in
-  Printf.printf "printAndStore:   lastname=%s  \n%!" lastname;
-  match lexeme with
-  | `Lexeme l ->
-      (match l with
-       | `Null -> Printf.printf "Lexeme: Null\n" 
-       | `Bool b -> Printf.printf "Lexeme: Bool - %b\n" b; H.add h lastname (b |> string_of_bool);
-       | `String s -> Printf.printf "Lexeme: String - %s\n" s; H.add h lastname s;
-       | `Float f -> Printf.printf "Lexeme: Float - %f\n" f; H.add h lastname (f |> string_of_float);
-       | `Name n -> Printf.printf "Lexeme: Name - %s\n" n
-       | `Os -> Printf.printf "Lexeme: START of Object\n"; 
-       | `Oe -> Printf.printf "Lexeme: END of Object\n"; 
-       | `As -> Printf.printf "Lexeme: Start of Array\n"
-       | `Ae -> Printf.printf "Lexeme: End of Array\n"); lexeme
-  | `End -> Printf.printf "Completed JSON parsing\n"; lexeme
-  | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
-  | `Await -> failwith "Unexpected `Await in decoder";;
-
-
-(* - : decoder ->
-    (string, string) H.t -> string -> state -> string * state * 'a option *)
-let rec getSample d h lastname state =
-        let lexeme = printAndStore d h lastname in
-        let _ = printState state |> Printf.printf "Sample:   lastname=%s  Etat = %s\n%!" lastname in
-        match lexeme, state with
-        | `Lexeme (`Name n), _ -> printAndStore d h n; getSample d h lastname Sample;
-        | `Lexeme (`Os), _ ->  failwith "Erreur : Un objet Sample ne possède aucun objet"
-        | `Lexeme (`Oe), Sample -> Printf.printf "getSample:Rendu\n%!"; let l, e, res = lastname, Samples,  Some {    
-                                                                        remote = H.find_option h "remote"; 
-                                                                        db = H.find_option h "db" |> BatOption.default "";
-                                                                        plan = H.find_option h "plan";
-                                                                        bind = H.find_option h "bind";
-                                                                        query = H.find_option h "query" |> BatOption.default "";
-                                                                        date = H.find_option h "date" |> BatOption.default "";
-                                                                        user = H.find_option h "user" |> BatOption.default "";
-                                                                        app = H.find_option h "app" |> BatOption.default "";
-                                                                   }
-                                   in H.clear h; l,e,res
-        | `Lexeme l, eta -> printAndStore d h lastname; printState eta |> Printf.printf "Cas général etat=%s  \n%!"; 
-                                printAndStore d h lastname; 
-                                getSample d h lastname Sample
-        | `End, _ -> Printf.printf "Completed JSON parsing\n"; lastname, state, None
-        | `Error e, _ -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
-        | `Await, _ -> failwith "Unexpected `Await in decoder";;
-
-
-let rec getSamples d h lastname state (hres : (float, sample) H.t) =
-        let lexeme = printAndStore d h lastname in
-        let _ = printState state |> Printf.printf "Samples:Etat = %s\n%!" in
-        match lexeme, state with
-        | `Lexeme (`Name n), _ -> printAndStore d h n; getSamples d h n Samples hres
-        | `Lexeme (`Os), _ -> Printf.printf "getSamples Objet début lastname=%s\n%!" lastname;
-                                let ln, sta, samp = getSample d h lastname Samples in
-                                
-                                getSamples d h lastname Samples hres
-        | `Lexeme (`Oe), Sample -> (*H.add hres (lastname |> float_of_string) (samp |> Option.get);*)
-                                        Printf.printf "getSamples:Rendu lastname=%s \n%!" lastname; getSamples d h lastname Samples hres
-        | `Lexeme l, eta ->
-                            printState eta |> Printf.printf "Cas général etat=%s  \n%!"; 
-                            printAndStore d h lastname; 
-                            getSamples d h lastname Samples hres
-        | `End, _ -> Printf.printf "Completed JSON parsing\n"; lastname, state, hres
-        | `Error e, _ -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
-        | `Await, _ -> failwith "Unexpected `Await in decoder";;
-
-
-
-let samples = " {
-               \"0.167\" : {
-                  \"remote\" : null,
-                  \"db\" : \"adep\",
-                  \"plan\" : null,
-                  \"bind\" : null,
-                  \"query\" : \"SELECT From Where\",
-                  \"date\" : \"2024-06-06 23:09:18\",
-                  \"user\" : \"openassur\",
-                  \"app\" : \"[unknown]\"
-               },
-               \"0.184\" : {
-                  \"plan\" : null,
-                  \"db\" : \"adep\",
-                  \"bind\" : null,
-                  \"remote\" : null,
-                  \"app\" : \"[unknown]\",
-                  \"user\" : \"openassur\",
-                  \"date\" : \"2024-06-06 23:08:16\",
-                  \"query\" : \"SELECT From Where\"
-               },
-               \"0.312\" : {
-                  \"remote\" : null,
-                  \"plan\" : null,
-                  \"db\" : \"adep\",
-                  \"bind\" : null,
-                  \"date\" : \"2024-06-06 23:09:18\",
-                  \"query\" : \"SELECT From Where\",
-                  \"app\" : \"[unknown]\",
-                  \"user\" : \"myuser\"
-               }
-            }";;
-
-
-let d = Jsonm.decoder (`String samples);;
-
 
 (*Est-ce que je récup les propriétés via la H ? Mais faut la vider
  H.clear h
  Et faut que la fonction rende le bon type, donc process_json doit rendre un acuumulateur*)
 
-let rec process_json d h lastname state =
-  match Jsonm.decode d with
+
+type json =
+  | Null
+  | Bool of bool
+  | Float of float
+  | String of string
+  | List of json list
+  | Obj of (string * json) list;;
+
+
+
+let rec parse_jsonm d =
+  let rec parse_value () =
+    match Jsonm.decode d with
+    | `Lexeme (`Null) -> Null
+    | `Lexeme (`Bool b) -> Bool b
+    | `Lexeme (`Float f) -> Float f
+    | `Lexeme (`String s) -> String s
+    | `Lexeme (`Os) -> parse_object []
+    | `Lexeme (`As) -> parse_array []
+    | `Lexeme (`Ae) -> failwith "Unexpected end of array"
+    | `Lexeme (`Oe) -> failwith "Unexpected end of object"
+    | `Lexeme (`Name n) ->  let value = parse_value () in
+                                 parse_object ((n, value) :: []) (* Printf.sprintf "Unexpected name :%s" n |> failwith*)
+    | `End -> failwith "Unexpected end of input"
+    | `Error e -> failwith (Format.asprintf "Decode error: %a" Jsonm.pp_error e)
+    | `Await -> failwith "Unexpected `Await in decoder"
+
+  and parse_object acc =
+    match Jsonm.decode d with
+    | `Lexeme (`Oe) -> Obj (List.rev acc)
+    | `Lexeme (`Name n) -> 
+        let value = parse_value () in
+        parse_object ((n, value) :: acc)
+    | _ -> failwith "Expected object name or end of object"
+
+  and parse_array acc =
+    match Jsonm.decode d with
+    | `Lexeme (`Ae) -> List (List.rev acc)
+    | _ -> 
+        let value = parse_value () in
+        parse_array (value :: acc)
+  in
+  parse_value ();;
+
+
+
+
+let rec process_json d lastname state acc =
+        let dec = Jsonm.decode d in
+        let print l = match l with
+       | `Null -> Printf.printf "Lexeme: Null\n"
+       | `Bool b -> Printf.printf "Lexeme: Bool - %b\n" b; 
+       | `String s -> Printf.printf "Lexeme: String - %s\n" s; 
+       | `Float f -> Printf.printf "Lexeme: Float - %f\n" f; 
+       | `Name n -> Printf.printf "Lexeme: Name - %s\n" n
+       | `Os -> Printf.printf "Lexeme: START of Object\n"; 
+       | `Oe -> Printf.printf "Lexeme: END of Object\n"; 
+       | `As -> Printf.printf "Lexeme: Start of Array\n"
+       | `Ae -> Printf.printf "Lexeme: End of Array\n" in
+        printState state;
+        match dec with
+          | `Lexeme l ->  begin 
+                           print l;
+                           match l, state with
+                                | `Name n, _ -> process_json d n state acc
+                                | `Os, Postgres -> printState state;
+                                                (*let newstate = transition state lastname in
+                                                        printState newstate;*)
+                                        process_json d lastname state ((parse_jsonm d)::acc) 
+                                        (*TODO : ça merde parce que le parse_value doit lui tomber sur un `Os, or il est déjà lue, donc il tombe sur le token suivant
+                                                        on a recopié le code de parse-object dans le cas name dans parse_value*)
+                                | `Os, n -> let newstate = transition state lastname in printState newstate; process_json d lastname newstate acc
+                                | `Oe, _ -> let newstate = previous_state state in  printState newstate; process_json d lastname newstate acc
+                                | _ -> printState state; process_json d lastname state acc  
+                          end
+                          
+          | `End -> Printf.printf "Completed JSON parsing\n"; lastname, state, acc 
+          | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
+          | `Await -> failwith "Unexpected `Await in decoder";;
+
+
+
+let read_and_process_json json_input =
+  let d = Jsonm.decoder (`String json_input) in
+  process_json  d  "root" Root [];; 
+
+
+let rec process_json_unit d h lastname state =
+        let dec = Jsonm.decode d in
+  match dec with
   | `Lexeme l ->
       (match l with
        | `Null -> Printf.printf "Lexeme: Null\n"
@@ -491,16 +540,14 @@ let rec process_json d h lastname state =
         | `Os, _ -> lastname, transition state lastname 
         | `Oe, Root -> lastname, previous_state state 
         | _ -> lastname, state in
-      Printf.printf "STATE: %s\n\n"  (printState new_state);
-      process_json d h curname new_state
+      printState new_state;
+      process_json_unit d h curname new_state
   | `End -> Printf.printf "Completed JSON parsing\n"
   | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
   | `Await -> failwith "Unexpected `Await in decoder";;
 
 
-let read_and_process_json json_input =
-  let d = Jsonm.decoder (`String json_input) in
-  process_json  d h "root" Root;; 
+
 
 (******************************************)
 
@@ -526,34 +573,4 @@ let create_accumulateur () = {
   current_chronos_hour_info = None;
 }
 
-(*
 
-let rec process_json d acc state stack =
-  match Jsonm.decode d with
-  | `Lexeme l ->
-      let new_state, new_stack = match l, state with
-        | `Name n, _ -> state, stack
-        | `Os, _ -> transition state, state :: stack
-        | `Oe, s :: ss -> s, ss
-        | _ -> state, stack in
-      begin
-        match l, state with
-        | `String s, Sample _ -> acc.current_sample <- Some { (Option.get acc.current_sample) with user = s }
-        | `Float f, Sample _ -> acc.current_sample <- Some { (Option.get acc.current_sample) with duration = f }
-        | `String s, User -> acc.current_user_app_info <- Some { (Option.get acc.current_user_app_info) with user = s }
-        | `Float f, User -> acc.current_user_app_info <- Some { (Option.get acc.current_user_app_info) with duration = f }
-        | `String s, Appname -> acc.current_user_app_info <- Some { (Option.get acc.current_user_app_info) with app = s }
-        | _ -> ()
-      end;
-      process_json d acc new_state new_stack
-  | `End -> acc
-  | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
-  | `Await -> failwith "Unexpected `Await in decoder"
-
-(* Example usage *)
-
-let parse json_string =
-  let d = Jsonm.decoder (`String json_string) in
-  let acc = create_accumulator () in
-  process_json d acc Root []
-*)
