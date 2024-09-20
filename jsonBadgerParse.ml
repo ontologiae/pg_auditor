@@ -313,21 +313,6 @@ let transition state =
 
 
 
-let getRoot str = Jsonm.decoder (`String str);;
-
-let subjson = "{
-                     \"count\" : 4,
-                     \"duration\" : 0.826,
-                     \"min_duration\" : {
-                        \"08\" : 0.347,
-                        \"09\" : 0.479
-                     },
-                     \"min\" : {
-                        \"09\" : 2,
-                        \"08\" : 2
-                     }
-                  }";;
-
 let rec printState state =
   Printf.printf "STATE: %s\n\n"  (string_of_state state)
  and string_of_state   state =     
@@ -404,34 +389,6 @@ let transition state input =
   | Chrono, "min" -> Min
   | Root, _ -> Root
   | _ -> state (* On reste dans le même état, endless loop*);;
-
-
-type acumulateur = {
-  mutable query_info: query_info option;
-  mutable samples: (float, sample) Hashtbl.t;
-  mutable apps: (string, user_app_info) Hashtbl.t;
-  mutable users: (string, user_app_info) Hashtbl.t;
-  mutable chronos: chronos_info option;
-  mutable current_sample: sample option;
-  mutable current_user_app_info: user_app_info option;
-  mutable current_chronos_hour_info: chronos_hour_info option;
-}
-
-let accBase = {
-        query_info = None;
-        samples = Hashtbl.create 786;
-        apps = Hashtbl.create 786;
-        users = Hashtbl.create 787;
-        chronos = None;
-        current_sample = None;
-        current_user_app_info = None;
-        current_chronos_hour_info = None;
-};;
-
-
-(*Est-ce que je récup les propriétés via la H ? Mais faut la vider
- H.clear h
- Et faut que la fonction rende le bon type, donc process_json doit rendre un acuumulateur*)
 
 
 type json =
@@ -547,30 +504,5 @@ let rec process_json_unit d h lastname state =
   | `Await -> failwith "Unexpected `Await in decoder";;
 
 
-
-
-(******************************************)
-
-type acumulateur = {
-  mutable query_info: query_info option;
-  mutable samples: (float, sample) Hashtbl.t;
-  mutable apps: (string, user_app_info) Hashtbl.t;
-  mutable users: (string, user_app_info) Hashtbl.t;
-  mutable chronos: chronos_info option;
-  mutable current_sample: sample option;
-  mutable current_user_app_info: user_app_info option;
-  mutable current_chronos_hour_info: chronos_hour_info option;
-}
-
-let create_accumulateur () = {
-  query_info = None;
-  samples = Hashtbl.create 10;
-  apps = Hashtbl.create 10;
-  users = Hashtbl.create 10;
-  chronos = None;
-  current_sample = None;
-  current_user_app_info = None;
-  current_chronos_hour_info = None;
-}
 
 
