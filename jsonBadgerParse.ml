@@ -435,6 +435,166 @@ let rec parse_jsonm d =
   in
   parse_value ();;
 
+ let get n l = 
+         let e = List.assoc n l in 
+         match e with
+         | String s      -> s
+         | Float f       -> string_of_float f
+         | Bool true     -> "true"
+         | Bool false    -> "false";;
+
+ let toSample json =
+         let existName n l = List.exists (fun (a,b) -> a = n) l in
+         match json with
+        |  Obj l when existName "date" l && existName "query" l -> let get n = get n l in
+                                {  remote = (try Some(get "remote") with e -> None);
+                                   db = get "db";
+                                   plan = (try Some(get "plan") with e -> None);
+                                   bind = (try Some(get "bind") with e -> None);
+                                   query = get "query";
+                                   date = get "date";
+                                   user = get "user";
+                                   app = get "app" }
+        | _ -> failwith "ce n'est pas un Sample";;
+
+ let toSamples jsonc h =
+        match jsonc with
+        | "samples", Obj l -> List.iter (fun (temps,l) -> H.add h temps  (toSample l)) l
+        | _ -> failwith "Pas un couple samples";;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let toUserAppInfo json =
+  match json with
+  | Obj l -> 
+    let get n = get n l in
+    { duration = float_of_string (get "duration");
+      count = float_of_string (get "count") |> int_of_float }
+  | _ -> failwith "ce n'est pas un UserAppInfo";;
+
+
+let toUserAppInfos json h =
+  match json with
+  | "users", Obj l | "apps", Obj l -> List.iter (fun (name, obj) -> H.add h name (toUserAppInfo obj)) l
+  | _ -> failwith "Pas un couple users ou apps";;
+
+let toMinDurationInfo json =
+  match json with
+  | Float f -> { duration = f }
+  | _ -> failwith "ce n'est pas un MinDurationInfo";;
+
+let toMinDurationInfos json h =
+  match json with
+  | "min_duration", Obj l -> List.iter (fun (time, obj) -> H.add h (float_of_string time) (toMinDurationInfo obj)) l
+  | _ -> failwith "Pas un couple min_duration";;
+
+let toMinInfo json =
+  match json with
+  | Float f -> { count = int_of_float f }
+  | _ -> failwith "ce n'est pas un MinInfo";;
+
+let toMinInfos json h =
+  match json with
+  | "min", Obj l -> List.iter (fun (time, obj) -> H.add h (float_of_string time) (toMinInfo obj)) l
+  | _ -> failwith "Pas un couple min";;
+
+let toChronosHourInfo json =
+  match json with
+  | Obj l -> 
+    let get n = get n l in
+    let min_duration = H.create 10 in
+    let min = H.create 10 in
+    List.iter (fun field -> match field with
+      | "min_duration", Obj _ -> toMinDurationInfos field min_duration
+      | "min", Obj _ -> toMinInfos field min
+      | _ -> ()) l;
+    { count = float_of_string (get "count") |> int_of_float;
+      duration = float_of_string (get "duration");
+      min_duration = min_duration;
+      min = min }
+  | _ -> failwith "ce n'est pas un ChronosHourInfo";;
+
+let toChronosHourInfos json h =
+  match json with
+  | Obj l -> List.iter (fun (hour, obj) -> H.add h (int_of_string hour) (toChronosHourInfo obj)) l
+  | _ -> failwith "Pas un couple hours";;
+
+let toChronosDayInfo json =
+  match json with
+  | Obj l -> 
+    let hours = H.create 24 in
+    List.iter (fun field -> match field with
+      | "hours", obj -> toChronosHourInfos obj hours
+      | _ -> ()) l;
+    { hours = hours }
+  | _ -> failwith "ce n'est pas un ChronosDayInfo";;
+
+let toChronosDayInfos json h =
+  match json with
+  | Obj l -> List.iter (fun (day, obj) -> H.add h (int_of_string day) (toChronosDayInfo obj)) l
+  | _ -> failwith "Pas un couple day_info";;
+
+let toChronosInfo json =
+  match json with
+  | Obj l -> 
+    let day_info = H.create 365 in
+    List.iter (fun field -> match field with
+      | "day_info", obj -> toChronosDayInfos obj day_info
+      | _ -> ()) l;
+    { day_info = day_info }
+  | _ -> failwith "ce n'est pas un ChronosInfo";;
+
+let toQueryInfo json =
+  match json with
+  | Obj l -> 
+    let get n = get n l in
+    let samples = H.create 10 in
+    let apps = H.create 10 in
+    let users = H.create 10 in
+    let chronos = ref None in
+    List.iter (fun field -> match field with
+      | "samples", Obj _ -> toSamples field samples
+      | "apps", Obj _ -> toUserAppInfos field apps
+      | "users", Obj _ -> toUserAppInfos field users
+      | "chronos", obj -> chronos := Some(toChronosInfo obj)
+      | _ -> ()) l;
+    { duration = float_of_string (get "duration");
+      samples = H.to_list samples |> List.map (fun (a,b) -> float_of_string a,b) |> H.of_list;
+      count = float_of_string (get "count") |> int_of_float;
+      apps = apps;
+      max = float_of_string (get "max");
+      users = users;
+      chronos = (match !chronos with Some c -> c | None -> failwith "chronos missing");
+      min = float_of_string (get "min") }
+  | _ -> failwith "ce n'est pas un QueryInfo";;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -466,7 +626,6 @@ let rec process_json d lastname state acc =
                                 | `Oe, _ -> let newstate = previous_state state in  printState newstate; process_json d lastname newstate acc
                                 | _ -> printState state; process_json d lastname state acc  
                           end
-                          
           | `End -> Printf.printf "Completed JSON parsing\n"; lastname, state, acc 
           | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
           | `Await -> failwith "Unexpected `Await in decoder";;
