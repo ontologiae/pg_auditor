@@ -267,8 +267,6 @@ let rec parse_whereClause json =
 
   | Object (("ColumnRef", colref)::_) -> IsTrueOrNot(true, parse_expreCondTerm json)
   
-
-
   | _ -> print_endline (validJsonOfJsont json);
          failwith ("Unknown whereClause structure: " ^ validJsonOfJsont json) 
 

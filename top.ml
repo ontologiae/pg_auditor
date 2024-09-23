@@ -1,4 +1,4 @@
-#require "tiny_json";;
+#require "tiny_json,jsonm,batteries";;
 #load "JsonSqlParse.cmo";;
 open Tiny_json.Json;;
 open JsonSqlParse;;
