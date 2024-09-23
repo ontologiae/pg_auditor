@@ -13,18 +13,18 @@ type sample = {
   app: string;
 }
 type user_app_info = {
-  duration: float;
+  total_duration: float;
   count: int;
 }
 type min_duration_info = {
-  duration: float;
+  total_duration: float;
 }
 type min_info = {
   count: int;
 }
 type chronos_hour_info = {
   count: int;
-  duration: float;
+  total_duration: float;
   min_duration: (float, min_duration_info) Hashtbl.t;
   min: (float, min_info) Hashtbl.t ;
 }
@@ -35,7 +35,7 @@ type chronos_info = {
   day_info: (int, chronos_day_info) Hashtbl.t;
 }
 type query_info = {
-  duration: float;
+  total_duration: float;
   samples: (float, sample) Hashtbl.t;
   count: int;
   apps: (string, user_app_info) Hashtbl.t;
@@ -43,6 +43,7 @@ type query_info = {
   users: (string, user_app_info) Hashtbl.t;
   chronos: chronos_info;
   min: float;
+  query:string;
 }
 type root = {
   queryProto : query_info list;
@@ -401,7 +402,7 @@ type json =
 
 
 
-let rec parse_jsonm d =
+let rec parse_jsonm d name =
   let rec parse_value () =
     match Jsonm.decode d with
     | `Lexeme (`Null) -> Null
@@ -433,7 +434,10 @@ let rec parse_jsonm d =
         let value = parse_value () in
         parse_array (value :: acc)
   in
-  parse_value ();;
+  Obj[ (name,parse_value ())];;
+
+
+
 
  let get n l = 
          let e = List.assoc n l in 
@@ -464,22 +468,11 @@ let rec parse_jsonm d =
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 let toUserAppInfo json =
   match json with
   | Obj l -> 
     let get n = get n l in
-    { duration = float_of_string (get "duration");
+    { total_duration = float_of_string (get "duration");
       count = float_of_string (get "count") |> int_of_float }
   | _ -> failwith "ce n'est pas un UserAppInfo";;
 
@@ -491,7 +484,7 @@ let toUserAppInfos json h =
 
 let toMinDurationInfo json =
   match json with
-  | Float f -> { duration = f }
+  | Float f -> { total_duration = f }
   | _ -> failwith "ce n'est pas un MinDurationInfo";;
 
 let toMinDurationInfos json h =
@@ -509,6 +502,11 @@ let toMinInfos json h =
   | "min", Obj l -> List.iter (fun (time, obj) -> H.add h (float_of_string time) (toMinInfo obj)) l
   | _ -> failwith "Pas un couple min";;
 
+
+(*TODO bug : les chronos ne sont pas lus
+List.map (fun a -> H.to_list a.chronos.day_info) q;;
+pour tester 
+ *)
 let toChronosHourInfo json =
   match json with
   | Obj l -> 
@@ -520,7 +518,7 @@ let toChronosHourInfo json =
       | "min", Obj _ -> toMinInfos field min
       | _ -> ()) l;
     { count = float_of_string (get "count") |> int_of_float;
-      duration = float_of_string (get "duration");
+      total_duration = float_of_string (get "duration");
       min_duration = min_duration;
       min = min }
   | _ -> failwith "ce n'est pas un ChronosHourInfo";;
@@ -535,7 +533,7 @@ let toChronosDayInfo json =
   | Obj l -> 
     let hours = H.create 24 in
     List.iter (fun field -> match field with
-      | "hours", obj -> toChronosHourInfos obj hours
+      | hoursname, obj when is_int hoursname -> toChronosHourInfos obj hours
       | _ -> ()) l;
     { hours = hours }
   | _ -> failwith "ce n'est pas un ChronosDayInfo";;
@@ -557,7 +555,7 @@ let toChronosInfo json =
 
 let toQueryInfo json =
   match json with
-  | Obj l -> 
+  | Obj [(query,Obj l)] -> 
     let get n = get n l in
     let samples = H.create 10 in
     let apps = H.create 10 in
@@ -569,14 +567,16 @@ let toQueryInfo json =
       | "users", Obj _ -> toUserAppInfos field users
       | "chronos", obj -> chronos := Some(toChronosInfo obj)
       | _ -> ()) l;
-    { duration = float_of_string (get "duration");
+    { total_duration = float_of_string (get "duration");
       samples = H.to_list samples |> List.map (fun (a,b) -> float_of_string a,b) |> H.of_list;
       count = float_of_string (get "count") |> int_of_float;
       apps = apps;
       max = float_of_string (get "max");
       users = users;
       chronos = (match !chronos with Some c -> c | None -> failwith "chronos missing");
-      min = float_of_string (get "min") }
+      min = float_of_string (get "min") ;
+      query = query;
+      }
   | _ -> failwith "ce n'est pas un QueryInfo";;
 
 
@@ -619,9 +619,7 @@ let rec process_json d lastname state acc =
                                 | `Os, Postgres -> printState state;
                                                 (*let newstate = transition state lastname in
                                                         printState newstate;*)
-                                        process_json d lastname state ((parse_jsonm d)::acc) 
-                                        (*TODO : ça merde parce que le parse_value doit lui tomber sur un `Os, or il est déjà lue, donc il tombe sur le token suivant
-                                                        on a recopié le code de parse-object dans le cas name dans parse_value*)
+                                        process_json d lastname state ((parse_jsonm d lastname)::acc) 
                                 | `Os, n -> let newstate = transition state lastname in printState newstate; process_json d lastname newstate acc
                                 | `Oe, _ -> let newstate = previous_state state in  printState newstate; process_json d lastname newstate acc
                                 | _ -> printState state; process_json d lastname state acc  
@@ -636,6 +634,16 @@ let read_and_process_json json_input =
   let d = Jsonm.decoder (`String json_input) in
   process_json  d  "root" Root [];; 
 
+
+
+let readfile_and_process_json_file file_path =
+  let ic = open_in file_path in
+  (*let json_input = really_input_string ic (in_channel_length ic) in*)
+  
+  let d = Jsonm.decoder (`Channel ic) in
+  let res = process_json d "root" Root [] in
+  close_in ic;
+  res;;
 
 let rec process_json_unit d h lastname state =
         let dec = Jsonm.decode d in
@@ -663,5 +671,15 @@ let rec process_json_unit d h lastname state =
   | `Await -> failwith "Unexpected `Await in decoder";;
 
 
+let parse_json_to_query_info file_path =
+        let _,_,jsona = readfile_and_process_json_file file_path in
+        List.map  toQueryInfo jsona;;
 
+
+(* * Fonctions d'analyses des Query_infos* *)
+
+
+(*Renvoi la 1ére requête issue du sample, donc parsable puisque requête réelle*)
+let getOneParsableQuery q =
+        (H.to_list q.samples |> List.hd |> snd).query;;
 
