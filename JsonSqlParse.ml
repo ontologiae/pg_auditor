@@ -29,7 +29,7 @@ joinType =
 and  fromClause =
         | JoinExpre of joinType * fromClause * fromClause * condJoin
         | CondExpre of expreCondTerm
-        | SubQuery of sqlEntry
+        | FromSubQuery of sqlEntry
         | Inconnu (*Grammaire non gérée*)
 and op = And | Or | Equal | NotEqual | Inf | InfEq | Sup | SupEq | Any | All | Like | Ilike | Between | In
 and condJoin = 
@@ -43,6 +43,7 @@ and whereClause =
         | IsNullExpre of expreCondTerm
         | IsNotNullExpre of expreCondTerm
         | IsTrueOrNot of bool * expreCondTerm
+        | BoolConst of bool
         | NotBoolExpre of whereClause
         | AllBoolExpre of whereClause
         | AnyBoolExpre of whereClause
@@ -51,7 +52,7 @@ and whereClause =
         | Between of expreCondTerm * expreCondTerm
         | LikeBoolExpre of expreCondTerm * expreCondTerm
         | WhereCondExpre of condWhere
-        | SubQuery of selectQuery
+        | WhereSubQuery of selectQuery
 and condWhere =
         | OpCond of op * expreCondTerm * expreCondTerm
         | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
@@ -60,11 +61,12 @@ and expreCondTerm =
         | TableName of string
         | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
         | ColumnRef of string option * string (*Alias.champ*)
-        | SubQuery of selectQuery (**)
+        | ExpreSubQuery of sqlEntry * op (**)
         | ConstStr of string
         | ConstNbr of int64
         | ConstTimestamp of string
         | ConstDate of string
+        | ConstBool of bool
         | TypeCast of string * expreCondTerm
         | ListTerm of expreCondTerm list
         | ParamRef of int64
@@ -109,10 +111,13 @@ let string_to_join_type = function
 let string_to_op op =  (*TODO Uppercase*)
         match op with
     | "=" -> Equal
+    | "u003cu003e" -> NotEqual
     | "<>" -> NotEqual
     | "u003c" -> Inf
     | "<" -> Inf
     | "<=" -> InfEq
+    | "u003c="  -> InfEq
+    | "u003c"   -> Inf 
     | "u003e" -> Sup
     | ">" -> Sup
     | "u003e="  -> SupEq
@@ -144,7 +149,41 @@ let int64_of_json_string json = match json with
 (* Helper function to extract a string from JSON *)
 let extract_string json = match json with
   | String s -> s
-  | _ -> failwith "Expected a JSON string"
+  | _ -> failwith "Expected a JSON string";;
+
+
+
+(*  - : string -> string -> string -> string -> t -> indexStmt *)
+let json_to_indexElem idxname schemaname tblname typ elem = 
+
+        let makeIdxElem methodName idxname shema tbl col op ordr  nullordr =
+               match methodName with
+                | "hash" -> Hash(idxname, shema, tbl, col, []) (*TODO option si utile*)
+                | "gist" -> Gist(idxname, shema, tbl, col, [])
+                | "gin" -> Gin(idxname, shema, tbl, col, Some(op), [])
+                | "brin" -> Brin (idxname, shema, tbl, col, [])
+                | _ -> Btree(idxname, shema, tbl, col, []) in
+        match elem with 
+        |  Object
+             (("name", String column)::
+              ("opclass",
+                        Array
+                         [
+                                 Object [("String", Object [("str", String schemaOp)])];
+                                 Object [("String", Object [("str", String operateur)])]
+                          ]
+                       )::
+              ("ordering", String ordre)::
+              ("nulls_ordering", String null_ordre)::_)
+           -> makeIdxElem typ idxname schemaname tblname column operateur ordre  null_ordre
+              
+        | Object
+            (("name", String column)::
+             ("ordering", String ordre)::
+             ("nulls_ordering", String null_ordre)::_)
+           -> makeIdxElem typ idxname schemaname tblname column "" ordre  null_ordre
+        |  json -> failwith ("Unsupported json_to_indexElem: " ^ validJsonOfJsont json);;
+
 
 (*TODO fusionner avec parse_expreCondTerm ?*)
 (*   - : t -> expreCondTerm *)
@@ -165,6 +204,15 @@ let rec json_to_expreCond = function
         ConstNbr (Int64.of_float (float_of_string n))
 
     | json -> failwith ("Unsupported expression condition: " ^ validJsonOfJsont json);;
+
+
+
+
+let op_of_sublink_op operator =
+        match operator with
+        | "EXPR_SUBLINK" -> Equal
+        | "ANY_SUBLINK"  -> In;;
+
 
 
 
@@ -219,6 +267,22 @@ let rec parse_expreCondTerm json =
 
   |   Object (("ParamRef", Object (("number", Number nbr)::_))::_) -> ParamRef (Int64.of_string nbr)
 
+  | Object
+         [("SubLink",
+           Object
+            [("subLinkType", String ope);
+             ("subselect", selectStmt);("location", _)
+            ])
+          ]    -> (* Sous requête Select From Where 
+                        "EXPR_SUBLINK" = 
+                                ANY_SUBLINK IN
+                        
+                        *)
+                let op =  op_of_sublink_op ope in
+                ExpreSubQuery(getOneStatement  selectStmt,  op)
+     
+
+
   | _ -> let jsonprint = validJsonOfJsont json in
                 let _ = print_endline jsonprint in
                 failwith ("Unsupported parse_expreCondTerm: " ^ validJsonOfJsont json)
@@ -229,13 +293,26 @@ let rec parse_expreCondTerm json =
 (*  parse whereClause BoolExpr 
 - : t -> whereClause = <fun>
  *)
-let rec parse_whereClause json =
+and  parse_whereClause json =
   match json with
   (* AND boolean expression *)
   | Object [("BoolExpr", Object [("boolop", String "AND_EXPR"); ("args", Array [arg1; arg2]); ("location", _)])] ->
       let arg1_parsed = parse_whereClause arg1 in 
       let arg2_parsed = parse_whereClause arg2 in
       AndBoolExpre (arg1_parsed, arg2_parsed)
+   | Object [("BoolExpr", Object [("boolop", String "AND_EXPR"); ("args", Array [arg1; arg2; arg3]); ("location", _)])] ->
+      let arg1_parsed = parse_whereClause arg1 in 
+      let arg2_parsed = parse_whereClause arg2 in
+      let arg3_parsed = parse_whereClause arg3 in
+      AndBoolExpre(AndBoolExpre (arg1_parsed, arg2_parsed), arg3_parsed)
+      (*TODO Va falloir faire un fold...*)
+   | Object [("BoolExpr", Object [("boolop", String "AND_EXPR"); ("args", Array [arg1; arg2; arg3; arg4]); ("location", _)])] ->
+      let arg1_parsed = parse_whereClause arg1 in 
+      let arg2_parsed = parse_whereClause arg2 in
+      let arg3_parsed = parse_whereClause arg3 in
+      let arg4_parsed = parse_whereClause arg4 in
+      AndBoolExpre(AndBoolExpre(AndBoolExpre (arg1_parsed, arg2_parsed), arg3_parsed),arg4_parsed)
+
   | Object [("BoolExpr", Object [("boolop", String "OR_EXPR"); ("args", Array [arg1; arg2]); ("location", _)])] ->
       let arg1_parsed = parse_whereClause arg1 in 
       let arg2_parsed = parse_whereClause arg2 in
@@ -245,6 +322,31 @@ let rec parse_whereClause json =
                   L.fold_left ( fun a -> fun b -> AndBoolExpre(  a, parse_whereClause b) ) (parse_whereClause arg1) q
   | Object   [("BoolExpr",      Object      (("boolop", String "OR_EXPR")::("args",Array (arg1::q) )::_))] ->
                   L.fold_left ( fun a -> fun b -> OrBoolExpre(  a, parse_whereClause b) ) (parse_whereClause arg1) q
+
+
+
+| Object [("BoolExpr", Object [("boolop", String "NOT_EXPR"); ("args", Array [arg1]); ("location", _)])] ->
+      let arg1_parsed = parse_whereClause arg1 in 
+      NotBoolExpre (arg1_parsed)
+                  
+  | Object
+   [("BooleanTest",
+     Object
+      [("arg",
+        Object
+         [("ColumnRef",
+           Object
+            [("fields",
+              Array
+               [Object [("String", Object [("str", String alias)])];
+                Object [("String", Object [("str", String field)])]]);
+             ("location", _)]
+             )]);
+             ("booltesttype", String is_true_or_false); ("location", _)
+         ]
+       )
+      ] -> let trueorfalse = if is_true_or_false = "IS_TRUE" then true else false in IsTrueOrNot(trueorfalse, ColumnRef (Some(alias), field))
+  
 
   | Object [("A_Expr", Object [("kind", String "AEXPR_OP"); ("name", Array [Object [("String", Object [("str", String op)])]]); ("lexpr", lexpr); ("rexpr", rexpr); ("location", _)])] ->
       let lexpr_parsed = parse_expreCondTerm lexpr in
@@ -266,7 +368,28 @@ let rec parse_whereClause json =
   | Object  (("NullTest",  Object (("arg", arg)::_))::_) -> IsNullExpre( parse_expreCondTerm arg)
 
   | Object (("ColumnRef", colref)::_) -> IsTrueOrNot(true, parse_expreCondTerm json)
-  
+
+  (*genre AND FALSE ou AND TRUE*)
+  | Object
+    [("TypeCast",
+      Object
+       [("arg",
+         Object
+          [("A_Const",
+            Object
+             [("val", Object [("String", Object [("str", String falseortrue)])]);
+              ("location", _)])]);
+        ("typeName",
+         Object
+          [("names",
+            Array
+             [Object [("String", Object [("str", String "pg_catalog")])];
+              Object [("String", Object [("str", String "bool")])]]);
+           ("typemod", _); ("location", _)]);
+        ("location", _)])] -> let trueorfalse =  if falseortrue = "f" then false else true in
+                                BoolConst trueorfalse
+
+       
   | _ -> print_endline (validJsonOfJsont json);
          failwith ("Unknown whereClause structure: " ^ validJsonOfJsont json) 
 
@@ -277,7 +400,7 @@ let rec parse_whereClause json =
 (*  - : t -> condJoin   
 
  TODO faut mettre des try catch pour lancer json_to_condJoin au cas où on a des subexpre*)
-let rec json_to_condJoin json : condJoin =
+and json_to_condJoin json : condJoin =
         let trySubCondJoin json =
                 try json_to_condJoin json with e -> CondExpre(parse_expreCondTerm json) in
    match json with 
@@ -306,9 +429,12 @@ let rec json_to_condJoin json : condJoin =
 
     | Object   [("BoolExpr",      Object      (("boolop", String "Or_EXPR")::("args",Array (arg1::q) )::_))] ->
                     L.fold_left ( fun a -> fun b -> Cond(Or,  a, json_to_condJoin b) ) (json_to_condJoin arg1) q
+    | Object   [("BoolExpr",      Object      (("boolop", String "Or_EXPR")::("args",Array (arg1::q) )::_))] ->
+                    L.fold_left ( fun a -> fun b -> Cond(Or,  a, json_to_condJoin b) ) (json_to_condJoin arg1) q
+
                     
 
-    | json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json);;
+    | json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json)
 
 
 
@@ -316,40 +442,10 @@ let rec json_to_condJoin json : condJoin =
 
 
 
-(*  - : string -> string -> string -> string -> t -> indexStmt *)
-let json_to_indexElem idxname schemaname tblname typ elem = 
-
-        let makeIdxElem methodName idxname shema tbl col op ordr  nullordr =
-               match methodName with
-                | "hash" -> Hash(idxname, shema, tbl, col, []) (*TODO option si utile*)
-                | "gist" -> Gist(idxname, shema, tbl, col, [])
-                | "gin" -> Gin(idxname, shema, tbl, col, Some(op), [])
-                | "brin" -> Brin (idxname, shema, tbl, col, [])
-                | _ -> Btree(idxname, shema, tbl, col, []) in
-        match elem with 
-        |  Object
-             (("name", String column)::
-              ("opclass",
-                        Array
-                         [
-                                 Object [("String", Object [("str", String schemaOp)])];
-                                 Object [("String", Object [("str", String operateur)])]
-                          ]
-                       )::
-              ("ordering", String ordre)::
-              ("nulls_ordering", String null_ordre)::_)
-           -> makeIdxElem typ idxname schemaname tblname column operateur ordre  null_ordre
-              
-        | Object
-            (("name", String column)::
-             ("ordering", String ordre)::
-             ("nulls_ordering", String null_ordre)::_)
-           -> makeIdxElem typ idxname schemaname tblname column "" ordre  null_ordre
-        |  json -> failwith ("Unsupported json_to_indexElem: " ^ validJsonOfJsont json);;
            
 
 (*- : t -> fromClause*)
-let rec json_to_fromClause clause =
+and json_to_fromClause clause =
         (*TODO  f108 f110 f111 f113*)
         let rec array_to_JoinExpreCross l =
                 match l with
@@ -390,7 +486,7 @@ let rec json_to_fromClause clause =
                                                      let join_type = string_to_join_type jointype in
                                                      let larg = json_to_fromClause larg in
                                                      let rarg = getOneStatement selectStmt  in
-                                                     JoinExpre (Lateral, larg, SubQuery rarg, NA)
+                                                     JoinExpre (Lateral, larg, FromSubQuery rarg, NA)
                                                      
 
          | Object (("JoinExpr", Object (("jointype", String jointype)::("isNatural", Bool true)::
@@ -413,7 +509,7 @@ let rec json_to_fromClause clause =
         -> CondExpre(TableName(n))
 
 
-        |  Object   (("RangeSubselect", Object (("subquery", subquery)::_))::_) -> SubQuery ( getOneStatement subquery  ) (*Il est normalement impossible qu'il y ait 2 subquery*)
+        |  Object   (("RangeSubselect", Object (("subquery", subquery)::_))::_) -> FromSubQuery ( getOneStatement subquery  ) (*Il est normalement impossible qu'il y ait 2 subquery*)
 
 
         | json -> let jsonprint = validJsonOfJsont json in
