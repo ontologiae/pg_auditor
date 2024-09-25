@@ -77,7 +77,7 @@ let querySeq  = Sequence.create();;
 (*int -> (float, JsonBadgerParse.query_info) Hashtbl.t -> string list = <fun>*)
 let samplesToSql idx sampleInfo =
         let l = H.to_list sampleInfo in
-        let sampleToSql time query = Printf.sprintf "Insert into samples(id,queryId,time,query) values (%d,%d,%f,%s);\n" (Sequence.next sampleSeq) idx time query in
+        let sampleToSql time query = Printf.sprintf "Insert into samples(id,queryId,time,query) values (%d,%d,%f,'%s');\n" (Sequence.next sampleSeq) idx time query in (*TODO remplacer \n et ' par ''*) 
         L.map (fun (time,smpl) -> sampleToSql time smpl.query_wparam) l;;
 
 
@@ -96,6 +96,24 @@ let find_key_by_value hashtbl value =
 
 
 
+
+let expreCond2String e =
+        match e with
+        | TableChampRef(_,_) -> "TableChampRef"
+        | TableName _ -> "TableName"
+        | FunctionCall(_,_) -> "FunctionCall"
+        | ColumnRef(_,_) -> "ColumnRef"
+        | ExpreSubQuery(_,_) -> "ExpreSubQuery"
+        | ConstStr _ -> "ConstStr"
+        | ConstNbr _ -> "ConstNbr"
+        | ConstTimestamp _ -> "ConstTimestamp"
+        | ConstDate _ -> "ConstDate"
+        | ConstBool _ -> "ConstBool"
+        | TypeCast(_,_) -> "TypeCast"
+        | ListTerm _ -> "ListTerm"
+        | ParamRef _ -> "ParamRef"
+        | ArgStarAll -> "ArgStarAll"
+        | ConstNull -> "ConstNull";;
 
 
 
@@ -124,6 +142,14 @@ let rec expreCondTerm_to_data  seq table_ids alias_ids expre : (int * string * s
                               Hashtbl.add alias_ids table_alias id;
                               (id, table_name, None)
                           end
+         | TableName table_name ->
+                          begin 
+                              let id = Sequence.next seq in
+                              Hashtbl.add table_ids table_name id;
+                              (id, table_name, None)
+                          end
+
+         | autre -> expreCond2String autre |> failwith
 (*- : Sequence.t ->
     (string, int) Hashtbl.t ->
     (string, int) Hashtbl.t -> condJoin -> (int * string * string option) list *)
@@ -224,9 +250,9 @@ let query_infoToSql  queryinfo ast =
         | Lateral -> "Lateral" 
         | Cross -> "Cross" 
         | Natural -> "Natural" in
+        let cur_query_id = (Sequence.next querySeq) in
         let req_query = Printf.sprintf "Insert into Query(id,req,totaltime,max,min) values(%d,'%s',%f::real,%f::real,%f::real);\n"
-                 (Sequence.next querySeq) queryinfo.query  queryinfo.total_duration queryinfo.max queryinfo.min in
-        let cur_query_id = (Sequence.get querySeq) in
+                 cur_query_id queryinfo.query  queryinfo.total_duration queryinfo.max queryinfo.min in
         let reqsSamples = samplesToSql cur_query_id queryinfo.samples in
         let fromAst = getFrom ast in
         let reqsFromLst = from_to_data fromSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromSeq) None None [] in

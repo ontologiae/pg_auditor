@@ -1,11 +1,15 @@
 open JsonBadgerParse;;
 open Pg_query;;
 open JsonSqlParse;;
+open SqlAnalyse;;
 module H = BatHashtbl;;
 module L = BatList;;
 module O = BatOption;;
 module A = BatArray;;
 module S = BatString;;
+
+
+
 
 
 let parseAllQueries filepath =
@@ -19,9 +23,11 @@ let parseAllQueries filepath =
         let jsons = List.map getAst queriestr in
         let _ = Printf.printf "Recup AST OK \n%!" in
         let asts = List.map (fun ast -> try BatString.nreplace ~str:ast  ~sub:"\\" ~by:""  |> Tiny_json.Json.parse with e -> Printf.printf "\n%s\n" ast; Null) jsons in
+        let query_info_ast = L.combine queries asts in
         let _ = Printf.printf "Traitement AST OK \n%!" in
-        let asts = List.map (fun ast -> try JsonSqlParse.json2Grammar ast with e -> validJsonOfJsont ast |> Printf.printf "\n%s\n"; [] ) asts in
-        let getStmtList =  List.map (fun astsrc -> let ast = L.hd astsrc in on match le sqlEntry !!
+        let query_info_ast = List.filter_map (fun (q,ast) -> try Some(q,JsonSqlParse.json2Grammar ast |> L.hd) with e -> validJsonOfJsont ast |> Printf.printf "\n%s\n"; None ) query_info_ast in
+        (*let from =  List.map (fun astsrc -> let ast = L.hd astsrc in SqlAnalyse.getFrom ast) asts in*)
+        L.iter (fun (q,a) -> SqlAnalyse.query_infoToSql q a) query_info_ast
 ;;
 
 
