@@ -10,7 +10,7 @@ type sample = {
   db: string;
   plan: string option;
   bind: string option;
-  query: string;
+  query_wparam: string;
   date: string;
   user: string;
   app: string;
@@ -459,7 +459,7 @@ let rec parse_jsonm d name =
                                    db = get "db";
                                    plan = (try Some(get "plan") with e -> None);
                                    bind = (try Some(get "bind") with e -> None);
-                                   query = get "query";
+                                   query_wparam = get "query";
                                    date = get "date";
                                    user = get "user";
                                    app = get "app" }
@@ -685,5 +685,5 @@ let parse_json_to_query_info file_path =
 
 (*Renvoi la 1ére requête issue du sample, donc parsable puisque requête réelle*)
 let getOneParsableQuery q =
-        (H.to_list q.samples |> List.hd |> snd).query;;
+        (H.to_list q.samples |> List.hd |> snd).query_wparam;;
 

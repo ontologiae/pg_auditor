@@ -7,7 +7,7 @@ module H = BatHashtbl;;
 module L = BatList;;
 module O = BatOption;;
 module A = BatArray;;
-
+module S = BatString;;
 
 (*
 type sample = {
@@ -69,15 +69,16 @@ module Sequence = struct
     value
 end;;  *)
 
-
+(*Global, car on génère une base*)
 let sampleSeq = Sequence.create();;
 let fromSeq   = Sequence.create();; 
+let querySeq  = Sequence.create();; 
 
-
+(*int -> (float, JsonBadgerParse.query_info) Hashtbl.t -> string list = <fun>*)
 let samplesToSql idx sampleInfo =
         let l = H.to_list sampleInfo in
         let sampleToSql time query = Printf.sprintf "Insert into samples(id,queryId,time,query) values (%d,%d,%f,%s);\n" (Sequence.next sampleSeq) idx time query in
-        L.map (fun (time,smpl) -> sampleToSql time smpl.query) l;;
+        L.map (fun (time,smpl) -> sampleToSql time smpl.query_wparam) l;;
 
 
 
@@ -204,15 +205,41 @@ and from_to_data seq table_ids alias_ids from_clause parent_id join_op column_op
 
 
 
-(*let getFromsAnalysis queryAST =
+let getFrom queryAST =
         let getFrom sqlEntry = match sqlEntry with (*TODO, il faut chercher les from DANS les sous requêtes et les With !*)
-                                | SelectStatement(parts)  -> L.filter_map (fun el -> match el with | Some(From(_,_)) -> el | _ -> None )  parts |> L.hd
+                                | SelectStatement(parts)  -> L.filter_map (fun el -> match el with | Some(From(res,_)) -> Some(res) | _ -> None )  parts |> L.hd
                                 | _ -> failwith "Aucune clause From dans la requête" (* *) in
-        let from = getFrom queryAST in
-        from_to_data fromSeq (H.create 1) (H.create 1) from 
-        *)
+        getFrom queryAST
+        ;;
 
 
 
-let query_infoToSql idx queryinfo =
-        "Insert into...";;
+
+let query_infoToSql  queryinfo ast =
+        let joinType_to_string jt = match jt with
+        | Inner -> "Inner" 
+        | FullOuter -> "FullOuter" 
+        | Left -> "Left" 
+        | Right -> "Right" 
+        | Lateral -> "Lateral" 
+        | Cross -> "Cross" 
+        | Natural -> "Natural" in
+        let req_query = Printf.sprintf "Insert into Query(id,req,totaltime,max,min) values(%d,'%s',%f::real,%f::real,%f::real);\n"
+                 (Sequence.next querySeq) queryinfo.query  queryinfo.total_duration queryinfo.max queryinfo.min in
+        let cur_query_id = (Sequence.get querySeq) in
+        let reqsSamples = samplesToSql cur_query_id queryinfo.samples in
+        let fromAst = getFrom ast in
+        let reqsFromLst = from_to_data fromSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromSeq) None None [] in
+        let reqsFromStrLst = L.map (fun (id, table, parentId, join_type, column) ->
+                                let goodpid = match parentId with
+                                | Some id -> Printf.sprintf "'%d'" id
+                                | None -> "NULL" in
+                                let jtyp = O.default Cross join_type in
+                                let col  = O.default "NULL" column in
+                                Printf.sprintf "Insert into Froms(id,queryid, tablename, idfrom, joinType, column) values (%d,%d, '%s', %s, '%s', '%s');\n" 
+                                                                 id cur_query_id table goodpid (joinType_to_string jtyp) col) reqsFromLst in
+        print_endline req_query;
+        S.join "" reqsSamples |> print_endline;
+        S.join "" reqsFromStrLst |> print_endline;
+
+;;
