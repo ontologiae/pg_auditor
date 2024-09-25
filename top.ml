@@ -1,5 +1,7 @@
 #require "tiny_json,jsonm,batteries";;
 #load "JsonSqlParse.cmo";;
+#load "sqlAnalyse.cmo";;
+
 open Tiny_json.Json;;
 open JsonSqlParse;;
 
@@ -74,7 +76,25 @@ let indexesReq = parseJsonFile "indexesAST.json";;
 
 let getW s = match s with
 | Where (_,j) -> Some(j)
-|  _ -> None
+|  _ -> None;;
+
+
+let afrom = 
+       (JoinExpre (Inner,
+         JoinExpre (Inner,
+          JsonSqlParse.FromExpre (TableChampRef ("ir_model_access", "a")),
+          JsonSqlParse.FromExpre (TableChampRef ("ir_model", "m")),
+          Cond (Equal, CondExpre (ColumnRef (Some "m", "id")),
+           CondExpre (ColumnRef (Some "a", "model_id")))),
+         JsonSqlParse.FromExpre (TableChampRef ("res_groups_users_rel", "gu")),
+         Cond (Equal, CondExpre (ColumnRef (Some "gu", "gid")),
+          CondExpre (ColumnRef (Some "a", "group_id")))));;
+open SqlAnalyse;;
+
+#trace expreCondTerm_to_data;;
+#trace make_hashs;;
+#trace from_to_data;;
+#trace condexpre_to_data;;
 
 (*let whereClause = match selectReq |> List.hd with  SelectStatement gram -> List.filter_map (fun e -> match e with Some(f) -> getW f | None -> getW (Top(Null)) )  gram;;
 let wc = List.hd whereClause;;*)

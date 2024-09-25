@@ -81,13 +81,6 @@ let samplesToSql idx sampleInfo =
 
 
 
-        | JoinExpre of joinType * fromClause * fromClause * condJoin
-        | CondExpre of expreCondTerm
-        | FromSubQuery of sqlEntry
-        | Inconnu (*Grammaire non gérée*)
-
-
-
 
 
 
@@ -100,42 +93,124 @@ let find_key_by_value hashtbl value =
   !found_key;;
 
 
-let rec to_data seq table_ids alias_ids from_clause parent_id join_op column_opt parent_column_opt : (int * string * int option * joinType option * string option * string option) list =
-  match from_clause with
-  | JoinExpre (join_type, left_clause, right_clause, Cond (op, CondExpre (ColumnRef (Some alias_left, column_left)), CondExpre (ColumnRef (Some alias_right, column_right)))) ->
-      let left_data = to_data seq table_ids alias_ids left_clause parent_id (Some join_type) (Some column_left) parent_column_opt in
-      let right_data = to_data seq table_ids alias_ids right_clause parent_id (Some join_type) (Some column_right) (Some column_left) in
-      left_data @ right_data
-  | CondExpre (TableChampRef (table_name, table_alias)) ->
-      begin match Hashtbl.find_opt alias_ids table_alias with
-      | Some id ->
-          [(id, table_name, (if parent_id = id then None else Some(parent_id)), join_op, column_opt, parent_column_opt)]
-      | None ->
-          let id = Sequence.next seq in
-          Hashtbl.add table_ids table_name id;
-          Hashtbl.add alias_ids table_alias id;
-          [(id, table_name, Some(parent_id), join_op, column_opt, parent_column_opt)]
-      end
-      (*TODO :Duplication de code !!*)
-  | CondExpre (ColumnRef ( Some table_alias, columnName)) ->
-      begin match Hashtbl.find_opt alias_ids table_alias with
-      | Some id -> (*l'ID suffit pas : il faut le nom de la table à partir de l'ID pour la mettre dans la ligne TODO : SALE !*)
-          [(id, find_key_by_value table_ids id |> O.get, 
-                                (if parent_id = id then None else Some(parent_id)), join_op, column_opt, parent_column_opt)]
-      | None ->
-          let id = Sequence.next seq in
-          Hashtbl.add alias_ids table_alias id;
-          [(id, "?", (if parent_id = id then None else Some(parent_id)), join_op, column_opt, parent_column_opt)]
-      end
-  | _ -> [];;
 
-let getFromsAnalysis queryAST =
+
+
+
+
+
+(*
+- : Sequence.t -> (string, int) Hashtbl.t -> (string, int) Hashtbl.t -> expreCondTerm 
+        -> int * string * string option
+*)
+let rec expreCondTerm_to_data  seq table_ids alias_ids expre : (int * string * string option) = (*L'id de la table, le nom de la table et le nom de la colonne*) 
+        printHashDebug alias_ids;printHashDebug table_ids;
+        match expre with
+        | ColumnRef (Some alias, colonne) ->
+                        begin match Hashtbl.find_opt alias_ids alias with
+                          | Some id ->
+                                          let table_name = find_key_by_value table_ids id in
+                                          (id, table_name |> O.get (*TODO : bouhhh !!*), Some colonne)
+                          | None -> failwith "expreCondTerm_to_data, cas ColumnRef (Some alias, colonne) et rien dans la Hashtbl : alias Inconnu"
+                        end
+        | TableChampRef (table_name, table_alias) ->
+                          begin match Hashtbl.find_opt alias_ids table_alias with
+                          | Some id ->
+                              (id, table_name,None )
+                          | None ->
+                              let id = Sequence.next seq in
+                              Hashtbl.add table_ids table_name id;
+                              Hashtbl.add alias_ids table_alias id;
+                              (id, table_name, None)
+                          end
+(*- : Sequence.t ->
+    (string, int) Hashtbl.t ->
+    (string, int) Hashtbl.t -> condJoin -> (int * string * string option) list *)
+ and condexpre_to_data seq table_ids alias_ids cond_clause : (int * string * string option ) list = (*L'id de la table, le nom de la table, le nom de la colonne *)
+        match cond_clause with
+        | Cond (op, left, right) ->
+                        let res = (condexpre_to_data seq table_ids alias_ids left )@(condexpre_to_data seq table_ids alias_ids right ) in
+                        res
+        | CondExpre(expre) -> [expreCondTerm_to_data seq table_ids alias_ids expre] 
+
+(*
+- : SqlAnalyse.Sequence.t -> (string, int) Hashtbl.t -> (string, int) Hashtbl.t ->
+    fromClause ->
+    int ->
+    joinType option ->
+    string option ->
+    string option ->
+    (int * string * int option * joinType option * string option * string option) list
+*)
+and printHashDebug h = H.iter (fun k -> fun v -> Printf.printf "K=%s, V=%d\n%!" k v) h 
+and make_hashs seq table_ids alias_ids from_clause =
+        match from_clause with
+        | JoinExpre (join_type, left_clause, right_clause, cond) ->     make_hashs seq table_ids alias_ids left_clause; 
+                                                                        make_hashs seq table_ids alias_ids right_clause
+        | FromExpre expre -> ignore(expreCondTerm_to_data seq  table_ids alias_ids expre) (*On lui donne une seq dans le vent pour éviter les effets de bords, et on rempli la hash*)
+
+and fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op column_opt
+                                                (*parent_column_opt : string option*) 
+                                                (res :  (int * string * int option * joinType option * string option ) list)
+                                        : (int * string * int option * joinType option * string option ) list =
+                                                (* id *  tablename * id du from père * op * champ de relation *)
+        printHashDebug alias_ids;printHashDebug table_ids;
+  match from_clause with
+
+  (*
+  JoinExpre (Inner, FromExpre (TableChampRef ("ir_model_access", "a")),
+   FromExpre (TableChampRef ("ir_model", "m")),
+   Cond (Equal, CondExpre (ColumnRef (Some "m", "id")),
+    CondExpre (ColumnRef (Some "a", "model_id"))))
+
+        Exemple de règle  : le parentid du membre de droite pointe sur l'id du membre de gauche en terme SI le membre de droite se réfère au membre de gauche
+        Dans cet algo, il faut faire 2 passes : une passe de dépendance et une passe de liens...
+
+        L'algo est beaucoup trop basique, on doit construire le graph, puis le représenter
+        2ième problème : il faut une table des tables pour remplacer les tables par des ids
+        Le système actuel devrait fonctionner dans la plupart des cas, modulo les sous requêtes...
+   
+   *)
+  | JoinExpre (join_type, left_clause, right_clause, cond) ->
+                make_hashs seq table_ids alias_ids from_clause;
+                let conds =  condexpre_to_data seq table_ids alias_ids cond  in
+                let id_left, table_left, column_left = L.hd conds in
+                let id_right, table_right, column_right = L.at conds 1 in
+                let parentId tblname curid =
+                        let id = Hashtbl.find_opt  table_ids tblname in
+                        match id, curid with
+                        | Some (id), cur when id = cur -> Printf.printf "tblname=%s id=%d cur=%d\n%!" tblname id cur; None (*C'est sans doute la table qui se référence elle-même, donc on renvoi None pour Null dans la table*)
+                        | Some (id), cur -> Some(id) (*Lien vers table père pour la jointure*)
+                        | _,_ -> failwith "fromClause_to_data JoinExpre parentId | _,_ " in
+                let res_final = (id_left, table_left, parentId table_left id_left, Some join_type, column_left)
+                                        ::(id_right, table_right, Some(id_left), Some join_type, column_right)
+                                        ::res in
+                let left_data = from_to_data seq table_ids alias_ids left_clause parent_id (Some join_type) (column_left)  res_final in
+                let right_data = from_to_data seq table_ids alias_ids right_clause id_left (Some join_type) (column_right) res_final in
+                left_data @ right_data
+  | FromExpre expre->
+                  let id, table_name, colonne = expreCondTerm_to_data seq table_ids alias_ids expre in
+                  begin
+                          match colonne with
+                          | Some colname ->
+                                  (id, table_name, (if parent_id = id then None else Some(parent_id)), join_op, colonne)::res
+                          | None -> printHashDebug table_ids; printHashDebug alias_ids; Printf.printf "Colonne id=%d\n%!" id; res
+                                          (*failwith "from_to_data cas FromExpre expre match colonne None : Pas de nom de colonne"*)
+                  end
+(*FromSubQuery TODO*)
+  | _ -> []
+and from_to_data seq table_ids alias_ids from_clause parent_id join_op column_opt res =
+        fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op column_opt res |> L.unique;;
+
+
+
+(*let getFromsAnalysis queryAST =
         let getFrom sqlEntry = match sqlEntry with (*TODO, il faut chercher les from DANS les sous requêtes et les With !*)
-                                | SelectStatement(parts)  -> L.filter_map (fun el -> match Some(From(_,_)) -> el | _ -> None )  parts |> L.hd
+                                | SelectStatement(parts)  -> L.filter_map (fun el -> match el with | Some(From(_,_)) -> el | _ -> None )  parts |> L.hd
                                 | _ -> failwith "Aucune clause From dans la requête" (* *) in
         let from = getFrom queryAST in
-        let getJoins
-        
+        from_to_data fromSeq (H.create 1) (H.create 1) from 
+        *)
 
 
 

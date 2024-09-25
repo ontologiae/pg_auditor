@@ -28,7 +28,7 @@ joinType =
         | Inner | FullOuter | Left | Right | Lateral | Cross | Natural
 and  fromClause =
         | JoinExpre of joinType * fromClause * fromClause * condJoin
-        | CondExpre of expreCondTerm
+        | FromExpre of expreCondTerm
         | FromSubQuery of sqlEntry
         | Inconnu (*Grammaire non gérée*)
 and op = And | Or | Equal | NotEqual | Inf | InfEq | Sup | SupEq | Any | All | Like | Ilike | Between | In
@@ -476,7 +476,7 @@ and json_to_fromClause clause =
                                                      let join_type = string_to_join_type jointype in
                                                      let larg = json_to_fromClause larg in
                                                      let rarg = L.hd funcs |> parse_expreCondTerm  in
-                                                     JoinExpre (Lateral, larg, CondExpre rarg, NA)
+                                                     JoinExpre (Lateral, larg, FromExpre rarg, NA)
 
 
          | Object [("JoinExpr", Object (("jointype", String jointype):: (*Cas subtil d'inner sans condition : Lateral*)
@@ -506,10 +506,10 @@ and json_to_fromClause clause =
         | Array l -> array_to_JoinExpreCross l
 (*TODO : C'est débile de mettre un condExpre dans FromClause !*)
         | Object [("RangeVar", Object (("relname", String n)::("inh", Bool heritage)::("relpersistence", String persist)::("alias", Object [("aliasname", String alias)])::_))]
-         -> CondExpre(TableChampRef(n,alias))
+         -> FromExpre(TableChampRef(n,alias))
 
         | Object [("RangeVar", Object  (("relname", String n)::("inh", Bool heritage)::("relpersistence", String persist)::_))]
-        -> CondExpre(TableName(n))
+        -> FromExpre(TableName(n))
 
 
         |  Object   (("RangeSubselect", Object (("subquery", subquery)::_))::_) -> FromSubQuery ( getOneStatement subquery  ) (*Il est normalement impossible qu'il y ait 2 subquery*)

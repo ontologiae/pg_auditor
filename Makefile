@@ -1,5 +1,7 @@
 top:
 	ocamlfind ocamlc  -thread -linkpkg -package "tiny_json,batteries" JsonSqlParse.ml
+	ocamlfind ocamlc  -thread -linkpkg -package "jsonm,batteries" jsonBadgerParse.ml
+	ocamlfind ocamlc  -linkpkg -thread -package "pg_query,jsonm,tiny_json,batteries" JsonSqlParse.cmo jsonBadgerParse.cmo sqlAnalyse.ml
 	utop -init top.ml
 build:
 	ocamlfind ocamlopt  -thread -linkpkg -package "tiny_json,batteries" JsonSqlParse.ml
