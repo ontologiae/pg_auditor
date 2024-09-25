@@ -52,7 +52,7 @@ and whereClause =
         | Between of expreCondTerm * expreCondTerm
         | LikeBoolExpre of expreCondTerm * expreCondTerm
         | WhereCondExpre of condWhere
-        | WhereSubQuery of selectQuery
+        | WhereSubQuery of selectQuery * op
 and condWhere =
         | OpCond of op * expreCondTerm * expreCondTerm
         | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
@@ -320,7 +320,10 @@ and  parse_whereClause json =
       
   | Object   [("BoolExpr",      Object      (("boolop", String "AND_EXPR")::("args",Array (arg1::q) )::_))] ->
                   L.fold_left ( fun a -> fun b -> AndBoolExpre(  a, parse_whereClause b) ) (parse_whereClause arg1) q
+
+
   | Object   [("BoolExpr",      Object      (("boolop", String "OR_EXPR")::("args",Array (arg1::q) )::_))] ->
+                  (*let try_where_clause e = try parse_whereClause e with er -> TODO soit on fixe la grammaire, soit gère le cas via try catch*)
                   L.fold_left ( fun a -> fun b -> OrBoolExpre(  a, parse_whereClause b) ) (parse_whereClause arg1) q
 
 
@@ -501,8 +504,8 @@ and json_to_fromClause clause =
         | Array (t::[]) -> json_to_fromClause t
 
         | Array l -> array_to_JoinExpreCross l
-
-        | Object [("RangeVar", Object  (("relname", String n)::("inh", Bool heritage)::("relpersistence", String persist)::("alias", Object [("aliasname", String alias)])::_))]
+(*TODO : C'est débile de mettre un condExpre dans FromClause !*)
+        | Object [("RangeVar", Object (("relname", String n)::("inh", Bool heritage)::("relpersistence", String persist)::("alias", Object [("aliasname", String alias)])::_))]
          -> CondExpre(TableChampRef(n,alias))
 
         | Object [("RangeVar", Object  (("relname", String n)::("inh", Bool heritage)::("relpersistence", String persist)::_))]

@@ -1,6 +1,9 @@
 (*#require "jsonm, batteries";;*)
 
 module H = BatHashtbl;;
+module L = BatList;;
+module O = BatOption;;
+module A = BatArray;;
 
 type sample = {
   remote: string option;
@@ -45,6 +48,7 @@ type query_info = {
   min: float;
   query:string;
 }
+
 type root = {
   queryProto : query_info list;
 }
