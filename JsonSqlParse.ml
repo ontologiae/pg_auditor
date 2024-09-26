@@ -237,7 +237,7 @@ let rec parse_expreCondTerm json =
          ColumnRef (Some(table), column)
        | [Object [("String", Object [("str", String column)])]] -> ColumnRef (None, column)
        | _ -> let jsonprint = L.map validJsonOfJsont fields |> String.concat "\n" in
-                let _ = print_endline jsonprint in
+                let _ = prerr_endline jsonprint in
                 failwith ("Unrecognized ColumnRef structure: " ))
       
   | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("location", _)])] ->
@@ -284,7 +284,7 @@ let rec parse_expreCondTerm json =
 
 
   | _ -> let jsonprint = validJsonOfJsont json in
-                let _ = print_endline jsonprint in
+                let _ = prerr_endline jsonprint in
                 failwith ("Unsupported parse_expreCondTerm: " ^ validJsonOfJsont json)
 
 
@@ -393,7 +393,7 @@ and  parse_whereClause json =
                                 BoolConst trueorfalse
 
        
-  | _ -> print_endline (validJsonOfJsont json);
+  | _ -> prerr_endline (validJsonOfJsont json);
          failwith ("Unknown whereClause structure: " ^ validJsonOfJsont json) 
 
 
@@ -475,7 +475,7 @@ and json_to_fromClause clause =
                    ]  ->
                                                      let join_type = string_to_join_type jointype in
                                                      let larg = json_to_fromClause larg in
-                                                     let rarg = L.hd funcs |> parse_expreCondTerm  in
+                                                     let rarg = try L.hd funcs |> parse_expreCondTerm with e -> prerr_endline "Failure HD json_to_fromClause"; ConstNull (*TODO bidouille*) in
                                                      JoinExpre (Lateral, larg, FromExpre rarg, NA)
 
 
@@ -516,7 +516,7 @@ and json_to_fromClause clause =
 
 
         | json -> let jsonprint = validJsonOfJsont json in
-                let _ = print_endline jsonprint in
+                let _ = prerr_endline jsonprint in
                 failwith ("Unsupported json_to_fromClause: " ^ validJsonOfJsont json)
 
 and parseWithClause withClause = 
@@ -535,7 +535,7 @@ and parseWithClause withClause =
                    ] ->   Null, ctename, getOneStatement selectStmt
 
         | _ ->  let jsonprint = validJsonOfJsont withClause in
-                let _ = print_endline jsonprint in
+                let _ = prerr_endline jsonprint in
                 failwith ("Unsupported parseWithClause: " ^ validJsonOfJsont withClause)
 
 
@@ -580,7 +580,7 @@ and getOneStatement statement =
                 | json -> failwith ("Unsupported getOneSelectQuery: " ^ validJsonOfJsont json)
 
 and  json2Grammar ( json : Tiny_json.Json.t) :  sqlEntry list =
-        let printJsonList  = L.iter (fun elem -> validJsonOfJsont elem |> print_endline) in
+        let printJsonList  = L.iter (fun elem -> validJsonOfJsont elem |> prerr_endline) in
                 match json with
         | Object( version::("stmts",Array( stmts ) )::_   ) -> (*printJsonList stmt ;*)
                         let idxParsedList = L.map getOneStatement stmts

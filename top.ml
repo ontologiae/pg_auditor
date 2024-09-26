@@ -1,10 +1,11 @@
 #require "tiny_json,jsonm,batteries";;
 #load "JsonSqlParse.cmo";;
 #load "sqlAnalyse.cmo";;
-
+#load "jsonBadgerParse.cmo";;
 open Tiny_json.Json;;
 open JsonSqlParse;;
-
+open JsonBadgerParse;;
+open SqlAnalyse;;
 let validJsonOfJsont  j =
         let buffer = Buffer.create 65535 in
         let formatter = Format.formatter_of_buffer buffer in
