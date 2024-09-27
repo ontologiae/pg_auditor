@@ -25,7 +25,7 @@ and  indexStmt =
 
 type
 joinType =
-        | Inner | FullOuter | Left | Right | Lateral | Cross | Natural
+        | Inner | FullOuter | Left | Right | Lateral | Cross | Natural 
 and  fromClause =
         | JoinExpre of joinType * fromClause * fromClause * condJoin
         | FromExpre of expreCondTerm

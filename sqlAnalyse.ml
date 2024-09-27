@@ -209,8 +209,8 @@ and fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op col
   | JoinExpre (join_type, left_clause, right_clause, cond) ->
                 make_hashs seq table_ids alias_ids from_clause;
                 let conds =  condexpre_to_data seq table_ids alias_ids cond  in
-                let id_left, table_left, column_left = try L.hd conds with e -> prerr_endline "condexpre_to_data rien dans le mebre de gauche !";(-1,"unknown",None) in
-                let id_right, table_right, column_right = try L.at conds 1 with e -> prerr_endline "condexpre_to_data rien dans le mebre de gauche !";(-1,"unknown",None) in
+                let id_left, table_left, column_left = try L.hd conds with e -> prerr_endline "condexpre_to_data rien dans le membre de gauche !";(-1,"unknown",None) in
+                let id_right, table_right, column_right = try L.at conds 1 with e -> prerr_endline "condexpre_to_data rien dans le membre de gauche !";(-1,"unknown",None) in
                 let parentId tblname curid =
                         let id = Hashtbl.find_opt  table_ids tblname in
                         match id, curid with
@@ -223,6 +223,7 @@ and fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op col
                 let left_data = from_to_data seq table_ids alias_ids left_clause parent_id (Some join_type) (column_left)  res_final in
                 let right_data = from_to_data seq table_ids alias_ids right_clause id_left (Some join_type) (column_right) res_final in
                 left_data @ right_data
+  | FromExpre (TableName tn) -> [(Sequence.next seq, tn, None, None, None)]
   | FromExpre expre->
                   let id, table_name, colonne = expreCondTerm_to_data seq table_ids alias_ids expre in
                   begin
@@ -250,6 +251,7 @@ let getFrom queryAST =
 
 
 let query_infoToSql  queryinfo ast =
+        Printf.eprintf "Analyse de : %s\n%!" queryinfo.query;
         let joinType_to_string jt = match jt with
         | Inner -> "Inner" 
         | FullOuter -> "FullOuter" 
@@ -263,7 +265,9 @@ let query_infoToSql  queryinfo ast =
                  cur_query_id queryinfo.query  queryinfo.total_duration queryinfo.max queryinfo.min in
         let reqsSamples = samplesToSql cur_query_id queryinfo.samples in
         let fromAst = getFrom ast in
-        let reqsFromLst = try from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] with e -> [] in
+        (*let reqsFromLst = try from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] with e -> [] in*)
+        let reqsFromLst = from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] in 
+        Printf.eprintf "On a %d éléments From\n%!" (L.length reqsFromLst);
         let reqsFromStrLst = L.map (fun (id, table, parentId, join_type, column) ->
                                 let goodpid = match parentId with
                                 | Some id -> Printf.sprintf "%d" id
