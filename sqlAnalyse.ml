@@ -106,7 +106,7 @@ let find_key_by_value hashtbl value =
 
 let expreCond2String e =
         match e with
-        | TableChampRef(_,_) -> "TableChampRef"
+        | TableChampRef(_,__,_) -> "TableChampRef"
         | TableName _ -> "TableName"
         | FunctionCall(_,_) -> "FunctionCall"
         | ColumnRef(_,_) -> "ColumnRef"
@@ -139,7 +139,7 @@ let rec expreCondTerm_to_data  seq table_ids alias_ids expre : (int * string * s
                                           (id, table_name |> O.get (*TODO : bouhhh !!*), Some colonne)
                           | None -> failwith "expreCondTerm_to_data, cas ColumnRef (Some alias, colonne) et rien dans la Hashtbl : alias Inconnu"
                         end
-        | TableChampRef (table_name, table_alias) ->
+        | TableChampRef (schema,table_name, table_alias) ->
                           begin match Hashtbl.find_opt alias_ids table_alias with
                           | Some id ->
                               (id, table_name,None )
@@ -149,7 +149,7 @@ let rec expreCondTerm_to_data  seq table_ids alias_ids expre : (int * string * s
                               Hashtbl.add alias_ids table_alias id;
                               (id, table_name, None)
                           end
-         | TableName table_name ->
+         | TableName (_,table_name) ->
                           begin 
                               let id = Sequence.next seq in
                               Hashtbl.add table_ids table_name id;
@@ -223,7 +223,7 @@ and fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op col
                 let left_data = from_to_data seq table_ids alias_ids left_clause parent_id (Some join_type) (column_left)  res_final in
                 let right_data = from_to_data seq table_ids alias_ids right_clause id_left (Some join_type) (column_right) res_final in
                 left_data @ right_data
-  | FromExpre (TableName tn) -> [(Sequence.next seq, tn, None, None, None)]
+  | FromExpre (TableName (_,tn)) -> [(Sequence.next seq, tn, None, None, None)]
   | FromExpre expre->
                   let id, table_name, colonne = expreCondTerm_to_data seq table_ids alias_ids expre in
                   begin

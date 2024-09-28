@@ -83,11 +83,11 @@ let getW s = match s with
 let afrom = 
        (JoinExpre (Inner,
          JoinExpre (Inner,
-          JsonSqlParse.FromExpre (TableChampRef ("ir_model_access", "a")),
-          JsonSqlParse.FromExpre (TableChampRef ("ir_model", "m")),
+          JsonSqlParse.FromExpre (TableChampRef (None,"ir_model_access", "a")),
+          JsonSqlParse.FromExpre (TableChampRef (None,"ir_model", "m")),
           Cond (Equal, CondExpre (ColumnRef (Some "m", "id")),
            CondExpre (ColumnRef (Some "a", "model_id")))),
-         JsonSqlParse.FromExpre (TableChampRef ("res_groups_users_rel", "gu")),
+         JsonSqlParse.FromExpre (TableChampRef (None,"res_groups_users_rel", "gu")),
          Cond (Equal, CondExpre (ColumnRef (Some "gu", "gid")),
           CondExpre (ColumnRef (Some "a", "group_id")))));;
 open SqlAnalyse;;
@@ -97,5 +97,17 @@ open SqlAnalyse;;
 #trace from_to_data;;
 #trace condexpre_to_data;;
 
+module Sequence = struct
+  (* Un ref pour stocker la valeur courante de la séquence *)
+  let current_value = ref 0
+
+  (* Fonction pour obtenir la valeur suivante de la séquence *)
+  let next () =
+    let value = !current_value in
+    incr current_value;
+    value
+  let set v =
+        current_value := v 
+end;;
 (*let whereClause = match selectReq |> List.hd with  SelectStatement gram -> List.filter_map (fun e -> match e with Some(f) -> getW f | None -> getW (Top(Null)) )  gram;;
 let wc = List.hd whereClause;;*)

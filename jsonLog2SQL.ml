@@ -22,6 +22,7 @@ let parseAllQueries filepath =
         let _ = Printf.eprintf "Parse query OK \n%!" in
         let queriesInfoQuerystrJsons = List.map (fun (qi,qs) -> qi,qs,getAst qs) queriesInfoQuerystr in
         let _ = Printf.eprintf "Recup AST JSON OK \n%!" in
+        let _ = Gc.full_major in
         let queriesInfoQuerystrJsons = List.map (fun (qi,querystr,json) -> 
                         try qi,querystr,S.nreplace ~str:json  ~sub:"\\" ~by:""  |> Tiny_json.Json.parse 
                         with e -> Printf.eprintf "\n%s\n" json; qi,querystr,Null) queriesInfoQuerystrJsons in
