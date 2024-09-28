@@ -43,6 +43,9 @@ and condJoin =
         | Cond of op * condJoin * condJoin
         | CondExpre of expreCondTerm
         | NA
+
+      (*Est-ce qu'en fait on derait pas regrouper la plupart sous boolExpreTerm et définir whereClause
+       comme boolExpreTerm * op * boolExpreTerm list*)  
 and whereClause =
         | AndBoolExpre of whereClause * whereClause
         | OrBoolExpre of whereClause * whereClause
@@ -66,9 +69,10 @@ and condWhere =
         (*TODO : un expreCondTerm devrait exprimer un booléen, pas n'importe quoi : un TableName ne peut être un booléen exemple avec j/m54.json  108 où on a un null test qui tombe dans un where*)
 and expreCondTerm = 
         | TableChampRef of string option * string * string (*table schema.name Alias*)
-        | TableName of string option * string (*table schema.name *)
+        | TableName of string option * string (*table schema.name TODO : pas une expression*)
         | FunctionCall of string * expreCondTerm list (*arguments de la fonction*)
         | ColumnRef of string option * string (*Alias.champ*)
+        | CoalesceExpr of expreCondTerm list
         | ExpreSubQuery of sqlEntry * op (**)
         | ConstStr of string
         | ConstNbr of int64
@@ -306,6 +310,8 @@ let rec parse_expreCondTerm json =
     | Object [("A_Const", Object ((("val", Object [("Float", Object [("str", String n)])]))::_))] ->
         ConstNbr (Int64.of_float (float_of_string n))
 
+    |  Object (("CoalesceExpr", Object (("args", Array args)::_))::_) -> CoalesceExpr(L.map parse_expreCondTerm args)
+
   | _ -> let jsonprint = validJsonOfJsont json in
                 let _ = prerr_endline jsonprint in
                 failwith ("Unsupported parse_expreCondTerm: " ^ validJsonOfJsont json)
@@ -486,8 +492,10 @@ and json_to_condJoin json : condJoin =
                     L.fold_left ( fun a -> fun b -> Cond(Or,  a, trySubCondJoin b) ) (trySubCondJoin arg1) q
 
                     
+    | json -> try CondExpre(parse_expreCondTerm json) with e ->  
+                    failwith ("Unsupported condition join: " ^ validJsonOfJsont json)
+    (*En gros on laisse parse_expreCondTerm se démerder| json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json)*)
 
-    | json -> failwith ("Unsupported condition join: " ^ validJsonOfJsont json)
 
 
 
@@ -499,7 +507,7 @@ and json_to_condJoin json : condJoin =
 
 (*- : t -> fromClause*)
 and json_to_fromClause clause =
-        (*TODO  f108 f110 f111 f113*)
+        (*TODO  f108 f110 f111 f113 m241 *)
         let rec array_to_JoinExpreCross l =
                 match l with
                 | t::t2::[]     -> JoinExpre(Cross,json_to_fromClause t,json_to_fromClause t2, NA)                

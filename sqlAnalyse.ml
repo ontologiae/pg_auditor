@@ -84,8 +84,10 @@ let sql_mr_propre str =
 (*int -> (float, JsonBadgerParse.query_info) Hashtbl.t -> string list = <fun>*)
 let samplesToSql idx sampleInfo =
         let l = H.to_list sampleInfo in
-        let sampleToSql time query = Printf.sprintf "Insert into samples(id,queryId,time,query) values (%d,%d,%f,'%s');\n" (Sequence.next sampleSeq) idx time (sql_mr_propre query) in (*TODO remplacer \n et ' par ''*) 
-        L.map (fun (time,smpl) -> sampleToSql time smpl.query_wparam) l;;
+        let entet = "Insert into samples(id,queryId,time,query) values " in
+        let sampleToSql time query = Printf.sprintf "(%d,%d,%f,'%s')" (Sequence.next sampleSeq) idx time (sql_mr_propre query) in (*TODO remplacer \n et ' par ''*) 
+        let values = L.map (fun (time,smpl) -> sampleToSql time smpl.query_wparam) l in
+        entet ^(S.join ",\n" values)^";" ;;
 
 
 
@@ -193,6 +195,9 @@ and fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op col
   match from_clause with
 
   (*
+  TODO : m194.json, 195 pour un subquery, 222 pour une complexe, 249 complexe avec sub mal parsée 
+  m267 pour le ::regclass donc TypeCast
+  
   JoinExpre (Inner, FromExpre (TableChampRef ("ir_model_access", "a")),
    FromExpre (TableChampRef ("ir_model", "m")),
    Cond (Equal, CondExpre (ColumnRef (Some "m", "id")),
@@ -277,7 +282,7 @@ let query_infoToSql  queryinfo ast =
                                 Printf.sprintf "Insert into Froms(id,nodeid,queryid, tablename, idfrom, joinType, columname) values (%d,%d,%d, '%s', %s, '%s', '%s');\n" 
                                                                  (Sequence.next fromGlobalSeq) id cur_query_id table goodpid (joinType_to_string jtyp) col) reqsFromLst in
         print_endline req_query;
-        S.join "" reqsSamples |> print_endline;
+        reqsSamples |> print_endline;
         S.join "" reqsFromStrLst |> print_endline;
 
 ;;

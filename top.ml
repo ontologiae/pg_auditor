@@ -109,5 +109,9 @@ module Sequence = struct
   let set v =
         current_value := v 
 end;;
+
+let getFromStmt sqlEntry = match sqlEntry with (*TODO, il faut chercher les from DANS les sous requêtes et les With !*)
+                                | SelectStatement(parts)  -> L.filter_map (fun el -> match el with | Some(From(res,_)) -> Some(res) | _ -> None )  parts |> L.hd;;
+
 (*let whereClause = match selectReq |> List.hd with  SelectStatement gram -> List.filter_map (fun e -> match e with Some(f) -> getW f | None -> getW (Top(Null)) )  gram;;
 let wc = List.hd whereClause;;*)
