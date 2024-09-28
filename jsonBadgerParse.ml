@@ -32,11 +32,10 @@ type chronos_hour_info = {
   min_duration: (float, min_duration_info) Hashtbl.t;
   min: (float, min_info) Hashtbl.t ;
 }
-type chronos_day_info = {
-  hours: (int, chronos_hour_info) Hashtbl.t;
-}
+
+
 type chronos_info = {
-  day_info: (int, chronos_day_info) Hashtbl.t;
+  day_info: (int, chronos_hour_info) Hashtbl.t;(*Date*)
 }
 type query_info = {
   total_duration: float;
@@ -389,10 +388,11 @@ let toChronosHourInfo json =
 
 let toChronosHourInfos json h =
   match json with
-  | Obj l -> List.iter (fun (hour, obj) -> H.add h (int_of_string hour) (toChronosHourInfo obj)) l
+  | Obj l -> List.iter (fun (heure, obj) -> let heure = int_of_string heure  in
+                                            if heure >= 1 && heure < 25 then H.add h heure (toChronosHourInfo obj)) l
   | _ -> failwith "Pas un couple hours";;
 
-let toChronosDayInfo json =
+(*let toChronosDayInfo json =
   match json with
   | Obj l -> 
     let hours = H.create 24 in
@@ -401,21 +401,30 @@ let toChronosDayInfo json =
       | _ -> ()) l;
     { hours = hours }
   | _ -> failwith "ce n'est pas un ChronosDayInfo";;
+*)
+
 
 let toChronosDayInfos json h =
   match json with
-  | Obj l -> List.iter (fun (day, obj) -> H.add h (int_of_string day) (toChronosDayInfo obj)) l
+  | Obj l -> List.iter (fun (heure, obj) -> let heure = int_of_string heure  in
+                                            if heure >= 1 && heure < 25 then H.add h heure (toChronosHourInfo obj)) l
   | _ -> failwith "Pas un couple day_info";;
+
+
+
 
 let toChronosInfo json =
   match json with
   | Obj l -> 
     let day_info = H.create 365 in
     List.iter (fun field -> match field with
-      | "day_info", obj -> toChronosDayInfos obj day_info
+      | yyyymmdd, obj when is_int yyyymmdd  && (S.length yyyymmdd = 8) -> toChronosDayInfos obj day_info
       | _ -> ()) l;
     { day_info = day_info }
   | _ -> failwith "ce n'est pas un ChronosInfo";;
+
+
+
 
 let toQueryInfo json =
   match json with
