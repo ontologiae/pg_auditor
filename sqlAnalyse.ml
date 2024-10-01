@@ -74,7 +74,7 @@ let sampleSeq = Sequence.create();;
 let fromNodeSeq   = Sequence.create();; 
 let querySeq  = Sequence.create();;
 let fromGlobalSeq   = Sequence.create();; 
-
+let statGlobalSeq = Sequence.create();;
 
 let sql_mr_propre str = 
         let s1 = S.nreplace ~str:str  ~sub:"'" ~by:"''"  in
@@ -184,7 +184,8 @@ and make_hashs seq table_ids alias_ids from_clause =
         | JoinExpre (join_type, left_clause, right_clause, cond) ->     make_hashs seq table_ids alias_ids left_clause; 
                                                                         make_hashs seq table_ids alias_ids right_clause
         | FromExpre expre -> ignore(expreCondTerm_to_data seq  table_ids alias_ids expre) (*On lui donne une seq dans le vent pour éviter les effets de bords, et on rempli la hash*)
-        | FromSubQuery _ -> () (*TODO : triater le cas des sous requêtes*)
+        | FromSubQuery ast -> let subAst = getFrom ast in
+                              make_hashs seq table_ids alias_ids subAst
 
 and fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op column_opt
                                                 (*parent_column_opt : string option*) 
@@ -202,7 +203,7 @@ and fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op col
    FromExpre (TableChampRef ("ir_model", "m")),
    Cond (Equal, CondExpre (ColumnRef (Some "m", "id")),
     CondExpre (ColumnRef (Some "a", "model_id"))))
-
+res
         Exemple de règle  : le parentid du membre de droite pointe sur l'id du membre de gauche en terme SI le membre de droite se réfère au membre de gauche
         Dans cet algo, il faut faire 2 passes : une passe de dépendance et une passe de liens...
 
@@ -238,19 +239,34 @@ and fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op col
                           | None -> printHashDebug table_ids; printHashDebug alias_ids; Printf.eprintf "Colonne id=%d\n%!" id; res
                                           (*failwith "from_to_data cas FromExpre expre match colonne None : Pas de nom de colonne"*)
                   end
+  | FromSubQuery ast -> let subAst = getFrom ast in
+                                from_to_data seq table_ids alias_ids subAst parent_id join_op column_opt res
 (*FromSubQuery TODO*)
   | _ -> []
 and from_to_data seq table_ids alias_ids from_clause parent_id join_op column_opt res =
-        fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op column_opt res |> L.unique;;
+        fromClause_to_data seq table_ids alias_ids from_clause parent_id join_op column_opt res |> L.unique
 
 
 
-let getFrom queryAST =
+and getFrom queryAST =
         let getFrom sqlEntry = match sqlEntry with (*TODO, il faut chercher les from DANS les sous requêtes et les With !*)
                                 | SelectStatement(parts)  -> L.filter_map (fun el -> match el with | Some(From(res,_)) -> Some(res) | _ -> None )  parts |> L.hd
                                 | _ -> failwith "Aucune clause From dans la requête" (* *) in
         getFrom queryAST
         ;;
+
+
+
+let rec chronos_hour_info_to_stats queryId  queryInfo =
+        let dateheure q1 =
+                let dh = L.map (fun (date,h) -> L.map (fun (heure,h) -> Printf.sprintf "%s %.2d" date heure, h) (H.to_list h) ) q1.chronos.date |> L.flatten in
+                let dh2 = L.map (fun (date, hourInfo) -> date, zip hourInfo.minutes_duration hourInfo.minutes) dh in
+                L.map (fun (date,datalist) -> L.map (fun (heure, (time,count)) -> Printf.sprintf "%s:%.2d" date (heure |> int_of_float), (time,count)  ) datalist ) dh2 |> L.flatten in
+        let values = dateheure queryInfo |> 
+                         L.map (fun (timestamp, (duration,count)) -> Printf.sprintf "values (%d, %d, '%s', %f, %d)" (Sequence.next statGlobalSeq) queryId timestamp duration count)  |>
+                         S.join "," in
+        Printf.sprintf "Insert Into queryStats(id,queryId,queryTimestamp,duration,querycountByMn) %s\n;" values;;
+        
 
 
 
@@ -269,6 +285,7 @@ let query_infoToSql  queryinfo ast =
         let req_query = Printf.sprintf "Insert into Query(id,req,totaltime,max,min) values(%d,'%s',%f::real,%f::real,%f::real);\n"
                  cur_query_id queryinfo.query  queryinfo.total_duration queryinfo.max queryinfo.min in
         let reqsSamples = samplesToSql cur_query_id queryinfo.samples in
+        let reqsQueriesStats = chronos_hour_info_to_stats cur_query_id queryinfo in
         let fromAst = getFrom ast in
         (*let reqsFromLst = try from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] with e -> [] in*)
         let reqsFromLst = from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] in 
@@ -284,5 +301,6 @@ let query_infoToSql  queryinfo ast =
         print_endline req_query;
         reqsSamples |> print_endline;
         S.join "" reqsFromStrLst |> print_endline;
+        print_endline reqsQueriesStats;
 
 ;;

@@ -115,3 +115,19 @@ let getFromStmt sqlEntry = match sqlEntry with (*TODO, il faut chercher les from
 
 (*let whereClause = match selectReq |> List.hd with  SelectStatement gram -> List.filter_map (fun e -> match e with Some(f) -> getW f | None -> getW (Top(Null)) )  gram;;
 let wc = List.hd whereClause;;*)
+
+
+#trace toMinDurationInfo;;
+#trace toChronosHourInfo;;
+#trace toChronosHourInfos;;
+#trace toMinDurationInfos;;
+#trace toMinInfos;;
+
+
+
+let q1 qi =  L.at qi 2;;
+let dateheure q1 =
+        let dh = L.map (fun (date,h) -> L.map (fun (heure,h) -> Printf.sprintf "%s %.2d" date heure, h) (H.to_list h) ) q1.chronos.date |> L.flatten in
+        let dh2 = L.map (fun (date, hourInfo) -> date, zip hourInfo.minutes_duration hourInfo.minutes) dh in
+        L.map (fun (date,datalist) -> L.map (fun (heure, (time,count)) -> Printf.sprintf "%s:%.2d" date (heure |> int_of_float), (time,count)  ) datalist ) dh2 |> L.flatten;;
+
