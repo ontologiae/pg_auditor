@@ -282,8 +282,9 @@ let query_infoToSql  queryinfo ast =
         | Cross -> "Cross" 
         | Natural -> "Natural" in
         let cur_query_id = (Sequence.next querySeq) in
-        let req_query = Printf.sprintf "Insert into Query(id,req,totaltime,max,min) values(%d,'%s',%f::real,%f::real,%f::real);\n"
-                 cur_query_id queryinfo.query  queryinfo.total_duration queryinfo.max queryinfo.min in
+        let nullIfNone = O.map_default string_of_float  "NULL" in
+        let req_query = Printf.sprintf "Insert into Query(id,req,totaltime,max,min) values(%d,'%s',%f::real,%s,%s);\n"
+                 cur_query_id queryinfo.query  queryinfo.total_duration (nullIfNone queryinfo.max) (nullIfNone queryinfo.min) in
         let reqsSamples = samplesToSql cur_query_id queryinfo.samples in
         let reqsQueriesStats = chronos_hour_info_to_stats cur_query_id queryinfo in
         let fromAst = getFrom ast in

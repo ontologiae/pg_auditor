@@ -1,7 +1,7 @@
 #require "tiny_json,jsonm,batteries";;
 #load "JsonSqlParse.cmo";;
-#load "sqlAnalyse.cmo";;
 #load "jsonBadgerParse.cmo";;
+#load "sqlAnalyse.cmo";;
 open Tiny_json.Json;;
 open JsonSqlParse;;
 open JsonBadgerParse;;
@@ -122,7 +122,9 @@ let wc = List.hd whereClause;;*)
 #trace toChronosHourInfos;;
 #trace toMinDurationInfos;;
 #trace toMinInfos;;
-
+#trace get;;
+#trace toSamples;;
+#trace toQueryInfo;;
 
 
 let q1 qi =  L.at qi 2;;

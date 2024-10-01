@@ -11,21 +11,18 @@ type sample = {
   db: string;
   plan: string option;
   bind: string option;
-  query_wparam: string;
-  date: string;
-  user: string;
-  app: string;
+  query_wparam: string option;
+  date: string option;
+  user: string option;
+  app: string option;
 }
 type user_app_info = {
   total_duration: float;
   count: int;
 }
-type min_duration_info = {
-  total_duration: float;
-}
-type min_info = {
-  count: int;
-}
+
+
+
 type chronos_hour_info = {
   count: int;
   total_duration: float;
@@ -44,10 +41,10 @@ type query_info = {
   samples: (float, sample) Hashtbl.t;
   count: int;
   apps: (string, user_app_info) Hashtbl.t;
-  max: float;
+  max: float option;
   users: (string, user_app_info) Hashtbl.t;
   chronos: chronos_info;
-  min: float;
+  min: float option;
   query:string;
 }
 
@@ -310,7 +307,17 @@ let rec parse_jsonm d name =
          | String s      -> s
          | Float f       -> string_of_float f
          | Bool true     -> "true"
-         | Bool false    -> "false";;
+         | Bool false    -> "false"
+         | _ -> failwith ("get n l match failure sur n="^n);;
+       (*  | json -> Tiny_json.Json.as_string json |> failwith  ;;*)
+
+
+ let getFloat n l =
+         let e = List.assoc n l in 
+         match e with
+         | Float f      -> Some f
+         | _            -> None;;
+
 
  let toSample json =
          let existName n l = List.exists (fun (a,b) -> a = n) l in
@@ -463,10 +470,10 @@ let toQueryInfo json =
       samples = H.to_list samples |> List.map (fun (a,b) -> float_of_string a,b) |> H.of_list;
       count = float_of_string (get "count") |> int_of_float;
       apps = apps;
-      max = float_of_string (get "max");
+      max =  getFloat "max" l;
       users = users;
       chronos = (match !chronos with Some c -> c | None -> failwith "chronos missing");
-      min = float_of_string (get "min") ;
+      min = getFloat "min" l ;
       query = query;
       }
   | _ -> failwith "ce n'est pas un QueryInfo";;
@@ -497,7 +504,7 @@ let rec process_json d lastname state acc =
        | `Bool b -> Printf.eprintf "Lexeme: Bool - %b\n" b; 
        | `String s -> Printf.eprintf "Lexeme: String - %s\n" s; 
        | `Float f -> Printf.eprintf "Lexeme: Float - %f\n" f; 
-       | `Name n -> Printf.eprintf "Lexeme: Name - %s\n" n
+       | `Name n -> Printf.eprintf "Lexeme: Name - %s\n" (S.left n 20)
        | `Os -> Printf.eprintf "Lexeme: START of Object\n"; 
        | `Oe -> Printf.eprintf "Lexeme: END of Object\n"; 
        | `As -> Printf.eprintf "Lexeme: Start of Array\n"
