@@ -265,9 +265,9 @@ let rec chronos_hour_info_to_stats queryId  queryInfoChronos =
                 L.map (fun (date,datalist) -> L.map (fun (heure, (time,count)) -> Printf.sprintf "%s:%.2d" date (heure |> int_of_float), (time,count)  ) datalist ) dh2 |> L.flatten in
         let lstChronos = dateheure queryInfoChronos in
         let values =  L.map (fun (timestamp, (duration,count)) ->
-                                         Printf.sprintf "values (%d, %d, '%s', %f, %d)" (Sequence.next statGlobalSeq) queryId timestamp duration count) lstChronos |>
+                                         Printf.sprintf "(%d, %d, '%s', %f, %d)" (Sequence.next statGlobalSeq) queryId timestamp duration count) lstChronos |>
                          S.join "," in
-        if L.length lstChronos > 0 then Printf.sprintf "Insert Into queryStats(id,queryId,queryTimestamp,duration,querycountByMn) %s;\n" values else "";;
+        if L.length lstChronos > 0 then Printf.sprintf "Insert Into queryStats(id,queryId,queryTimestamp,duration,querycountByMn) values %s;\n" values else "";;
         
 
 
