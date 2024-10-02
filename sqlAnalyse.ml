@@ -85,9 +85,10 @@ let sql_mr_propre str =
 let samplesToSql idx sampleInfo =
         let l = H.to_list sampleInfo in
         let entet = "Insert into samples(id,queryId,time,query) values " in
-        let sampleToSql time query = Printf.sprintf "(%d,%d,%f,'%s')" (Sequence.next sampleSeq) idx time (sql_mr_propre query) in (*TODO remplacer \n et ' par ''*) 
-        let values = L.map (fun (time,smpl) -> sampleToSql time smpl.query_wparam) l in
-        entet ^(S.join ",\n" values)^";" ;;
+        let sampleToSql time query = Printf.sprintf "(%d,%d,%f,'%s')" (Sequence.next sampleSeq) idx time (sql_mr_propre query) in (*TODO remplacer \n et ' par ''*)
+        let qry = O.default "" in
+        let values = L.map (fun (time,smpl) -> sampleToSql time (qry smpl.query_wparam)) l in
+        if L.length l > 0 then entet ^(S.join ",\n" values)^";" else "";;
 
 
 
@@ -257,15 +258,16 @@ and getFrom queryAST =
 
 
 
-let rec chronos_hour_info_to_stats queryId  queryInfo =
+let rec chronos_hour_info_to_stats queryId  queryInfoChronos =
         let dateheure q1 =
-                let dh = L.map (fun (date,h) -> L.map (fun (heure,h) -> Printf.sprintf "%s %.2d" date heure, h) (H.to_list h) ) q1.chronos.date |> L.flatten in
+                let dh = L.map (fun (date,h) -> L.map (fun (heure,h) -> Printf.sprintf "%s %.2d" date heure, h) (H.to_list h) ) q1.date |> L.flatten in
                 let dh2 = L.map (fun (date, hourInfo) -> date, zip hourInfo.minutes_duration hourInfo.minutes) dh in
                 L.map (fun (date,datalist) -> L.map (fun (heure, (time,count)) -> Printf.sprintf "%s:%.2d" date (heure |> int_of_float), (time,count)  ) datalist ) dh2 |> L.flatten in
-        let values = dateheure queryInfo |> 
-                         L.map (fun (timestamp, (duration,count)) -> Printf.sprintf "values (%d, %d, '%s', %f, %d)" (Sequence.next statGlobalSeq) queryId timestamp duration count)  |>
+        let lstChronos = dateheure queryInfoChronos in
+        let values =  L.map (fun (timestamp, (duration,count)) ->
+                                         Printf.sprintf "values (%d, %d, '%s', %f, %d)" (Sequence.next statGlobalSeq) queryId timestamp duration count) lstChronos |>
                          S.join "," in
-        Printf.sprintf "Insert Into queryStats(id,queryId,queryTimestamp,duration,querycountByMn) %s\n;" values;;
+        if L.length lstChronos > 0 then Printf.sprintf "Insert Into queryStats(id,queryId,queryTimestamp,duration,querycountByMn) %s;\n" values else "";;
         
 
 
@@ -283,10 +285,10 @@ let query_infoToSql  queryinfo ast =
         | Natural -> "Natural" in
         let cur_query_id = (Sequence.next querySeq) in
         let nullIfNone = O.map_default string_of_float  "NULL" in
-        let req_query = Printf.sprintf "Insert into Query(id,req,totaltime,max,min) values(%d,'%s',%f::real,%s,%s);\n"
-                 cur_query_id queryinfo.query  queryinfo.total_duration (nullIfNone queryinfo.max) (nullIfNone queryinfo.min) in
+        let req_query = Printf.sprintf "Insert into Query(id,req,totaltime,max,min) values(%d,'%s',%s,%s,%s);\n"
+                 cur_query_id queryinfo.query  (nullIfNone queryinfo.total_duration) (nullIfNone queryinfo.max) (nullIfNone queryinfo.min) in
         let reqsSamples = samplesToSql cur_query_id queryinfo.samples in
-        let reqsQueriesStats = chronos_hour_info_to_stats cur_query_id queryinfo in
+        let reqsQueriesStats = O.map_default (chronos_hour_info_to_stats cur_query_id ) "" queryinfo.chronos in
         let fromAst = getFrom ast in
         (*let reqsFromLst = try from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] with e -> [] in*)
         let reqsFromLst = from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] in 

@@ -17,15 +17,15 @@ type sample = {
   app: string option;
 }
 type user_app_info = {
-  total_duration: float;
-  count: int;
+  total_duration: float option;
+  count: int option;
 }
 
 
 
 type chronos_hour_info = {
-  count: int;
-  total_duration: float;
+  count: int option;
+  total_duration: float option;
   minutes_duration: (float * float) list;
   minutes: (float * int) list ;
 }
@@ -37,13 +37,13 @@ type chronos_info = {
 
 
 type query_info = {
-  total_duration: float;
+  total_duration: float option;
   samples: (float, sample) Hashtbl.t;
-  count: int;
+  count: int option;
   apps: (string, user_app_info) Hashtbl.t;
   max: float option;
   users: (string, user_app_info) Hashtbl.t;
-  chronos: chronos_info;
+  chronos: chronos_info option;
   min: float option;
   query:string;
 }
@@ -301,7 +301,8 @@ let rec parse_jsonm d name =
 
 
 
- let get n l = 
+ let get n l =
+         
          let e = List.assoc n l in 
          match e with
          | String s      -> s
@@ -312,25 +313,49 @@ let rec parse_jsonm d name =
        (*  | json -> Tiny_json.Json.as_string json |> failwith  ;;*)
 
 
+ let getStr n l =
+         try
+          (  let e = L.assoc n l in 
+         match e with
+         | String s      -> Some s
+         | Float f       -> Some (string_of_float f)
+         | Bool true     -> Some "true"
+         | Bool false    -> Some "false"
+         | _ ->  Printf.eprintf "getStr n l match failure sur n=%s\n" n; None)
+        with e -> Printf.eprintf "getStr L.assoc Not_found"; None;;
+
+
  let getFloat n l =
-         let e = List.assoc n l in 
+         try 
+         (let e = L.assoc n l in 
          match e with
          | Float f      -> Some f
-         | _            -> None;;
+         | _            -> None)
+         with e -> Printf.eprintf "getFloat L.assoc Not_found"; None;;
+
+ let getInt n l =
+         try 
+         (let e = L.assoc n l in 
+         match e with
+         | Float f      -> Some (f |> int_of_float)
+         | _            -> None)
+         with e -> Printf.eprintf "getFloat L.assoc Not_found"; None;;
 
 
  let toSample json =
          let existName n l = List.exists (fun (a,b) -> a = n) l in
+         let getCropedStr n l  = getStr n l |> O.map (fun s -> S.left s 4095) in
          match json with
-        |  Obj l when existName "date" l && existName "query" l -> let get n = get n l in
-                                {  remote = (try Some(get "remote") with e -> None);
+        |  Obj l when existName "date" l && existName "query" l ->
+                                 let get n = get n l in
+                                {  remote = getCropedStr "remote" l;
                                    db = get "db";
-                                   plan = (try Some(get "plan") with e -> None);
-                                   bind = (try Some(get "bind") with e -> None);
-                                   query_wparam = S.left (get "query") 4095; (*On crop les requêtes trop longues*)
-                                   date = get "date";
-                                   user = get "user";
-                                   app = get "app" }
+                                   plan = getCropedStr "plan" l;
+                                   bind = getCropedStr "bind" l;
+                                   query_wparam = getCropedStr "query" l ; (*On crop les requêtes trop longues*)
+                                   date = getCropedStr "date" l;
+                                   user = getCropedStr "user" l;
+                                   app = getCropedStr "app" l }
         | _ -> failwith "ce n'est pas un Sample";;
 
  let toSamples jsonc h =
@@ -343,9 +368,9 @@ let rec parse_jsonm d name =
 let toUserAppInfo json =
   match json with
   | Obj l -> 
-    let get n = get n l in
-    { total_duration = float_of_string (get "duration");
-      count = float_of_string (get "count") |> int_of_float }
+    let get n = getFloat n l in
+    { total_duration = getFloat "duration" l;
+      count =  getInt "count" l }
   | _ -> failwith "ce n'est pas un UserAppInfo";;
 
 
@@ -401,9 +426,9 @@ let toChronosHourInfo json =
                                         | "min_duration", Obj _ -> Printf.eprintf "Left\n%!"; Some(Left(toMinDurationInfos field ))
                                         | "min", Obj _ -> Some(Right(toMinInfos field ))
                                           | _ -> None) l in
-    Printf.eprintf "resLst %d éléments\n%!" (L.length resLst);
-    { count = float_of_string (get "count") |> int_of_float;
-      total_duration = float_of_string (get "duration");
+    (*Printf.eprintf "resLst %d éléments\n%!" (L.length resLst);*)
+    { count = getInt "count" l;
+      total_duration = getFloat "duration" l;
       minutes_duration = L.filter_map (fun lr -> match lr with | Some(Left(dur)) -> Some(dur) | _ -> None) resLst |> L.flatten ;
       minutes = L.filter_map (fun lr -> match lr with | Some(Right(count)) -> Some(count) | _ -> None) resLst  |> L.flatten }
   | _ -> failwith "ce n'est pas un ChronosHourInfo";;
@@ -466,13 +491,14 @@ let toQueryInfo json =
       | "users", Obj _ -> toUserAppInfos field users
       | "chronos", obj -> chronos := Some(toChronosInfo obj)
       | _ -> ()) l;
-    { total_duration = float_of_string (get "duration");
-      samples = H.to_list samples |> List.map (fun (a,b) -> float_of_string a,b) |> H.of_list;
-      count = float_of_string (get "count") |> int_of_float;
+    { total_duration = getFloat "duration" l;
+                                                                (*On a des cas où le nom de l'objet est une chaine vide !*)
+      samples = H.to_list samples |> List.map (fun (a,b) -> (try float_of_string a with e -> 0.),b) |> H.of_list;
+      count = O.map int_of_float  (getFloat "count" l) ;
       apps = apps;
       max =  getFloat "max" l;
       users = users;
-      chronos = (match !chronos with Some c -> c | None -> failwith "chronos missing");
+      chronos = !chronos;
       min = getFloat "min" l ;
       query = query;
       }
@@ -509,19 +535,19 @@ let rec process_json d lastname state acc =
        | `Oe -> Printf.eprintf "Lexeme: END of Object\n"; 
        | `As -> Printf.eprintf "Lexeme: Start of Array\n"
        | `Ae -> Printf.eprintf "Lexeme: End of Array\n" in
-        printState state;
+        (*printState state;*)
         match dec with
           | `Lexeme l ->  begin 
-                           print l;
+                           (*print l;*)
                            match l, state with
                                 | `Name n, _ -> process_json d n state acc
-                                | `Os, Postgres -> printState state;
+                                | `Os, Postgres ->
                                                 (*let newstate = transition state lastname in
                                                         printState newstate;*)
                                         process_json d lastname state ((parse_jsonm d lastname)::acc) 
-                                | `Os, n -> let newstate = transition state lastname in printState newstate; process_json d lastname newstate acc
-                                | `Oe, _ -> let newstate = previous_state state in  printState newstate; process_json d lastname newstate acc
-                                | _ -> printState state; process_json d lastname state acc  
+                                | `Os, n -> let newstate = transition state lastname in  process_json d lastname newstate acc
+                                | `Oe, _ -> let newstate = previous_state state in (* printState newstate;*) process_json d lastname newstate acc
+                                | _ ->  process_json d lastname state acc  
                           end
           | `End -> Printf.eprintf "Completed JSON parsing\n"; lastname, state, acc 
           | `Error e -> failwith (Format.asprintf "decode_value : Decode error: %a" Jsonm.pp_error e)
