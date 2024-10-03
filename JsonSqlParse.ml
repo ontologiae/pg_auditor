@@ -146,6 +146,9 @@ let string_to_op op =  (*TODO Uppercase*)
 
 
 
+let objectExists (objs : (string * Tiny_json.Json.t) list)  name =
+        L.mem_assoc name objs ;;
+
 let rec jsonToWhereClause json =
         match json with
         |    Object (("BoolExpr", Object (("boolop", String "AND_EXPR")::("args", Array l)::_))::_)  ->  l
@@ -655,8 +658,18 @@ and getOneStatement statement =
                                    (("IndexElem",  elem    )::_)::_
                                    ))::_
                                                  ))
-                        )])::_ ) -> IndexCreation (json_to_indexElem idxname schemaName tableName typeIndex elem) 
-
+                        )])::_ ) -> IndexCreation (json_to_indexElem idxname schemaName tableName typeIndex elem)
+                | Object (("stmt", Object (("InsertStmt",Object l )::_))::_)
+                        when (*L.mem_assoc "relname" l &&*) L.mem_assoc "selectStmt" l ->
+                                let select = L.assoc  "selectStmt" l in
+                                L.iter (fun (n,s) -> Printf.eprintf "%s=%s\n%!" n (validJsonOfJsont s) ) l;
+                                getOneStatement select
+                                (*match select with
+                                | Object (("selectStmt", Object selectOK )::_) -> 
+                                (*TODO TODO : faire un UpdateSelect et mettre le nom*)
+                                        SelectStatement (L.map  getGoodClause selectOK)
+                                | js -> failwith ("Unsupported getOneSelectQuery.2: " ^ validJsonOfJsont js)
+                                *)
                 | json -> failwith ("Unsupported getOneSelectQuery: " ^ validJsonOfJsont json)
 
 and  json2Grammar ( json : Tiny_json.Json.t) :  sqlEntry list =

@@ -423,7 +423,7 @@ let toChronosHourInfo json =
   | Obj l -> 
     let get n = get n l in
     let resLst : ((float * float) list, (float * int) list) Either.t option list =  List.map (fun field -> match field with
-                                        | "min_duration", Obj _ -> Printf.eprintf "Left\n%!"; Some(Left(toMinDurationInfos field ))
+                                        | "min_duration", Obj _ ->  Some(Left(toMinDurationInfos field ))
                                         | "min", Obj _ -> Some(Right(toMinInfos field ))
                                           | _ -> None) l in
     (*Printf.eprintf "resLst %d éléments\n%!" (L.length resLst);*)
