@@ -15,22 +15,31 @@ module S = BatString;;
 let parseAllQueries filepath =
         let queriesInfo = parse_json_to_query_info filepath in
         let _ = Printf.eprintf "Parse queryInfo ok %d éléments parsés\n%!" (List.length queriesInfo) in
-        (*Certaines requêtes font segfault la lib postgresql !*)
-        let queriesInfoQuerystr = L.filter_map (fun q -> let res = Some(q.query) in O.bind res (fun e -> Some(q,e)))  queriesInfo in 
+        (*Certaines requêtes font segfault la lib postgresql !
+         TODO : pourquoi on extrait la chaine alors qu'elle dans le queryinfo ? Au cas où on va la chercher dans le sample ?*)
+        let queriesInfoQuerystr = L.filter_map (fun q -> let res = Some(S.nreplace ~str:q.query ~sub:"(...)" ~by:"(1)") 
+                                                        in O.bind res (fun e -> Some(q,e)))
+                                                  queriesInfo in 
         let _ = Printf.eprintf "Recup queries OK \n%!" in
         let getAst contenu = (*Printf.eprintf "On parse : \n%s\n%!" contenu;*) (Pg_query.raw_parse contenu).parse_tree in
-        let _ = Gc.full_major in
+        let _ = Gc.compact in
         let _ = Printf.eprintf "Parse query OK \n%!" in
-        let queriesInfoQuerystrJsons = L.map (fun (qi,qs) -> qi,qs,getAst qs) queriesInfoQuerystr in
+        let queriesInfoQuerystrJsons = L.map (fun (qi,qs) -> 
+                                                (*if Random.int 511 = 11 then Printf.eprintf "GC !\n%!";Gc.compact();*)
+                                                qi,qs,getAst qs) queriesInfoQuerystr in
         let _ = Printf.eprintf "Recup AST JSON OK \n%!" in
-        let _ = Gc.full_major in
+        let _ = Gc.compact in
         let queriesInfoQuerystrJsons = L.mapi (fun i -> fun (qi,querystr,json) -> if i mod 1000 = 0 then Printf.eprintf ".%!";
+                        if i mod 10000 = 0 then begin Gc.compact(); Printf.eprintf "GC ! %!"; end;
                         try qi,querystr,S.nreplace ~str:json  ~sub:"\\" ~by:""  |> Tiny_json.Json.parse 
                         with e -> Printf.eprintf "\n%s\n" json; qi,querystr,Null) queriesInfoQuerystrJsons in
         let _ = Printf.eprintf "Traitement AST JSON OK \n%!" in
-        let _ = Gc.full_major in
-        let queriesInfoQuerystrJsonsAst = L.filter_map (fun (qi,qs,json) -> try Some(qi,qs,JsonSqlParse.json2Grammar json |> L.hd) with e -> validJsonOfJsont json |> Printf.eprintf "\n%s\n%!"; None ) queriesInfoQuerystrJsons in
-        let _ = Gc.full_major in
+        let _ = Gc.compact in
+        let queriesInfoQuerystrJsonsAst = L.filter_map (fun (qi,qs,json) -> 
+                if Random.int 15511 = 11 then Printf.eprintf "GC !\n%!"; Gc.compact();
+                try Some(qi,qs,JsonSqlParse.json2Grammar json |> L.hd) 
+                with e -> validJsonOfJsont json |> Printf.eprintf "\n%s\n%!"; None ) queriesInfoQuerystrJsons in
+        let _ = Gc.compact in
         let _ = Printf.eprintf "Recup AST ML OK : %d éléments\n%!" (L.length queriesInfoQuerystrJsonsAst) in
         (*let from =  List.map (fun astsrc -> let ast = L.hd astsrc in SqlAnalyse.getFrom ast) asts in*)
         L.iter (fun (qi,qs,ast) -> try SqlAnalyse.query_infoToSql qi ast 
