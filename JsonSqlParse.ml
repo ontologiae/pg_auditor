@@ -1,13 +1,7 @@
 open Tiny_json.Json;;
+open Jsonm
 
 module L = List;;
-
-let validJsonOfJsont  j =
-        let buffer = Buffer.create 65535 in
-        let formatter = Format.formatter_of_buffer buffer in
-        Tiny_json.Json.format formatter j;
-        Format.pp_print_flush formatter ();
-        Buffer.contents buffer;;
 
 
 
@@ -676,8 +670,12 @@ and  json2Grammar ( json : Tiny_json.Json.t) :  sqlEntry list =
         let printJsonList  = L.iter (fun elem -> validJsonOfJsont elem |> prerr_endline) in
                 match json with
         | Object( version::("stmts",Array( stmts ) )::_   ) -> (*printJsonList stmt ;*)
-                        let idxParsedList = L.map getOneStatement stmts
-                        in idxParsedList
+                        let parsedList = L.map getOneStatement stmts in
+                        parsedList
+        | Object( version::("stmts",Object(_) )::_   ) -> (*printJsonList stmt ;*)
+                        [getOneStatement json]
+        | Object (("",  Object (("",  Object (("version", Number _)::("stmts",    stmts  )::_))::_   ))::_) ->
+                        [getOneStatement stmts]
         | _ -> failwith "pas pas  match"
 
 ;;

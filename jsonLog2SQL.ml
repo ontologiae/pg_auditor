@@ -1,3 +1,4 @@
+open Jsonm2json;;
 open JsonBadgerParse;;
 open Pg_query;;
 open JsonSqlParse;;
@@ -30,15 +31,15 @@ let parseAllQueries filepath =
         let _ = Printf.eprintf "Recup AST JSON OK \n%!" in
         let _ = Gc.compact in
         let queriesInfoQuerystrJsons = L.mapi (fun i -> fun (qi,querystr,json) -> if i mod 1000 = 0 then Printf.eprintf ".%!";
-                        if i mod 10000 = 0 then begin Gc.compact(); Printf.eprintf "GC ! %!"; end;
-                        try qi,querystr,S.nreplace ~str:json  ~sub:"\\" ~by:""  |> Tiny_json.Json.parse 
-                        with e -> Printf.eprintf "\n%s\n" json; qi,querystr,Null) queriesInfoQuerystrJsons in
+                        if i mod 100000 = 0 then begin Gc.compact(); Printf.eprintf "GC ! %!"; end;
+                        try qi,querystr,S.nreplace ~str:json  ~sub:"\\" ~by:""  |> Jsonm2json.string_2_tinyjson 
+                        with e -> Printf.eprintf "\nItération %d\n%s\n" i json; qi,querystr,Null) queriesInfoQuerystrJsons in
         let _ = Printf.eprintf "Traitement AST JSON OK \n%!" in
         let _ = Gc.compact in
-        let queriesInfoQuerystrJsonsAst = L.filter_map (fun (qi,qs,json) -> 
-                if Random.int 15511 = 11 then Printf.eprintf "GC !\n%!"; Gc.compact();
+        let queriesInfoQuerystrJsonsAst = L.filteri_map (fun i -> fun (qi,qs,json) -> 
+                if Random.int 38511 = 11 then begin Printf.eprintf "GC !\n%!"; Gc.compact(); end;
                 try Some(qi,qs,JsonSqlParse.json2Grammar json |> L.hd) 
-                with e -> validJsonOfJsont json |> Printf.eprintf "\n%s\n%!"; None ) queriesInfoQuerystrJsons in
+                with e -> validJsonOfJsont json |> Printf.eprintf "\nAnalyse Itération %d\n%s\n%s\n%!" i (Printexc.to_string e); None ) queriesInfoQuerystrJsons in
         let _ = Gc.compact in
         let _ = Printf.eprintf "Recup AST ML OK : %d éléments\n%!" (L.length queriesInfoQuerystrJsonsAst) in
         (*let from =  List.map (fun astsrc -> let ast = L.hd astsrc in SqlAnalyse.getFrom ast) asts in*)

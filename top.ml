@@ -1,4 +1,5 @@
 #require "tiny_json,jsonm,batteries";;
+#load "jsonm2json.cmo";;
 #load "JsonSqlParse.cmo";;
 #load "jsonBadgerParse.cmo";;
 #load "sqlAnalyse.cmo";;

@@ -1,5 +1,5 @@
 (*#require "jsonm, batteries";;*)
-
+open Jsonm2json;;
 module H = BatHashtbl;;
 module L = BatList;;
 module O = BatOption;;
@@ -254,49 +254,8 @@ let transition state input =
   | _ -> state (* On reste dans le même état, endless loop*);;
 
 
-type json =
-  | Null
-  | Bool of bool
-  | Float of float
-  | String of string
-  | List of json list
-  | Obj of (string * json) list;;
 
 
-
-let rec parse_jsonm d name =
-  let rec parse_value () =
-    match Jsonm.decode d with
-    | `Lexeme (`Null) -> Null
-    | `Lexeme (`Bool b) -> Bool b
-    | `Lexeme (`Float f) -> Float f
-    | `Lexeme (`String s) -> String s
-    | `Lexeme (`Os) -> parse_object []
-    | `Lexeme (`As) -> parse_array []
-    | `Lexeme (`Ae) -> failwith "Unexpected end of array"
-    | `Lexeme (`Oe) -> failwith "Unexpected end of object"
-    | `Lexeme (`Name n) ->  let value = parse_value () in
-                                 parse_object ((n, value) :: []) (* Printf.sprintf "Unexpected name :%s" n |> failwith*)
-    | `End -> failwith "Unexpected end of input"
-    | `Error e -> failwith (Format.asprintf "Decode error: %a" Jsonm.pp_error e)
-    | `Await -> failwith "Unexpected `Await in decoder"
-
-  and parse_object acc =
-    match Jsonm.decode d with
-    | `Lexeme (`Oe) -> Obj (List.rev acc)
-    | `Lexeme (`Name n) -> 
-        let value = parse_value () in
-        parse_object ((n, value) :: acc)
-    | _ -> failwith "Expected object name or end of object"
-
-  and parse_array acc =
-    match Jsonm.decode d with
-    | `Lexeme (`Ae) -> List (List.rev acc)
-    | _ -> 
-        let value = parse_value () in
-        parse_array (value :: acc)
-  in
-  Obj[ (name,parse_value ())];;
 
 
 
@@ -321,7 +280,7 @@ let rec parse_jsonm d name =
          | Float f       -> Some (string_of_float f)
          | Bool true     -> Some "true"
          | Bool false    -> Some "false"
-         | _ ->  Printf.eprintf "getStr n l match failure sur n=%s\n" n; None)
+         | _ ->  (*Printf.eprintf "getStr n l match failure sur n=%s\n" n;*) None)
         with e -> Printf.eprintf "getStr L.assoc Not_found"; None;;
 
 
