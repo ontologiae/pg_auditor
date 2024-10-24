@@ -150,10 +150,6 @@ let rec jsonToWhereClause json =
 
 
 
-(* Helper function to parse a JSON string to int64 *)
-let int64_of_json_string json = match json with
-                                | Number u -> Int64.of_string u
-                                | _ -> failwith ("Unsupported int64_of_json_string: " ^ validJsonOfJsont json)
 
 (* Helper function to extract a string from JSON *)
 let extract_string json = match json with
@@ -274,7 +270,7 @@ let rec parse_expreCondTerm json =
   | Object [("A_Const", Object (("val", Object [("Null", Object [])])::_))] -> ConstNull
   | Object [("List",  Object [("items",  Array l )])] -> ListTerm ( L.filter_map (fun e -> match e with Object [] -> None | _ -> Some(parse_expreCondTerm e)) l  )
 
-  | Object (("ParamRef", Object (("number", Number nbr)::_))::_) -> ParamRef (Int64.of_string nbr)
+  | Object (("ParamRef", Object (("number", Number nbr)::_))::_) -> ParamRef (float_of_string nbr |> Int64.of_float)
   | Object [("ParamRef", Object [("location", _)])] -> ParamRef 0L
 
   | Object
@@ -302,7 +298,7 @@ let rec parse_expreCondTerm json =
         ConstStr s
 
     | Object [("A_Const", Object ((("val", Object [("Integer", Object [("ival", Number n)] )]))::_)  )] ->
-        ConstNbr (Int64.of_string n)
+        ConstNbr (float_of_string n |> Int64.of_float)
 
     | Object [("A_Const", Object ((("val", Object [("Float", Object [("str", String n)])]))::_))] ->
         ConstNbr (Int64.of_float (float_of_string n))
@@ -634,7 +630,7 @@ and  getGoodClause j =
 
 and getOneStatement statement = 
                 match statement with
-
+                | Array (  Object ( ("stmt", Object ( ("SelectStmt", Object(clauses) )::_) )::_ )::_ ) -> SelectStatement (L.map  getGoodClause clauses)
                 | Object ( ("stmt", Object ( ("SelectStmt", Object(clauses) )::_) )::_ )  -> SelectStatement (L.map  getGoodClause clauses)
                 | Object ( ("SelectStmt", Object(clauses) )::_) -> SelectStatement (L.map  getGoodClause clauses)
 
@@ -664,7 +660,7 @@ and getOneStatement statement =
                                         SelectStatement (L.map  getGoodClause selectOK)
                                 | js -> failwith ("Unsupported getOneSelectQuery.2: " ^ validJsonOfJsont js)
                                 *)
-                | json -> failwith ("Unsupported getOneSelectQuery: " ^ validJsonOfJsont json)
+                | json -> failwith ("Unsupported getOneStatement: " ^ validJsonOfJsont json)
 
 and  json2Grammar ( json : Tiny_json.Json.t) :  sqlEntry list =
         let printJsonList  = L.iter (fun elem -> validJsonOfJsont elem |> prerr_endline) in
@@ -676,7 +672,11 @@ and  json2Grammar ( json : Tiny_json.Json.t) :  sqlEntry list =
                         [getOneStatement json]
         | Object (("",  Object (("",  Object (("version", Number _)::("stmts",    stmts  )::_))::_   ))::_) ->
                         [getOneStatement stmts]
+        | Object (("",  Object (("version", Number _)::("stmts",    stmts  )::_))::_   ) ->
+                        [getOneStatement stmts]
+
         | _ -> failwith "pas pas  match"
+        
 
 ;;
 
