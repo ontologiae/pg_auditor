@@ -247,9 +247,15 @@ let rec parse_expreCondTerm json =
       
   | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("location", _)])] ->
       FunctionCall (fname, [])
+   | Object [("FuncCall", Object (("funcname", Array [Object [("String", Object [("str", String prefix)])];Object[("String", Object [("str", String fname)]) ] ])::_ ) )] ->
+      FunctionCall (prefix^"."^fname, [])
 
-  | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("args",Array l); ("location", _)])] ->
+  | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String prefix)])];Object[("String", Object [("str", String fname)]) ] ]); ("args",Array l); ("location", _)])] ->
+      FunctionCall (prefix^"."^fname, L.map parse_expreCondTerm l)
+
+   | Object [("FuncCall", Object [("funcname", Array [Object [("String", Object [("str", String fname)])]]); ("args",Array l); ("location", _)])] ->
       FunctionCall (fname, L.map parse_expreCondTerm l)
+
 
   | Object [("FuncCall", Object (("funcname", Array [Object [("String", Object [("str", String fname)])]]) :: ("agg_star",Bool true)::_ ))] ->
                   FunctionCall (fname, [ArgStarAll])
