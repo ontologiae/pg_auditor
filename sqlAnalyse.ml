@@ -273,7 +273,7 @@ and getFrom queryAST =
 
 
 
-let query_infoToSql  queryinfo ast =
+let query_infoToSql  queryinfo astp =
         Printf.eprintf "Analyse de : %s\n%!" queryinfo.query;
         let joinType_to_string jt = match jt with
         | Inner -> "Inner" 
@@ -289,21 +289,23 @@ let query_infoToSql  queryinfo ast =
                  cur_query_id queryinfo.query  (nullIfNone queryinfo.total_duration) (nullIfNone queryinfo.max) (nullIfNone queryinfo.min) in
         let reqsSamples = samplesToSql cur_query_id queryinfo.samples in
         let reqsQueriesStats = O.map_default (chronos_hour_info_to_stats cur_query_id ) "" queryinfo.chronos in
-        let fromAst = getFrom ast in
-        (*let reqsFromLst = try from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] with e -> [] in*)
-        let reqsFromLst = from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] in 
-        Printf.eprintf "On a %d éléments From\n%!" (L.length reqsFromLst);
-        let reqsFromStrLst = L.map (fun (id, table, parentId, join_type, column) ->
-                                let goodpid = match parentId with
+        match astp with
+        | Some(ast) ->
+                        let fromAst = getFrom ast in
+                        (*let reqsFromLst = try from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] with e -> [] in*)
+                        let reqsFromLst = from_to_data fromNodeSeq (H.create 1) (H.create 1) fromAst (Sequence.next fromNodeSeq) None None [] in 
+                        Printf.eprintf "On a %d éléments From\n%!" (L.length reqsFromLst);
+                        let reqsFromStrLst = L.map (fun (id, table, parentId, join_type, column) ->
+                               let goodpid = match parentId with
                                 | Some id -> Printf.sprintf "%d" id
                                 | None -> "NULL" in
                                 let jtyp = O.default Cross join_type in
                                 let col  = O.default "NULL" column in
                                 Printf.sprintf "Insert into Froms(id,nodeid,queryid, tablename, idfrom, joinType, columname) values (%d,%d,%d, '%s', %s, '%s', '%s');\n" 
                                                                  (Sequence.next fromGlobalSeq) id cur_query_id table goodpid (joinType_to_string jtyp) col) reqsFromLst in
-        print_endline req_query;
-        reqsSamples |> print_endline;
-        S.join "" reqsFromStrLst |> print_endline;
-        print_endline reqsQueriesStats;
-
+                        print_endline req_query;
+                        reqsSamples |> print_endline;
+                        S.join "" reqsFromStrLst |> print_endline;
+                        print_endline reqsQueriesStats;
+         | None -> ();
 ;;
