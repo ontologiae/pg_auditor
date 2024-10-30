@@ -84,10 +84,13 @@ let sql_mr_propre str =
 (*int -> (float, JsonBadgerParse.query_info) Hashtbl.t -> string list = <fun>*)
 let samplesToSql idx sampleInfo =
         let l = H.to_list sampleInfo in
-        let entet = "Insert into samples(id,queryId,time,query) values " in
-        let sampleToSql time query = Printf.sprintf "(%d,%d,%f,'%s')" (Sequence.next sampleSeq) idx time (sql_mr_propre query) in (*TODO remplacer \n et ' par ''*)
+        let entet = "Insert into samples(id,queryId,time,query,timestmp) values " in
+        let sampleToSql time query timestmp = Printf.sprintf "(%d,%d,%f,'%s','%s')" (Sequence.next sampleSeq) idx time (sql_mr_propre query) timestmp in (*TODO remplacer \n et ' par ''*)
         let qry = O.default "" in
-        let values = L.map (fun (time,smpl) -> sampleToSql time (qry smpl.query_wparam)) l in
+        let coales s = match s with
+                        | Some ss -> "'"^ss^"'" 
+                        | None    -> "NULL" in
+        let values = L.map (fun (time,smpl) -> sampleToSql time (qry smpl.query_wparam) (coales smpl.timestamp)) l in
         if L.length l > 0 then entet ^(S.join ",\n" values)^";" else "";;
 
 

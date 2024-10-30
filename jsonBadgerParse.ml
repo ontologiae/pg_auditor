@@ -15,6 +15,7 @@ type sample = {
   date: string option;
   user: string option;
   app: string option;
+  timestamp : string option;
 }
 type user_app_info = {
   total_duration: float option;
@@ -314,6 +315,7 @@ let transition state input =
                                    query_wparam = getCropedStr "query" l ; (*On crop les requêtes trop longues*)
                                    date = getCropedStr "date" l;
                                    user = getCropedStr "user" l;
+                                   timestamp = getStr "date" l;
                                    app = getCropedStr "app" l }
         | _ -> failwith "ce n'est pas un Sample";;
 
